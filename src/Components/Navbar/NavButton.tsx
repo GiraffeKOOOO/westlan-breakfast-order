@@ -1,6 +1,10 @@
+// libraries
 import { FC } from 'react';
-import COLOURS from '../../Theme/Colours';
 import Button from '@mui/material/Button';
+// providers
+// files
+import COLOURS from '../../Theme/Colours';
+// styles
 
 type ButtonProps = {
   buttonName: string;

@@ -61,9 +61,14 @@ const Navbar = () => {
               <MenuButton handleOpenUserMenu={handleOpenUserMenu} />
               <Menu
                 sx={{
-                  mt: '3.5rem',
+                  mt: '3rem',
+                  maxWidth: '100vw',
                   '& .MuiMenu-paper': {
+                    maxWidth: '100vw',
                     backgroundColor: COLOURS.DARK_MENU_BACKGROUND,
+                  },
+                  '& .MuiModal-backdrop': {
+                    maxWidth: '100vw',
                   },
                 }}
                 anchorEl={anchorElUser}
