@@ -18,11 +18,11 @@ const Footer: FC = () => {
         backgroundColor: COLOURS.FOOTER_BACKGROUND,
         paddingY: '3rem',
         paddingX: '2rem',
+        marginTop: '4rem',
       }}
     >
       <Grid item xs={4} />
       <Grid item xs={4}>
-        {/* footer content */}
         <Stack direction="row" justifyContent="center">
           <FooterButton buttonName={'Events'} />
           <FooterButton buttonName={'Photos'} />
