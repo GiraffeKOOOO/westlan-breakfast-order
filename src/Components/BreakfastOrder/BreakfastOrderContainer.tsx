@@ -10,16 +10,17 @@ import COLOURS from '../../Theme/Colours';
 export type BreakfastOption = {
   name: string;
   ingredients: string[];
+  colour: string;
 };
 
 const breakfastOptions: BreakfastOption[] = [
-  { name: 'Fat Bastard', ingredients: ['Sausage', 'Bacon', 'Egg'] },
-  { name: 'Sausage & Bacon', ingredients: ['Sausage', 'Bacon'] },
-  { name: 'Sausage & Egg', ingredients: ['Sausage', 'Egg'] },
-  { name: 'Egg & Bacon', ingredients: ['Bacon', 'Egg'] },
-  { name: 'Only Bacon', ingredients: ['Bacon'] },
-  { name: 'Only Sausage', ingredients: ['Sausage'] },
-  { name: 'Only Egg', ingredients: ['Egg'] },
+  { name: 'Fat Bastard', ingredients: ['Sausage', 'Bacon', 'Egg'], colour: 'blue' },
+  { name: 'Sausage & Bacon', ingredients: ['Sausage', 'Bacon'], colour: 'orange' },
+  { name: 'Sausage & Egg', ingredients: ['Sausage', 'Egg'], colour: 'purple' },
+  { name: 'Egg & Bacon', ingredients: ['Bacon', 'Egg'], colour: 'green' },
+  { name: 'Only Bacon', ingredients: ['Bacon'], colour: 'yellow' },
+  { name: 'Only Sausage', ingredients: ['Sausage'], colour: 'pink' },
+  { name: 'Only Egg', ingredients: ['Egg'], colour: 'white' },
 ];
 
 const BreakfastOrderContainer: FC = () => {
@@ -27,9 +28,9 @@ const BreakfastOrderContainer: FC = () => {
   const [editing, setEditing] = useState<boolean>(false);
 
   return (
-    <Grid container>
+    <Grid container sx={{ width: '100vw', maxWidth: '100vw' }}>
       <Grid item xs={2} />
-      <Grid item xs={8} sx={{ marginTop: '1.5rem' }}>
+      <Grid item xs={8} sx={{ marginTop: '1.5rem', width: '100vw', maxWidth: '100vw' }}>
         {userSelection !== null ? (
           <Typography
             sx={{
@@ -62,7 +63,7 @@ const BreakfastOrderContainer: FC = () => {
       </Grid>
       <Grid item xs={2} />
       <Grid item xs={2} />
-      <Grid item xs={8}>
+      <Grid item xs={8} sx={{ width: '1000px', maxWidth: '1000px' }}>
         <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
           {breakfastOptions.map((breakfastOption) => (
             <BreakfastOrderCard

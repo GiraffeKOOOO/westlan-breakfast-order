@@ -62,13 +62,11 @@ const Navbar = () => {
               <Menu
                 sx={{
                   mt: '3rem',
-                  maxWidth: '100vw',
+                  maxWidth: '1900px',
+                  minWidth: '1900px',
                   '& .MuiMenu-paper': {
-                    maxWidth: '100vw',
+                    maxWidth: '1900px',
                     backgroundColor: COLOURS.DARK_MENU_BACKGROUND,
-                  },
-                  '& .MuiModal-backdrop': {
-                    maxWidth: '100vw',
                   },
                 }}
                 anchorEl={anchorElUser}

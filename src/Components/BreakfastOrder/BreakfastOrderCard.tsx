@@ -6,7 +6,14 @@ import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
 // providers
 // files
-import burgerImage from '../../assets/burger.png';
+import burgerBlue from '../../assets/burger-blue.png';
+import burgerGreen from '../../assets/burger-green.png';
+import burgerOrange from '../../assets/burger-orange.png';
+import burgerPink from '../../assets/burger-pink.png';
+import burgerPurple from '../../assets/burger-purple.png';
+import burgerWhite from '../../assets/burger-white.png';
+import burgerYellow from '../../assets/burger-yellow.png';
+
 import { BreakfastOption } from './BreakfastOrderContainer';
 import COLOURS from '../../Theme/Colours';
 // styles
@@ -37,6 +44,27 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       case 'Egg':
         return <BsEggFried style={{ fontSize: '1.5rem' }} />;
       default:
+    }
+  }, []);
+
+  const colourSwitch = useCallback((colour: string) => {
+    switch (colour) {
+      case 'orange':
+        return burgerOrange;
+      case 'blue':
+        return burgerBlue;
+      case 'purple':
+        return burgerPurple;
+      case 'green':
+        return burgerGreen;
+      case 'yellow':
+        return burgerYellow;
+      case 'pink':
+        return burgerPink;
+      case 'white':
+        return burgerWhite;
+      default:
+        return burgerOrange;
     }
   }, []);
 
@@ -87,7 +115,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                 height: '8.75rem',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${burgerImage})`,
+                backgroundImage: `url(${colourSwitch(breakfastOption.colour)})`,
                 backgroundBlendMode: 'multiply',
                 backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG,
               }}
@@ -188,7 +216,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           },
         }}
       >
-        <CardMedia sx={{ height: '8.75rem' }} image={burgerImage} />
+        <CardMedia sx={{ height: '8.75rem' }} image={colourSwitch(breakfastOption.colour)} />
         <CardContent
           sx={{
             padding: '0.4rem',
