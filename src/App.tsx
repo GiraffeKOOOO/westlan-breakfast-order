@@ -3,8 +3,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // providers
 // import { ThemeProvider } from './components/ThemeContext/ThemeContext';
 // files
-import Home from './pages/Home.tsx';
-import Admin from './pages/Admin.tsx';
+import Home from './Pages/Home.tsx';
+import Admin from './Pages/Admin.tsx';
 // styles
 import './App.css';
 
