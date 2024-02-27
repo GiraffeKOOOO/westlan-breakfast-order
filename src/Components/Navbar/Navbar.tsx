@@ -8,6 +8,7 @@ import logoWhite from '../../assets/logo-white.webp';
 import NavButton from './NavButton';
 import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
+import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 // import logoDark from '../assets/logo-colour.webp';
 // styles
 
@@ -112,6 +113,7 @@ const Navbar = () => {
             </Grid>
           </Grid>
         </Container>
+        <BackgroundBanner />
       </AppBar>
     </>
   );

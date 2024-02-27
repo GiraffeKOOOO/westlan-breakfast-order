@@ -13,8 +13,8 @@ import burgerPink from '../../assets/burger-pink.png';
 import burgerPurple from '../../assets/burger-purple.png';
 import burgerWhite from '../../assets/burger-white.png';
 import burgerYellow from '../../assets/burger-yellow.png';
-
 import { BreakfastOption } from './BreakfastOrderContainer';
+import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import COLOURS from '../../Theme/Colours';
 // styles
 
@@ -37,11 +37,11 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 
   const iconSwitch = useCallback((ingredient: string) => {
     switch (ingredient) {
-      case 'Sausage':
+      case BREAKFAST_INGREDIENTS.SAUSAGE:
         return <GiSausage style={{ fontSize: '1.5rem' }} />;
-      case 'Bacon':
+      case BREAKFAST_INGREDIENTS.BACON:
         return <FaBacon style={{ fontSize: '1.5rem' }} />;
-      case 'Egg':
+      case BREAKFAST_INGREDIENTS.EGG:
         return <BsEggFried style={{ fontSize: '1.5rem' }} />;
       default:
     }
@@ -49,19 +49,19 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 
   const colourSwitch = useCallback((colour: string) => {
     switch (colour) {
-      case 'orange':
+      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_BACON:
         return burgerOrange;
-      case 'blue':
+      case BREAKFAST_OPTION_COLOURS.FAT_BASTARD:
         return burgerBlue;
-      case 'purple':
+      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_EGG:
         return burgerPurple;
-      case 'green':
+      case BREAKFAST_OPTION_COLOURS.EGG_AND_BACON:
         return burgerGreen;
-      case 'yellow':
+      case BREAKFAST_OPTION_COLOURS.ONLY_BACON:
         return burgerYellow;
-      case 'pink':
+      case BREAKFAST_OPTION_COLOURS.ONLY_SAUSAGE:
         return burgerPink;
-      case 'white':
+      case BREAKFAST_OPTION_COLOURS.ONLY_EGG:
         return burgerWhite;
       default:
         return burgerOrange;
