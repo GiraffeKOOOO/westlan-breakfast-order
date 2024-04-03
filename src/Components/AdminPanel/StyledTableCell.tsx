@@ -8,11 +8,11 @@ import colourSwitch from './ColourSwitch';
 // styles
 
 type StyledTableCellProps = {
-  orderType: string;
+  orderType: string | number;
   cellText: string | number;
   useColourModeWholeRow: boolean;
   strikethrough: boolean;
-  completed: boolean;
+  completed: string | number;
 };
 
 const StyledTableCell: FC<StyledTableCellProps> = ({
@@ -29,10 +29,11 @@ const StyledTableCell: FC<StyledTableCellProps> = ({
         [`&.${tableCellClasses.body}`]: {
           fontSize: 14,
           color: useColourModeWholeRow ? COLOURS.BLACK : COLOURS.DARK_TABLE_FONT,
-          backgroundColor: useColourModeWholeRow
-            ? colourSwitch(orderType)
-            : COLOURS.DARK_TABLE_CELL_BACKGROUND,
-          textDecoration: strikethrough && completed ? 'line-through' : '',
+          // backgroundColor: useColourModeWholeRow
+          //   ? colourSwitch(orderType)
+          //   : COLOURS.DARK_TABLE_CELL_BACKGROUND,
+          backgroundColor: '#ff0000',
+          // textDecoration: strikethrough && completed ? 'line-through' : '',
           textDecorationThickness: '0.3rem',
         },
       }}
