@@ -53,23 +53,11 @@ export const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-// const checkboxChangeHandler = useCallback(
-//   (orderIdParam: number) => {
-//     if (!stateOrderList) return;
-
-//     const updatedArray = [...stateOrderList];
-//     updatedArray[orderIdParam].completed = !updatedArray[orderIdParam].completed;
-
-//     setStateOrderList(updatedArray);
-//   },
-//   [stateOrderList],
-// );
-
 const AdminPanel: FC = () => {
   const navigate = useNavigate();
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
   const [useColourModeWholeRow, setUseColourModeWholeRow] = useState<boolean>(false);
-  const [strikethrough, setStrikethrough] = useState<boolean>(true);
+  const [strikethrough, setStrikethrough] = useState<boolean>(false);
   const [stateOrderList, setStateOrderList] = useState<Order[] | null>(null);
 
   useEffect(() => {

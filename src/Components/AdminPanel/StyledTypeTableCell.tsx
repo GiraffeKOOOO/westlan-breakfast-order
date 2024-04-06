@@ -8,10 +8,10 @@ import colourSwitch from './ColourSwitch';
 // styles
 
 type StyledTypeTableCellProps = {
-  orderType: string;
+  orderType: string | number;
   useColourMode: boolean;
   strikethrough: boolean;
-  completed: boolean;
+  completed: string | number;
 };
 
 const StyledTypeTableCell: FC<StyledTypeTableCellProps> = ({
@@ -24,7 +24,7 @@ const StyledTypeTableCell: FC<StyledTypeTableCellProps> = ({
     <TableCell
       align="right"
       sx={{
-        [`&.${tableCellClasses.body}`]: {
+        [`&.${tableCellClasses.root}`]: {
           fontSize: 14,
           color: useColourMode ? COLOURS.BLACK : COLOURS.DARK_TABLE_FONT,
           backgroundColor: useColourMode

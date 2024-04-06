@@ -104,7 +104,7 @@ const TableContent: FC<TableContentProps> = ({
         />
         {visibleRows.map((order, index) => {
           return (
-            <StyledTableRow key={order.orderId}>
+            <StyledTableRow key={order.orderId.toString()} id={index.toString()}>
               <StyledTableCell
                 orderType={order.orderType}
                 cellText={order.orderId}

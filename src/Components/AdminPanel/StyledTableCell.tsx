@@ -26,14 +26,13 @@ const StyledTableCell: FC<StyledTableCellProps> = ({
     <TableCell
       align="right"
       sx={{
-        [`&.${tableCellClasses.body}`]: {
+        [`&.${tableCellClasses.root}`]: {
           fontSize: 14,
           color: useColourModeWholeRow ? COLOURS.BLACK : COLOURS.DARK_TABLE_FONT,
-          // backgroundColor: useColourModeWholeRow
-          //   ? colourSwitch(orderType)
-          //   : COLOURS.DARK_TABLE_CELL_BACKGROUND,
-          backgroundColor: '#ff0000',
-          // textDecoration: strikethrough && completed ? 'line-through' : '',
+          backgroundColor: useColourModeWholeRow
+            ? colourSwitch(orderType)
+            : COLOURS.DARK_TABLE_CELL_BACKGROUND,
+          textDecoration: strikethrough && completed ? 'line-through' : '',
           textDecorationThickness: '0.3rem',
         },
       }}
