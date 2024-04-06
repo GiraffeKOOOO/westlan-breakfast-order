@@ -185,14 +185,14 @@ const AdminPanel: FC = () => {
             </Stack>
           </Stack>
 
-          <Table sx={{ marginTop: '1rem' }} stickyHeader>
-            {stateOrderList && stateOrderList.length > 0 ? (
-              <TableContent
-                useColourMode={useColourMode}
-                useColourModeWholeRow={useColourModeWholeRow}
-                strikethrough={strikethrough}
-              />
-            ) : (
+          {stateOrderList && stateOrderList.length > 0 ? (
+            <TableContent
+              useColourMode={useColourMode}
+              useColourModeWholeRow={useColourModeWholeRow}
+              strikethrough={strikethrough}
+            />
+          ) : (
+            <Table>
               <TableBody
                 sx={{
                   backgroundColor: COLOURS.DARK_TABLE_CELL_BACKGROUND,
@@ -207,8 +207,8 @@ const AdminPanel: FC = () => {
                   <StyledTableCell1 />
                 </StyledTableRow>
               </TableBody>
-            )}
-          </Table>
+            </Table>
+          )}
         </TableContainer>
       </Grid>
       <Grid item xs={2} />

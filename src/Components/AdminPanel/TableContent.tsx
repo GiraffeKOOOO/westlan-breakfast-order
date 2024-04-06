@@ -1,6 +1,6 @@
 // libraries
 import { FC, useEffect, useState, MouseEvent, useMemo, useCallback } from 'react';
-import { Checkbox, Table, TableCell, TableContainer } from '@mui/material';
+import { Checkbox, Table, TableBody, TableCell, TableContainer } from '@mui/material';
 // providers
 // files
 import TableHeader from './TableHeader';
@@ -33,7 +33,7 @@ const TableContent: FC<TableContentProps> = ({
 }) => {
   const [stateOrderList, setStateOrderList] = useState<Order[]>([]);
   const [orderDirection, setOrderDirection] = useState<ascDescEnum>(ascDescEnum.asc);
-  const [valueToOrderBy, setValueToOrderBy] = useState<keyof Order>('orderType');
+  const [valueToOrderBy, setValueToOrderBy] = useState<keyof Order>('orderId');
 
   useEffect(() => {
     setStateOrderList(MockLanOrderList);
@@ -102,45 +102,49 @@ const TableContent: FC<TableContentProps> = ({
           valueToOrderBy={valueToOrderBy}
           onRequestSort={handleRequestSort}
         />
-        {visibleRows.map((order, index) => {
-          return (
-            <StyledTableRow key={order.orderId.toString()} id={index.toString()}>
-              <StyledTableCell
-                orderType={order.orderType}
-                cellText={order.orderId}
-                useColourModeWholeRow={useColourModeWholeRow}
-                strikethrough={strikethrough}
-                completed={order.completed}
-              />
-              <StyledTableCell
-                orderType={order.orderType}
-                cellText={order.userName}
-                useColourModeWholeRow={useColourModeWholeRow}
-                strikethrough={strikethrough}
-                completed={order.completed}
-              />
-              <StyledTypeTableCell
-                useColourMode={useColourMode}
-                orderType={order.orderType}
-                strikethrough={strikethrough}
-                completed={order.completed}
-              />
-              <TableCell
-                align="right"
-                sx={{
-                  backgroundColor: useColourModeWholeRow
-                    ? colourSwitch(order.orderType)
-                    : COLOURS.DARK_TABLE_CELL_BACKGROUND,
-                }}
-              >
-                <Checkbox
-                  checked={order.completed}
-                  onChange={() => checkboxChangeHandler(order.orderId)}
+        <TableBody>
+          {visibleRows.map((order) => {
+            return (
+              <StyledTableRow key={order.orderId.toString()}>
+                <StyledTableCell
+                  orderType={order.orderType}
+                  cellText={order.orderId}
+                  useColourModeWholeRow={useColourModeWholeRow}
+                  strikethrough={strikethrough}
+                  completed={order.completed}
                 />
-              </TableCell>
-            </StyledTableRow>
-          );
-        })}
+                <StyledTableCell
+                  orderType={order.orderType}
+                  cellText={order.userName}
+                  useColourModeWholeRow={useColourModeWholeRow}
+                  strikethrough={strikethrough}
+                  completed={order.completed}
+                />
+                <StyledTypeTableCell
+                  useColourMode={useColourMode}
+                  orderType={order.orderType}
+                  strikethrough={strikethrough}
+                  completed={order.completed}
+                />
+                <TableCell
+                  align="right"
+                  sx={{
+                    backgroundColor: useColourModeWholeRow
+                      ? colourSwitch(order.orderType)
+                      : COLOURS.DARK_TABLE_CELL_BACKGROUND,
+                  }}
+                >
+                  <Checkbox
+                    // @ts-expect-error-wrong-type
+                    checked={order.completed}
+                    // @ts-expect-error-wrong-type
+                    onChange={() => checkboxChangeHandler(order.orderId)}
+                  />
+                </TableCell>
+              </StyledTableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     </TableContainer>
   );

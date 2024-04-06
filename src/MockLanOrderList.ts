@@ -33,12 +33,12 @@ const MockLanOrderList: MockOrder[] = [
     orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
     completed: false,
   },
-  // {
-  //   orderId: 5,
-  //   userName: 'PenPineapple',
-  //   orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
-  //   completed: false,
-  // },
+  {
+    orderId: 5,
+    userName: 'PenPineapple',
+    orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
+    completed: false,
+  },
   // {
   //   orderId: 6,
   //   userName: 'Shrek',
@@ -295,6 +295,7 @@ const MockLanOrderList: MockOrder[] = [
   //   orderId: 63,
   //   userName: 'Like a really really really really really really name',
   //   orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
+  //   completed: false,
   // },
 ];
 

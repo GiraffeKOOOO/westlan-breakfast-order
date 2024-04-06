@@ -1,11 +1,12 @@
 // libraries
 import { FC, MouseEvent } from 'react';
-import { Box, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { Box, TableBody, TableCell, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 // providers
 // files
 import ascDescEnum from './ascDescEnum';
 import { Order } from './TableContent';
+import COLOURS from '../../Theme/Colours';
 // styles
 
 interface HeadCell {
@@ -19,7 +20,7 @@ const headCells: readonly HeadCell[] = [
     label: 'Order Id',
   },
   {
-    id: 'orderId',
+    id: 'userName',
     label: 'Username',
   },
   {
@@ -44,8 +45,8 @@ const TableHeader: FC<TableHeaderProps> = ({ valueToOrderBy, orderDirection, onR
   };
 
   return (
-    <TableHead>
-      <TableRow>
+    <TableBody>
+      <TableRow sx={{ backgroundColor: COLOURS.DARK_MODE_BUTTON_LIGHT }}>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -56,6 +57,7 @@ const TableHeader: FC<TableHeaderProps> = ({ valueToOrderBy, orderDirection, onR
               active={valueToOrderBy === headCell.id}
               direction={valueToOrderBy === headCell.id ? orderDirection : ascDescEnum.asc}
               onClick={createSortHandler(headCell.id)}
+              sx={{ color: COLOURS.DARK_BUTTON_PRIMARY }}
             >
               {headCell.label}
               {valueToOrderBy === headCell.id ? (
@@ -67,7 +69,7 @@ const TableHeader: FC<TableHeaderProps> = ({ valueToOrderBy, orderDirection, onR
           </TableCell>
         ))}
       </TableRow>
-    </TableHead>
+    </TableBody>
   );
 };
 
