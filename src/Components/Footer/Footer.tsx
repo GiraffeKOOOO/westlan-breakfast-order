@@ -18,7 +18,7 @@ const Footer: FC = () => {
         backgroundColor: COLOURS.FOOTER_BACKGROUND,
         paddingY: '3rem',
         paddingX: '2rem',
-        marginTop: '4rem',
+        paddingTop: '4rem',
       }}
     >
       <Grid item xs={4} />
