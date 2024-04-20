@@ -1,10 +1,19 @@
 // libraries
-import { FC, useEffect, useState, MouseEvent, useMemo, useCallback } from 'react';
+import {
+  FC,
+  // useEffect,
+  useState,
+  MouseEvent,
+  useMemo,
+  useCallback,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableContainer } from '@mui/material';
 // providers
 // files
 import TableHeader from './TableHeader';
-import MockLanOrderList from '../../MockLanOrderList';
+// import MockLanOrderList from '../../MockLanOrderList';
 import ascDescEnum from './ascDescEnum';
 import { StyledTableRow } from './AdminPanel';
 import StyledTableCell from './StyledTableCell';
@@ -24,20 +33,19 @@ type TableContentProps = {
   useColourMode: boolean;
   useColourModeWholeRow: boolean;
   strikethrough: boolean;
+  stateOrderList: Order[];
+  setStateOrderList: Dispatch<SetStateAction<Order[] | null>>;
 };
 
 const TableContent: FC<TableContentProps> = ({
   useColourMode,
   useColourModeWholeRow,
   strikethrough,
+  stateOrderList,
+  setStateOrderList,
 }) => {
-  const [stateOrderList, setStateOrderList] = useState<Order[]>([]);
   const [orderDirection, setOrderDirection] = useState<ascDescEnum>(ascDescEnum.asc);
   const [valueToOrderBy, setValueToOrderBy] = useState<keyof Order>('orderId');
-
-  useEffect(() => {
-    setStateOrderList(MockLanOrderList);
-  }, []);
 
   function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -91,7 +99,7 @@ const TableContent: FC<TableContentProps> = ({
 
       setStateOrderList(updatedArray);
     },
-    [stateOrderList],
+    [setStateOrderList, stateOrderList],
   );
 
   return (
@@ -104,8 +112,9 @@ const TableContent: FC<TableContentProps> = ({
         />
         <TableBody>
           {visibleRows.map((order) => {
+            console.log('ORDER TEST: ', order.orderType);
             return (
-              <StyledTableRow key={order.orderId.toString()}>
+              <StyledTableRow key={order.orderId}>
                 <StyledTableCell
                   orderType={order.orderType}
                   cellText={order.orderId}

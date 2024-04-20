@@ -1,7 +1,8 @@
 // libraries
-import { useState, MouseEvent } from 'react';
-import { AppBar, Container, Grid, Menu, MenuItem, Stack, Toolbar, Typography } from '@mui/material';
+import { useState, MouseEvent, useContext } from 'react';
+import { AppBar, Container, Grid, Menu, Stack, Toolbar } from '@mui/material';
 // providers
+import UserContext from '../../Context/UserContext';
 // files
 import COLOURS from '../../Theme/Colours';
 import logoWhite from '../../assets/logo-white.webp';
@@ -9,12 +10,14 @@ import NavButton from './NavButton';
 import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
+import NavbarMenuItem from './MenuItem';
 // import logoDark from '../assets/logo-colour.webp';
 // styles
 
 const Navbar = () => {
+  const { userRole, userId, userName } = useContext(UserContext);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const settings = ['Event Tickets', 'Settings', 'Sign out'];
+  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -83,32 +86,13 @@ const Navbar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={handleCloseUserMenu}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: COLOURS.DARK_SECONDARY,
-                      },
-                    }}
-                  >
-                    <Typography
-                      textAlign="center"
-                      sx={{
-                        color: COLOURS.DARK_FONT_PRIMARY,
-                        fontSize: '0.875rem',
-                        lineHeight: '1.25rem',
-                        fontWeight: '500',
-                        paddingY: '0.5rem',
-                        paddingX: '0.75rem',
-                        textSizeAdjust: '100%',
-                      }}
-                    >
-                      {setting}
-                    </Typography>
-                  </MenuItem>
-                ))}
+                <NavbarMenuItem setting="Event Tickets" />
+                <NavbarMenuItem setting="Settings" />
+                {userLoggedIn ? (
+                  <NavbarMenuItem setting="Sign out" />
+                ) : (
+                  <NavbarMenuItem setting="Log in" />
+                )}
               </Menu>
             </Grid>
           </Grid>

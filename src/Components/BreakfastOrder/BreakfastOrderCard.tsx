@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
 import { Button, Card, CardContent, CardMedia, List, ListItem, Typography } from '@mui/material';
 import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
+import axios from 'axios';
 // providers
 // files
 import burgerBlue from '../../assets/burger-blue.png';
@@ -21,17 +23,71 @@ import COLOURS from '../../Theme/Colours';
 type BreakfastOrderCardProps = {
   editing: boolean;
   setEditing: Dispatch<SetStateAction<boolean>>;
-  userSelection: BreakfastOption | null;
-  setUserSelection: Dispatch<SetStateAction<BreakfastOption | null>>;
+  orderSelected: boolean;
+  orderType: string;
   breakfastOption: BreakfastOption;
+  userName: string;
+  orderId: number;
+  completed: boolean;
+};
+
+const updateOrderCall = (
+  orderId: number,
+  userName: string,
+  breakfastOption: BreakfastOption,
+  completed: boolean,
+) => {
+  try {
+    axios({
+      method: 'PUT',
+      url: `${import.meta.env.VITE_API_ADDRESS}Order`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        orderId: orderId,
+        userName: userName,
+        orderType: breakfastOption.name,
+        completed: completed,
+      },
+    })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => {
+  try {
+    axios({
+      method: 'POST',
+      url: `${import.meta.env.VITE_API_ADDRESS}Order`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: {
+        userName: userName,
+        orderType: breakfastOption.name,
+        completed: false,
+      },
+    })
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   editing,
   setEditing,
-  userSelection,
-  setUserSelection,
+  orderSelected,
+  orderType,
   breakfastOption,
+  userName,
+  orderId,
+  completed,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
@@ -70,7 +126,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 
   const checkShowConfirmation = useCallback(
     (breakfastOption: BreakfastOption) => {
-      if (breakfastOption === userSelection) return;
+      if (breakfastOption.name === orderType) return;
 
       if (editing) {
         setShowConfirmation(false);
@@ -81,17 +137,22 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
         return;
       }
     },
-    [editing, setEditing, userSelection],
+    [orderType, editing, setEditing],
   );
 
   const handleUserSelection = useCallback(
     (breakfastOption: BreakfastOption) => {
-      setUserSelection(breakfastOption);
       setShowConfirmation(false);
       setEditing(false);
-      // call the API
+
+      if (orderSelected) {
+        updateOrderCall(orderId, userName, breakfastOption, completed);
+      } else {
+        createOrderCall(userName, breakfastOption);
+      }
     },
-    [setEditing, setUserSelection],
+    // eslint-disable-next-line no-sparse-arrays
+    [completed, orderId, orderSelected, setEditing, , userName],
   );
 
   if (showConfirmation)
@@ -205,12 +266,12 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           marginX: '1rem',
           borderRadius: '6%',
           border:
-            breakfastOption === userSelection
+            breakfastOption.name === orderType
               ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
               : `0.3rem solid ${COLOURS.TRANSPARENT}`,
           '&:hover': {
             border:
-              breakfastOption === userSelection
+              breakfastOption.name === orderType
                 ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
                 : `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_HOVER}`,
           },

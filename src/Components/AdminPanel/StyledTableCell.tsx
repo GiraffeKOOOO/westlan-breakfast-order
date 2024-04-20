@@ -22,6 +22,7 @@ const StyledTableCell: FC<StyledTableCellProps> = ({
   strikethrough,
   completed,
 }) => {
+  console.log('ORDER TYPE TEST: ', orderType);
   return (
     <TableCell
       align="right"
