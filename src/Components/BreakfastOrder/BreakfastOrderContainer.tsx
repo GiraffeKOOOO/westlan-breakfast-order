@@ -33,7 +33,8 @@ const fetchOrder = (userName: string) => {
   }
 };
 
-const setUserOrder = (response) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const setUserOrder = (response: any) => {
   localStorage.setItem('orderId', response.data.orderId);
   localStorage.setItem('userName', response.data.userName);
   localStorage.setItem('orderType', response.data.orderType);

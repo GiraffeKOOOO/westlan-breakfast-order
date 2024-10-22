@@ -1,5 +1,5 @@
 // libraries
-import { useState, MouseEvent, useContext } from 'react';
+import { useState, MouseEvent, useContext, FC } from 'react';
 import { AppBar, Container, Grid, Menu, Stack, Toolbar } from '@mui/material';
 // providers
 import UserContext from '../../Context/UserContext';
@@ -14,7 +14,7 @@ import NavbarMenuItem from './MenuItem';
 // import logoDark from '../assets/logo-colour.webp';
 // styles
 
-const Navbar = () => {
+const Navbar: FC = () => {
   const { userRole, userId, userName } = useContext(UserContext);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
