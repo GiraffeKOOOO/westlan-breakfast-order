@@ -1,14 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
-import {
-  FC,
-  // useEffect,
-  useState,
-  MouseEvent,
-  useMemo,
-  useCallback,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import { FC, useState, MouseEvent, useMemo, useCallback, Dispatch, SetStateAction } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableContainer } from '@mui/material';
 // providers
 // files
@@ -20,7 +12,34 @@ import StyledTableCell from './StyledTableCell';
 import StyledTypeTableCell from './StyledTypeTableCell';
 import COLOURS from '../../Theme/Colours';
 import colourSwitch from './ColourSwitch';
+import axios from 'axios';
 // styles
+
+const updateOrderCall = (
+  orderId: number,
+  userName: string,
+  orderType: string,
+  completed: boolean,
+) => {
+  const newData = {
+    orderId: orderId,
+    userName: userName,
+    orderType: orderType,
+    completed: completed,
+  };
+  try {
+    axios({
+      method: 'PUT',
+      url: `${import.meta.env.VITE_API_ADDRESS}Order`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: newData,
+    }).catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export type Order = {
   orderId: number;
@@ -79,7 +98,7 @@ const TableContent: FC<TableContentProps> = ({
     return stabilizedThis.map((el) => el[0]);
   }
 
-  const handleRequestSort = (event: MouseEvent<unknown>, property: keyof Order) => {
+  const handleRequestSort = (_event: MouseEvent<unknown>, property: keyof Order) => {
     const isAsc = valueToOrderBy === property && orderDirection === ascDescEnum.asc;
     setOrderDirection(isAsc ? ascDescEnum.desc : ascDescEnum.asc);
     setValueToOrderBy(property);
@@ -91,12 +110,14 @@ const TableContent: FC<TableContentProps> = ({
   );
 
   const checkboxChangeHandler = useCallback(
-    (orderIdParam: number) => {
-      if (!stateOrderList) return;
+    (index: number, order: Order) => {
+      if (!stateOrderList && !order.orderId && !order.completed) return;
+
+      const completedFlip = !order.completed;
+      updateOrderCall(order.orderId, order.userName, order.orderType, completedFlip);
 
       const updatedArray = [...stateOrderList];
-      updatedArray[orderIdParam].completed = !updatedArray[orderIdParam].completed;
-
+      updatedArray[index].completed = !updatedArray[index].completed;
       setStateOrderList(updatedArray);
     },
     [setStateOrderList, stateOrderList],
@@ -111,8 +132,7 @@ const TableContent: FC<TableContentProps> = ({
           onRequestSort={handleRequestSort}
         />
         <TableBody>
-          {visibleRows.map((order) => {
-            console.log('ORDER TEST: ', order.orderType);
+          {visibleRows.map((order, index) => {
             return (
               <StyledTableRow key={order.orderId}>
                 <StyledTableCell
@@ -147,7 +167,13 @@ const TableContent: FC<TableContentProps> = ({
                     // @ts-expect-error-wrong-type
                     checked={order.completed}
                     // @ts-expect-error-wrong-type
-                    onChange={() => checkboxChangeHandler(order.orderId)}
+                    onChange={() => checkboxChangeHandler(index, order)}
+                    sx={{
+                      color: 'white',
+                      '&.Mui-checked': {
+                        color: 'white',
+                      },
+                    }}
                   />
                 </TableCell>
               </StyledTableRow>

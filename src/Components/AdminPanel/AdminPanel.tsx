@@ -119,7 +119,6 @@ const AdminPanel: FC = () => {
             padding: '2rem',
             backgroundColor: COLOURS.DARK_BUTTON_HOVER_BACKGROUND,
             borderRadius: '1rem',
-            maxHeight: '32rem',
           }}
         >
           <Stack alignItems="flex-start">

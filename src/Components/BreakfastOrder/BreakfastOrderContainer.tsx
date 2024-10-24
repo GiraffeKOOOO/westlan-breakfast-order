@@ -8,12 +8,9 @@ import UserContext from '../../Context/UserContext';
 import OrderContext from '../../Context/OrderContext';
 // files
 import BreakfastOrderCard from './BreakfastOrderCard';
-import BREAKFAST_OPTIONS, {
-  BREAKFAST_INGREDIENTS,
-  BREAKFAST_OPTION_COLOURS,
-} from '../BreakfastOptions';
 import COLOURS from '../../Theme/Colours';
 import userType from '../../Context/UserTypes';
+import BreakfastOptions from './BreakfastOrderOptions';
 // styles
 
 export type BreakfastOption = {
@@ -41,53 +38,12 @@ const setUserOrder = (response: any) => {
   localStorage.setItem('completed', response.data.completed);
 };
 
-const breakfastOptions: BreakfastOption[] = [
-  {
-    name: BREAKFAST_OPTIONS.FAT_BASTARD,
-    ingredients: [
-      BREAKFAST_INGREDIENTS.SAUSAGE,
-      BREAKFAST_INGREDIENTS.BACON,
-      BREAKFAST_INGREDIENTS.EGG,
-    ],
-    colour: BREAKFAST_OPTION_COLOURS.FAT_BASTARD,
-  },
-  {
-    name: BREAKFAST_OPTIONS.SAUSAGE_AND_BACON,
-    ingredients: [BREAKFAST_INGREDIENTS.SAUSAGE, BREAKFAST_INGREDIENTS.BACON],
-    colour: BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_BACON,
-  },
-  {
-    name: BREAKFAST_OPTIONS.SAUSAGE_AND_EGG,
-    ingredients: [BREAKFAST_INGREDIENTS.SAUSAGE, BREAKFAST_INGREDIENTS.EGG],
-    colour: BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_EGG,
-  },
-  {
-    name: BREAKFAST_OPTIONS.EGG_AND_BACON,
-    ingredients: [BREAKFAST_INGREDIENTS.BACON, BREAKFAST_INGREDIENTS.EGG],
-    colour: BREAKFAST_OPTION_COLOURS.EGG_AND_BACON,
-  },
-  {
-    name: BREAKFAST_OPTIONS.ONLY_BACON,
-    ingredients: [BREAKFAST_INGREDIENTS.BACON],
-    colour: BREAKFAST_OPTION_COLOURS.ONLY_BACON,
-  },
-  {
-    name: BREAKFAST_OPTIONS.ONLY_SAUSAGE,
-    ingredients: [BREAKFAST_INGREDIENTS.SAUSAGE],
-    colour: BREAKFAST_OPTION_COLOURS.ONLY_SAUSAGE,
-  },
-  {
-    name: BREAKFAST_OPTIONS.ONLY_EGG,
-    ingredients: [BREAKFAST_INGREDIENTS.EGG],
-    colour: BREAKFAST_OPTION_COLOURS.ONLY_EGG,
-  },
-];
-
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
   const { userRole, userId, userName } = useContext(UserContext);
   const { orderId, orderType, completed } = useContext(OrderContext);
   const [editing, setEditing] = useState<boolean>(false);
+  const breakfastOptions = BreakfastOptions;
 
   const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
   const orderSelected = orderId !== null && orderType !== undefined;

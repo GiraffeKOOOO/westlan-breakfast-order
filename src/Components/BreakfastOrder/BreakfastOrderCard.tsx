@@ -31,12 +31,29 @@ type BreakfastOrderCardProps = {
   completed: boolean;
 };
 
+const updateUserOrder = (response: any, data: any) => {
+  if (response.status !== 200) return;
+
+  localStorage.setItem('orderId', data.orderId);
+  localStorage.setItem('userName', data.userName);
+  localStorage.setItem('orderType', data.orderType);
+  localStorage.setItem('completed', data.completed);
+
+  window.location.reload();
+};
+
 const updateOrderCall = (
   orderId: number,
   userName: string,
   breakfastOption: BreakfastOption,
   completed: boolean,
 ) => {
+  const newData = {
+    orderId: orderId,
+    userName: userName,
+    orderType: breakfastOption.name,
+    completed: completed,
+  };
   try {
     axios({
       method: 'PUT',
@@ -44,14 +61,9 @@ const updateOrderCall = (
       headers: {
         'content-type': 'application/json',
       },
-      data: {
-        orderId: orderId,
-        userName: userName,
-        orderType: breakfastOption.name,
-        completed: completed,
-      },
+      data: newData,
     })
-      .then((response) => console.log(response))
+      .then((response) => updateUserOrder(response, newData))
       .catch((error) => console.log(error));
   } catch (error) {
     console.log(error);
@@ -59,6 +71,12 @@ const updateOrderCall = (
 };
 
 const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => {
+  const newData = {
+    orderId: 0,
+    userName: userName,
+    orderType: breakfastOption.name,
+    completed: false,
+  };
   try {
     axios({
       method: 'POST',
@@ -66,13 +84,9 @@ const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => 
       headers: {
         'content-type': 'application/json',
       },
-      data: {
-        userName: userName,
-        orderType: breakfastOption.name,
-        completed: false,
-      },
+      data: newData,
     })
-      .then((response) => console.log(response))
+      .then((response) => updateUserOrder(response, newData))
       .catch((error) => console.log(error));
   } catch (error) {
     console.log(error);
@@ -192,17 +206,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           >
             <div style={{ zIndex: 0 }}>
               <Typography variant="h5">{breakfastOption.name}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                <List sx={{ paddingTop: 0 }}>
-                  {breakfastOption.ingredients.map((ingredient, index) => (
-                    <ListItem key={index} sx={{ justifyContent: 'center' }}>
-                      {iconSwitch(ingredient)}
-                      <div style={{ width: '0.6rem' }} />
-                      <Typography>{ingredient}</Typography>
-                    </ListItem>
-                  ))}
-                </List>
-              </Typography>
+              <List sx={{ paddingTop: 0 }}>
+                {breakfastOption.ingredients.map((ingredient, index) => (
+                  <ListItem key={index} sx={{ justifyContent: 'center' }}>
+                    {iconSwitch(ingredient)}
+                    <Typography>{ingredient}</Typography>
+                  </ListItem>
+                ))}
+              </List>
             </div>
             <div
               style={{
@@ -287,17 +298,15 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           }}
         >
           <Typography variant="h5">{breakfastOption.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            <List sx={{ paddingTop: 0 }}>
-              {breakfastOption.ingredients.map((ingredient) => (
-                <ListItem sx={{ justifyContent: 'center' }}>
-                  {iconSwitch(ingredient)}
-                  <div style={{ width: '0.6rem' }} />
-                  <Typography>{ingredient}</Typography>
-                </ListItem>
-              ))}
-            </List>
-          </Typography>
+          <List sx={{ paddingTop: 0 }}>
+            {breakfastOption.ingredients.map((ingredient, index) => (
+              <ListItem key={index.toString()} sx={{ justifyContent: 'center' }}>
+                {iconSwitch(ingredient)}
+                <div style={{ width: '0.6rem' }} />
+                <Typography color="text.secondary">{ingredient}</Typography>
+              </ListItem>
+            ))}
+          </List>
         </CardContent>
       </Card>
     </div>

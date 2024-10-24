@@ -1,41 +1,47 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { useState, createContext, useEffect } from 'react';
 // providers
 // files
 // styles
 
-const OrderContext = createContext({
+const OrderContext = createContext<{
+  orderId: number;
+  orderUserName: string;
+  orderType: string;
+  completed: boolean;
+}>({
   orderId: -1,
   orderUserName: '',
   orderType: '',
   completed: false,
 });
 
-export function OrderProvider({ children }) {
-  const [orderId, setOrderId] = useState<number>();
-  const [orderUserName, setOrderUserName] = useState<string>();
-  const [orderType, setOrderType] = useState<string>();
-  const [completed, setCompleted] = useState<boolean>();
+export function OrderProvider({ children }: { children: React.ReactNode }) {
+  const [orderId, setOrderId] = useState<number>(-1);
+  const [orderUserName, setOrderUserName] = useState<string>('');
+  const [orderType, setOrderType] = useState<string>('');
+  const [completed, setCompleted] = useState<boolean>(false);
 
   useEffect(() => {
-    const orderId = window.localStorage.getItem('orderId');
-    if (orderId && typeof orderId === 'number') {
-      setOrderId(orderId);
+    const storedOrderId = window.localStorage.getItem('orderId');
+    if (storedOrderId) {
+      setOrderId(Number(storedOrderId));
     }
 
-    const orderUserName = window.localStorage.getItem('userName');
-    if (orderUserName && typeof orderUserName === 'string') {
-      setOrderUserName(orderUserName);
+    const storedUserName = window.localStorage.getItem('userName');
+    if (storedUserName) {
+      setOrderUserName(storedUserName);
     }
 
-    const orderType = window.localStorage.getItem('orderType');
-    if (orderType && typeof orderType === 'string') {
-      setOrderType(orderType);
+    const storedOrderType = window.localStorage.getItem('orderType');
+    if (storedOrderType) {
+      setOrderType(storedOrderType);
     }
 
-    const completed = window.localStorage.getItem('completed');
-    if (completed && typeof completed === 'boolean') {
-      setCompleted(completed);
+    const storedCompleted = window.localStorage.getItem('completed');
+    if (storedCompleted) {
+      setCompleted(storedCompleted === 'true');
     }
   }, []);
 
