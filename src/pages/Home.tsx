@@ -1,4 +1,5 @@
 // libraries
+import { FC } from 'react';
 import { Grid } from '@mui/material';
 // providers
 // files
@@ -8,7 +9,7 @@ import COLOURS from '../Theme/Colours';
 import Footer from '../Components/Footer/Footer';
 // styles
 
-const Home = () => {
+const Home: FC = () => {
   return (
     <Grid
       container

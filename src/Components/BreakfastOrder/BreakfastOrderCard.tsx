@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
 import { Button, Card, CardContent, CardMedia, List, ListItem, Typography } from '@mui/material';
 import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
+import axios from 'axios';
 // providers
 // files
 import burgerBlue from '../../assets/burger-blue.png';
@@ -21,17 +23,85 @@ import COLOURS from '../../Theme/Colours';
 type BreakfastOrderCardProps = {
   editing: boolean;
   setEditing: Dispatch<SetStateAction<boolean>>;
-  userSelection: BreakfastOption | null;
-  setUserSelection: Dispatch<SetStateAction<BreakfastOption | null>>;
+  orderSelected: boolean;
+  orderType: string;
   breakfastOption: BreakfastOption;
+  userName: string;
+  orderId: number;
+  completed: boolean;
+};
+
+const updateUserOrder = (response: any, data: any) => {
+  if (response.status !== 200) return;
+
+  localStorage.setItem('orderId', data.orderId);
+  localStorage.setItem('userName', data.userName);
+  localStorage.setItem('orderType', data.orderType);
+  localStorage.setItem('completed', data.completed);
+
+  window.location.reload();
+};
+
+const updateOrderCall = (
+  orderId: number,
+  userName: string,
+  breakfastOption: BreakfastOption,
+  completed: boolean,
+) => {
+  const newData = {
+    orderId: orderId,
+    userName: userName,
+    orderType: breakfastOption.name,
+    completed: completed,
+  };
+  try {
+    axios({
+      method: 'PUT',
+      url: `${import.meta.env.VITE_API_ADDRESS}Order`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: newData,
+    })
+      .then((response) => updateUserOrder(response, newData))
+      .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => {
+  const newData = {
+    orderId: 0,
+    userName: userName,
+    orderType: breakfastOption.name,
+    completed: false,
+  };
+  try {
+    axios({
+      method: 'POST',
+      url: `${import.meta.env.VITE_API_ADDRESS}Order`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: newData,
+    })
+      .then((response) => updateUserOrder(response, newData))
+      .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   editing,
   setEditing,
-  userSelection,
-  setUserSelection,
+  orderSelected,
+  orderType,
   breakfastOption,
+  userName,
+  orderId,
+  completed,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
@@ -70,7 +140,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 
   const checkShowConfirmation = useCallback(
     (breakfastOption: BreakfastOption) => {
-      if (breakfastOption === userSelection) return;
+      if (breakfastOption.name === orderType) return;
 
       if (editing) {
         setShowConfirmation(false);
@@ -81,17 +151,22 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
         return;
       }
     },
-    [editing, setEditing, userSelection],
+    [orderType, editing, setEditing],
   );
 
   const handleUserSelection = useCallback(
     (breakfastOption: BreakfastOption) => {
-      setUserSelection(breakfastOption);
       setShowConfirmation(false);
       setEditing(false);
-      // call the API
+
+      if (orderSelected) {
+        updateOrderCall(orderId, userName, breakfastOption, completed);
+      } else {
+        createOrderCall(userName, breakfastOption);
+      }
     },
-    [setEditing, setUserSelection],
+    // eslint-disable-next-line no-sparse-arrays
+    [completed, orderId, orderSelected, setEditing, , userName],
   );
 
   if (showConfirmation)
@@ -131,17 +206,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           >
             <div style={{ zIndex: 0 }}>
               <Typography variant="h5">{breakfastOption.name}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                <List sx={{ paddingTop: 0 }}>
-                  {breakfastOption.ingredients.map((ingredient, index) => (
-                    <ListItem key={index} sx={{ justifyContent: 'center' }}>
-                      {iconSwitch(ingredient)}
-                      <div style={{ width: '0.6rem' }} />
-                      <Typography>{ingredient}</Typography>
-                    </ListItem>
-                  ))}
-                </List>
-              </Typography>
+              <List sx={{ paddingTop: 0 }}>
+                {breakfastOption.ingredients.map((ingredient, index) => (
+                  <ListItem key={index} sx={{ justifyContent: 'center' }}>
+                    {iconSwitch(ingredient)}
+                    <Typography>{ingredient}</Typography>
+                  </ListItem>
+                ))}
+              </List>
             </div>
             <div
               style={{
@@ -205,12 +277,12 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           marginX: '1rem',
           borderRadius: '6%',
           border:
-            breakfastOption === userSelection
+            breakfastOption.name === orderType
               ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
               : `0.3rem solid ${COLOURS.TRANSPARENT}`,
           '&:hover': {
             border:
-              breakfastOption === userSelection
+              breakfastOption.name === orderType
                 ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
                 : `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_HOVER}`,
           },
@@ -226,17 +298,15 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           }}
         >
           <Typography variant="h5">{breakfastOption.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            <List sx={{ paddingTop: 0 }}>
-              {breakfastOption.ingredients.map((ingredient) => (
-                <ListItem sx={{ justifyContent: 'center' }}>
-                  {iconSwitch(ingredient)}
-                  <div style={{ width: '0.6rem' }} />
-                  <Typography>{ingredient}</Typography>
-                </ListItem>
-              ))}
-            </List>
-          </Typography>
+          <List sx={{ paddingTop: 0 }}>
+            {breakfastOption.ingredients.map((ingredient, index) => (
+              <ListItem key={index.toString()} sx={{ justifyContent: 'center' }}>
+                {iconSwitch(ingredient)}
+                <div style={{ width: '0.6rem' }} />
+                <Typography color="text.secondary">{ingredient}</Typography>
+              </ListItem>
+            ))}
+          </List>
         </CardContent>
       </Card>
     </div>

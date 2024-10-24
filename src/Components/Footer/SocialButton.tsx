@@ -47,7 +47,7 @@ const SocialButton: FC<SocialButtonProps> = ({ buttonName }) => {
         return <FaYoutube />;
       default:
     }
-  }, []);
+  }, [buttonName]);
 
   return (
     <IconButton

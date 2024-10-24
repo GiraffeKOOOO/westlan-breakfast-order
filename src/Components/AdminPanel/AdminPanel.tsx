@@ -1,5 +1,5 @@
 // libraries
-import { FC, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -16,9 +16,9 @@ import {
   tableCellClasses,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // providers
 // files
-import MockLanOrderList from '../../MockLanOrderList';
 import COLOURS from '../../Theme/Colours';
 import TableContent from './TableContent';
 // styles
@@ -53,6 +53,17 @@ export const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
+const fetchOrderList = (setStateOrderList: Dispatch<SetStateAction<Order[] | null>>) => {
+  try {
+    axios
+      .get(`${import.meta.env.VITE_API_ADDRESS}Order`)
+      .then((response) => setStateOrderList(response.data))
+      .catch(() => setStateOrderList(null));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const AdminPanel: FC = () => {
   const navigate = useNavigate();
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
@@ -61,7 +72,7 @@ const AdminPanel: FC = () => {
   const [stateOrderList, setStateOrderList] = useState<Order[] | null>(null);
 
   useEffect(() => {
-    setStateOrderList(MockLanOrderList);
+    fetchOrderList(setStateOrderList);
   }, []);
 
   const colourModeChangeHandler = () => {
@@ -108,7 +119,6 @@ const AdminPanel: FC = () => {
             padding: '2rem',
             backgroundColor: COLOURS.DARK_BUTTON_HOVER_BACKGROUND,
             borderRadius: '1rem',
-            maxHeight: '32rem',
           }}
         >
           <Stack alignItems="flex-start">
@@ -190,6 +200,8 @@ const AdminPanel: FC = () => {
               useColourMode={useColourMode}
               useColourModeWholeRow={useColourModeWholeRow}
               strikethrough={strikethrough}
+              stateOrderList={stateOrderList}
+              setStateOrderList={setStateOrderList}
             />
           ) : (
             <Table>

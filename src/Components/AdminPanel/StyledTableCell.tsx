@@ -35,6 +35,9 @@ const StyledTableCell: FC<StyledTableCellProps> = ({
           textDecoration: strikethrough && completed ? 'line-through' : '',
           textDecorationThickness: '0.3rem',
         },
+        maxWidth: '10rem',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       }}
     >
       {cellText}
