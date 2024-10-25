@@ -271,7 +271,10 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     <div onClick={() => checkShowConfirmation(breakfastOption)}>
       <Card
         sx={{
-          width: '20rem',
+          width: {
+            xs: '16rem',
+            sm: '20rem',
+          },
           minHeight: '19.125rem',
           marginY: '2rem',
           marginX: '1rem',

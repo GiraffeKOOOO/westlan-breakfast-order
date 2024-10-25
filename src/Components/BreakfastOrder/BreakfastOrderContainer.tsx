@@ -46,7 +46,7 @@ const BreakfastOrderContainer: FC = () => {
   const breakfastOptions = BreakfastOptions;
 
   const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
-  const orderSelected = orderId !== null && orderType !== undefined;
+  const orderSelected = orderId !== -1 && orderType !== '';
 
   useEffect(() => {
     if (userLoggedIn) {
@@ -71,7 +71,12 @@ const BreakfastOrderContainer: FC = () => {
             <Typography
               sx={{
                 color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '2rem',
+                fontSize: {
+                  xs: '1.3rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
                 lineHeight: '1.25rem',
                 fontWeight: '500',
                 paddingY: '0.5rem',
@@ -85,7 +90,12 @@ const BreakfastOrderContainer: FC = () => {
             <Typography
               sx={{
                 color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '2rem',
+                fontSize: {
+                  xs: '1.4rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
                 lineHeight: '1.25rem',
                 fontWeight: '500',
                 paddingY: '0.5rem',
@@ -100,7 +110,12 @@ const BreakfastOrderContainer: FC = () => {
           <Typography
             sx={{
               color: COLOURS.DARK_FONT_PRIMARY,
-              fontSize: '2rem',
+              fontSize: {
+                xs: '1.3rem',
+                sm: '1.6rem',
+                md: '2rem',
+                lg: '2rem',
+              },
               lineHeight: '1.25rem',
               fontWeight: '500',
               paddingY: '0.5rem',
@@ -119,9 +134,9 @@ const BreakfastOrderContainer: FC = () => {
           </Button>
         )}
       </Grid>
-      <Grid item xs={2} />
-      <Grid item xs={8} sx={{ width: '1000px', maxWidth: '1000px' }}>
-        <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
+      <Grid item xs={0} sm={2} />
+      <Grid item xs={12} sm={8}>
+        <Stack direction="row" justifyContent="center" flexWrap="wrap">
           {userLoggedIn &&
             breakfastOptions.map((breakfastOption, iterator) => (
               <BreakfastOrderCard
@@ -138,7 +153,7 @@ const BreakfastOrderContainer: FC = () => {
             ))}
         </Stack>
       </Grid>
-      <Grid item xs={2} />
+      <Grid item xs={0} sm={2} />
     </Grid>
   );
 };
