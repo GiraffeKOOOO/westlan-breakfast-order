@@ -24,7 +24,7 @@ const darkLayer = {
 
 const BackgroundBanner: FC = () => {
   return (
-    <Stack sx={{ position: 'static' }}>
+    <Stack sx={{ position: 'static', borderTop: `1px solid ${COLOURS.NAVBAR_BORDER_BOTTOM}` }}>
       <div style={backgroundImage}>
         <div style={darkLayer}>
           <Typography
@@ -32,13 +32,16 @@ const BackgroundBanner: FC = () => {
               position: 'relative',
               bottom: '-50%',
               color: COLOURS.DARK_FONT_PRIMARY,
-              fontSize: '3.75rem',
+              fontSize: {
+                xs: '2rem',
+                sm: '3rem',
+                md: '3.5rem',
+                lg: '3.75rem',
+              },
               lineHeight: '1.25rem',
               fontWeight: '800',
               letterSpacing: '-1.5px',
-              textSizeAdjust: '100%',
             }}
-            variant="h2"
           >
             Breakfast Order
           </Typography>

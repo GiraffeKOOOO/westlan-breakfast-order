@@ -1,7 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
-import { Button, Card, CardContent, CardMedia, List, ListItem, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  List,
+  ListItem,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
@@ -104,6 +114,8 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   completed,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const iconSwitch = useCallback((ingredient: string) => {
     switch (ingredient) {
@@ -174,7 +186,10 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       <Card
         sx={{
           zIndex: 1,
-          width: '20rem',
+          width: {
+            xs: '16rem',
+            sm: '20rem',
+          },
           minHeight: '19.125rem',
           maxHeight: '19.125rem',
           marginY: '2rem',
@@ -219,9 +234,9 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               style={{
                 zIndex: 1,
                 position: 'relative',
-                width: '20rem',
+                width: isMobile ? '16rem' : '20rem',
                 height: '19.125rem',
-                top: '-10rem',
+                top: isMobile ? '-8.5rem' : '-10rem',
               }}
             >
               <Typography
@@ -271,7 +286,10 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     <div onClick={() => checkShowConfirmation(breakfastOption)}>
       <Card
         sx={{
-          width: '20rem',
+          width: {
+            xs: '16rem',
+            sm: '20rem',
+          },
           minHeight: '19.125rem',
           marginY: '2rem',
           marginX: '1rem',
