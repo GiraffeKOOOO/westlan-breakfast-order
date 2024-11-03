@@ -24,7 +24,7 @@ const darkLayer = {
 
 const BackgroundBanner: FC = () => {
   return (
-    <Stack sx={{ position: 'static' }}>
+    <Stack sx={{ position: 'static', borderTop: `1px solid ${COLOURS.NAVBAR_BORDER_BOTTOM}` }}>
       <div style={backgroundImage}>
         <div style={darkLayer}>
           <Typography

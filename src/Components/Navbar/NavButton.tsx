@@ -1,34 +1,42 @@
 // libraries
 import { FC } from 'react';
-import Button from '@mui/material/Button';
+import { Button, ListItem, ListItemButton, Typography } from '@mui/material';
 // providers
 // files
 import COLOURS from '../../Theme/Colours';
+import locationSwitch from './locationSwitch';
 // styles
 
 type ButtonProps = {
+  isMobile: boolean;
   buttonName: string;
 };
 
-const NavButton: FC<ButtonProps> = ({ buttonName }) => {
-  const locationSwitch = () => {
-    switch (buttonName) {
-      case 'Events':
-        window.location.href = 'https://westlan.co.uk/events';
-        break;
-      case 'Photos':
-        window.location.href = 'https://westlan.co.uk/photos';
-        break;
-      case 'FAQs':
-        window.location.href = 'https://westlan.co.uk/faqs';
-        break;
-      case 'Support':
-        window.location.href = 'https://westlan.co.uk/support';
-        break;
-      default:
-        window.location.href = 'https://westlan.co.uk';
-    }
-  };
+const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
+  if (isMobile)
+    return (
+      <ListItem disablePadding sx={{ my: '0.5rem' }}>
+        <ListItemButton
+          onClick={() => locationSwitch(buttonName)}
+          sx={{
+            textAlign: 'center',
+            color: COLOURS.DARK_BUTTON_PRIMARY,
+            borderRadius: '0.375rem',
+            mx: '0.5rem',
+            '&:hover': {
+              backgroundColor: COLOURS.DARK_BUTTON_HOVER_BACKGROUND,
+              color: COLOURS.DARK_FONT_PRIMARY,
+            },
+            '&:focus': {
+              backgroundColor: COLOURS.TRANSPARENT,
+              border: `2px, solid ${COLOURS.DARK_FONT_PRIMARY}`,
+            },
+          }}
+        >
+          <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>{buttonName}</Typography>
+        </ListItemButton>
+      </ListItem>
+    );
 
   return (
     <Button
@@ -58,7 +66,7 @@ const NavButton: FC<ButtonProps> = ({ buttonName }) => {
           border: 'none',
         },
       }}
-      onClick={() => locationSwitch()}
+      onClick={() => locationSwitch(buttonName)}
     >
       {buttonName}
     </Button>
