@@ -25,6 +25,7 @@ import burgerPink from '../../assets/burger-pink.png';
 import burgerPurple from '../../assets/burger-purple.png';
 import burgerWhite from '../../assets/burger-white.png';
 import burgerYellow from '../../assets/burger-yellow.png';
+import burgerGrey from '../../assets/burger-grey.png';
 import { BreakfastOption } from './BreakfastOrderContainer';
 import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import COLOURS from '../../Theme/Colours';
@@ -39,6 +40,7 @@ type BreakfastOrderCardProps = {
   userName: string;
   orderId: number;
   completed: boolean;
+  lockedStatus: boolean;
 };
 
 const updateUserOrder = (response: any, data: any) => {
@@ -112,6 +114,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   userName,
   orderId,
   completed,
+  lockedStatus,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const theme = useTheme();
@@ -145,6 +148,8 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
         return burgerPink;
       case BREAKFAST_OPTION_COLOURS.ONLY_EGG:
         return burgerWhite;
+      case 'DISABLED':
+        return burgerGrey;
       default:
         return burgerOrange;
     }
@@ -283,7 +288,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     );
 
   return (
-    <div onClick={() => checkShowConfirmation(breakfastOption)}>
+    <div onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
       <Card
         sx={{
           width: {
@@ -302,11 +307,22 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
             border:
               breakfastOption.name === orderType
                 ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
-                : `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_HOVER}`,
+                : `0.3rem solid ${
+                    lockedStatus && orderType !== breakfastOption.name
+                      ? COLOURS.DARK_FONT_PRIMARY
+                      : COLOURS.BREAKFAST_OPTION_CARD_HOVER
+                  }`,
           },
         }}
       >
-        <CardMedia sx={{ height: '8.75rem' }} image={colourSwitch(breakfastOption.colour)} />
+        <CardMedia
+          sx={{ height: '8.75rem' }}
+          image={colourSwitch(
+            lockedStatus && orderType !== breakfastOption.name
+              ? 'DISABLED'
+              : breakfastOption.colour,
+          )}
+        />
         <CardContent
           sx={{
             padding: '0.4rem',

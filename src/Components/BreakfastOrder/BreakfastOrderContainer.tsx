@@ -1,5 +1,5 @@
 // libraries
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { Button, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -30,6 +30,16 @@ const fetchOrder = (userName: string) => {
   }
 };
 
+const fetchLockedStatus = (setLockedStatus: Dispatch<SetStateAction<boolean>>) => {
+  try {
+    axios.get(`${import.meta.env.VITE_API_ADDRESS}LockedStatus`).then((response) => {
+      setLockedStatus(response.data[0].value);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setUserOrder = (response: any) => {
   localStorage.setItem('orderId', response.data.orderId);
@@ -42,6 +52,7 @@ const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
   const { userRole, userId, userName } = useContext(UserContext);
   const { orderId, orderType, completed } = useContext(OrderContext);
+  const [lockedStatus, setLockedStatus] = useState(false);
   const [editing, setEditing] = useState<boolean>(false);
   const breakfastOptions = BreakfastOptions;
 
@@ -49,6 +60,7 @@ const BreakfastOrderContainer: FC = () => {
   const orderSelected = orderId !== -1 && orderType !== '';
 
   useEffect(() => {
+    fetchLockedStatus(setLockedStatus);
     if (userLoggedIn) {
       fetchOrder(userName);
     }
@@ -149,6 +161,7 @@ const BreakfastOrderContainer: FC = () => {
                 userName={userName}
                 orderId={orderId}
                 completed={completed}
+                lockedStatus={lockedStatus}
               />
             ))}
         </Stack>

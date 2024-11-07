@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // providers
 import { UserProvider } from './Context/UserContext.tsx';
 import { OrderProvider } from './Context/OrderContext.tsx';
+import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
 // import { ThemeProvider } from './components/ThemeContext/ThemeContext';
 // files
 import Home from './Pages/Home.tsx';
@@ -24,11 +25,13 @@ const router = createBrowserRouter([
 function App() {
   return (
     // <ThemeProvider>
-    <UserProvider>
-      <OrderProvider>
-        <RouterProvider router={router} />
-      </OrderProvider>
-    </UserProvider>
+    <LockedStatusProvider>
+      <UserProvider>
+        <OrderProvider>
+          <RouterProvider router={router} />
+        </OrderProvider>
+      </UserProvider>
+    </LockedStatusProvider>
     // </ThemeProvider>
   );
 }
