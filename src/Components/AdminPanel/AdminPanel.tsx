@@ -1,5 +1,5 @@
 // libraries
-import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useContext, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -17,7 +17,10 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 // providers
+import LockedStatusContext from '../../Context/LockedStatusContext';
 // files
 import COLOURS from '../../Theme/Colours';
 import TableContent from './TableContent';
@@ -64,14 +67,61 @@ const fetchOrderList = (setStateOrderList: Dispatch<SetStateAction<Order[] | nul
   }
 };
 
+const fetchLockedStatus = () => {
+  try {
+    axios.get(`${import.meta.env.VITE_API_ADDRESS}LockedStatus`).then((response) => {
+      setLockedStatus(response.data[0].value);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateLockedStatus = (response: any, data: any) => {
+  if (response.status !== 200) return;
+
+  setLockedStatus(data.value);
+  window.location.reload();
+};
+
+const updateLockedStatusCall = (prevLockedStatus: boolean) => {
+  const newData = {
+    lockStatus: 'locked',
+    value: !prevLockedStatus,
+  };
+
+  try {
+    axios({
+      method: 'PUT',
+      url: `${import.meta.env.VITE_API_ADDRESS}LockedStatus`,
+      headers: {
+        'content-type': 'application/json',
+      },
+      data: newData,
+    })
+      .then((response) => updateLockedStatus(response, newData))
+      .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const setLockedStatus = (response: any) => {
+  localStorage.setItem('lockedStatus', response);
+};
+
 const AdminPanel: FC = () => {
   const navigate = useNavigate();
+  const { lockedStatus } = useContext(LockedStatusContext);
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
   const [useColourModeWholeRow, setUseColourModeWholeRow] = useState<boolean>(false);
   const [strikethrough, setStrikethrough] = useState<boolean>(false);
   const [stateOrderList, setStateOrderList] = useState<Order[] | null>(null);
 
   useEffect(() => {
+    fetchLockedStatus();
     fetchOrderList(setStateOrderList);
   }, []);
 
@@ -135,64 +185,88 @@ const AdminPanel: FC = () => {
             >
               Order List
             </Typography>
-            <Stack direction="row">
-              <FormControlLabel
-                sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
-                control={
-                  <Checkbox
-                    checked={strikethrough}
-                    onChange={() => setStrikethrough(!strikethrough)}
-                    sx={{
-                      marginRight: '0.2rem',
-                      color: COLOURS.DARK_TABLE_FONT,
-                      padding: 0,
-                      '&.Mui-checked': {
-                        color: COLOURS.DARK_TABLE_FONT,
-                      },
-                    }}
-                  />
-                }
-                label="Strikethrough on complete"
-              />
-              <FormControlLabel
-                sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
-                control={
-                  <Checkbox
-                    checked={useColourMode}
-                    onChange={() => colourModeChangeHandler()}
-                    sx={{
-                      marginRight: '0.2rem',
-                      color: COLOURS.DARK_TABLE_FONT,
-                      padding: 0,
-                      '&.Mui-checked': {
-                        color: COLOURS.DARK_TABLE_FONT,
-                      },
-                    }}
-                  />
-                }
-                label="Order Type Colours"
-              />
-              {useColourMode && (
-                <FormControlLabel
-                  sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
-                  control={
-                    <Checkbox
-                      checked={useColourModeWholeRow}
-                      onChange={() => setUseColourModeWholeRow(!useColourModeWholeRow)}
-                      sx={{
-                        marginRight: '0.2rem',
-                        color: COLOURS.DARK_TABLE_FONT,
-                        padding: 0,
-                        '&.Mui-checked': {
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
+                <Stack direction="row">
+                  <FormControlLabel
+                    sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
+                    control={
+                      <Checkbox
+                        checked={strikethrough}
+                        onChange={() => setStrikethrough(!strikethrough)}
+                        sx={{
+                          marginRight: '0.2rem',
                           color: COLOURS.DARK_TABLE_FONT,
-                        },
-                      }}
+                          padding: 0,
+                          '&.Mui-checked': {
+                            color: COLOURS.DARK_TABLE_FONT,
+                          },
+                        }}
+                      />
+                    }
+                    label="Strikethrough on complete"
+                  />
+                  <FormControlLabel
+                    sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
+                    control={
+                      <Checkbox
+                        checked={useColourMode}
+                        onChange={() => colourModeChangeHandler()}
+                        sx={{
+                          marginRight: '0.2rem',
+                          color: COLOURS.DARK_TABLE_FONT,
+                          padding: 0,
+                          '&.Mui-checked': {
+                            color: COLOURS.DARK_TABLE_FONT,
+                          },
+                        }}
+                      />
+                    }
+                    label="Order Type Colours"
+                  />
+                  {useColourMode && (
+                    <FormControlLabel
+                      sx={{ color: COLOURS.DARK_TABLE_FONT, marginLeft: '0rem' }}
+                      control={
+                        <Checkbox
+                          checked={useColourModeWholeRow}
+                          onChange={() => setUseColourModeWholeRow(!useColourModeWholeRow)}
+                          sx={{
+                            marginRight: '0.2rem',
+                            color: COLOURS.DARK_TABLE_FONT,
+                            padding: 0,
+                            '&.Mui-checked': {
+                              color: COLOURS.DARK_TABLE_FONT,
+                            },
+                          }}
+                        />
+                      }
+                      label="Whole Row"
                     />
-                  }
-                  label="Whole Row"
-                />
-              )}
-            </Stack>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item>
+                <Typography>Order status: {lockedStatus ? 'locked' : 'unlocked'}</Typography>
+                <Button variant="contained" onClick={() => updateLockedStatusCall(lockedStatus)}>
+                  {lockedStatus ? (
+                    <>
+                      <LockOpenOutlinedIcon fontSize="small" />
+                      <Typography fontSize={14} sx={{ marginTop: '0.2rem', marginLeft: '0.2rem' }}>
+                        Unlock Orders
+                      </Typography>
+                    </>
+                  ) : (
+                    <>
+                      <LockOutlinedIcon fontSize="small" />
+                      <Typography fontSize={14} sx={{ marginTop: '0.2rem', marginLeft: '0.2rem' }}>
+                        Lock Orders
+                      </Typography>
+                    </>
+                  )}
+                </Button>
+              </Grid>
+            </Grid>
           </Stack>
 
           {stateOrderList && stateOrderList.length > 0 ? (
