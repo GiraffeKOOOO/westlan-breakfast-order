@@ -1,7 +1,8 @@
 // libraries
-import { FC } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Grid } from '@mui/material';
 // providers
+import ThemeContext from '../Context/ThemeContext';
 // files
 import Navbar from '../Components/Navbar/Navbar';
 import BreakfastOrderContainer from '../Components/BreakfastOrder/BreakfastOrderContainer';
@@ -10,6 +11,12 @@ import Footer from '../Components/Footer/Footer';
 // styles
 
 const Home: FC = () => {
+  const { darkMode } = useContext(ThemeContext);
+  const [darkModeState, setDarkModeState] = useState<boolean>(darkMode);
+
+  console.log(`TEST: `, darkMode);
+  console.log(`TEST 2: `, darkModeState);
+
   return (
     <Grid
       container
@@ -21,15 +28,15 @@ const Home: FC = () => {
       }}
     >
       <Grid item xs={12}>
-        <Navbar />
+        <Navbar darkMode={darkModeState} setDarkMode={setDarkModeState} />
       </Grid>
 
       <Grid item xs={12}>
-        <BreakfastOrderContainer />
+        <BreakfastOrderContainer darkMode={darkModeState} />
       </Grid>
 
       <Grid item xs={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Footer />
+        <Footer darkMode={darkModeState} />
       </Grid>
     </Grid>
   );

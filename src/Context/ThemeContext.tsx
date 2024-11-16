@@ -1,34 +1,26 @@
 // libraries
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 
-type ThemeContextType = 'LIGHT' | 'DARK';
+const ThemeContext = createContext<{
+  darkMode: boolean;
+}>({
+  darkMode: false,
+});
 
-const ThemeContext = createContext<ThemeContextType>('LIGHT');
-
-export function ThemeProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const enableDarkMode = () => {
-    setDarkMode(true);
-    window.localStorage.setItem('darkMode', true);
-  };
-
-  const disableDarkMode = () => {
-    setDarkMode(false);
-    window.localStorage.setItem('darkMode', false);
-  };
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
-    const storageDarkMode = window.localStorage.getItem('darkMode');
-    if (storageDarkMode !== null) setDarkMode(JSON.parse(storageDarkMode));
+    const storedDarkMode = window.localStorage.getItem('darkMode');
+    if (storedDarkMode) {
+      setDarkMode(storedDarkMode === 'true');
+    }
   }, []);
 
   return (
     <ThemeContext.Provider
       value={{
         darkMode,
-        enableDarkMode,
-        disableDarkMode,
       }}
     >
       {children}

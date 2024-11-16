@@ -1,5 +1,5 @@
 // libraries
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 // providers
 // files
 import userType from './UserTypes';
@@ -11,7 +11,7 @@ const UserContext = createContext({
   userRole: userType.user,
 });
 
-export function UserProvider({ children }) {
+export function UserProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<number>();
   const [userName, setUserName] = useState<string>();
   const [userRole, setUserRole] = useState<userType>();

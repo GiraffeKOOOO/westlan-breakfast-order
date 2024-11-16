@@ -4,7 +4,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { UserProvider } from './Context/UserContext.tsx';
 import { OrderProvider } from './Context/OrderContext.tsx';
 import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
-// import { ThemeProvider } from './components/ThemeContext/ThemeContext';
+import { ThemeProvider } from './Context/ThemeContext';
 // files
 import Home from './Pages/Home.tsx';
 import Admin from './Pages/Admin.tsx';
@@ -24,15 +24,15 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    // <ThemeProvider>
-    <LockedStatusProvider>
-      <UserProvider>
-        <OrderProvider>
-          <RouterProvider router={router} />
-        </OrderProvider>
-      </UserProvider>
-    </LockedStatusProvider>
-    // </ThemeProvider>
+    <ThemeProvider>
+      <LockedStatusProvider>
+        <UserProvider>
+          <OrderProvider>
+            <RouterProvider router={router} />
+          </OrderProvider>
+        </UserProvider>
+      </LockedStatusProvider>
+    </ThemeProvider>
   );
 }
 

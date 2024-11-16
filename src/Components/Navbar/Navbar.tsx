@@ -1,5 +1,5 @@
 // libraries
-import { useState, MouseEvent, useContext, FC } from 'react';
+import { useState, MouseEvent, useContext, FC, Dispatch, SetStateAction } from 'react';
 import {
   AppBar,
   Box,
@@ -29,7 +29,10 @@ import NavbarMenuItem from './MenuItem';
 // import logoDark from '../assets/logo-colour.webp';
 // styles
 
-const Navbar: FC = () => {
+const Navbar: FC<{
+  darkMode: boolean;
+  setDarkMode: Dispatch<SetStateAction<boolean>>;
+}> = ({ darkMode, setDarkMode }) => {
   const { userRole, userId, userName } = useContext(UserContext);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
@@ -233,7 +236,7 @@ const Navbar: FC = () => {
           </Grid>
 
           <Grid item xs={2}>
-            <DarkModeButton />
+            <DarkModeButton darkMode={darkMode} setDarkMode={setDarkMode} />
             <MenuButton isOpen={false} isMobile={false} handleOpenUserMenu={handleOpenUserMenu} />
             <Menu
               sx={{
