@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 // providers
 // files
 // styles
@@ -11,7 +11,7 @@ const LockedStatusContext = createContext<{
   lockedStatus: false,
 });
 
-export function LockedStatusProvider({ children }: { children: React.ReactNode }) {
+export function LockedStatusProvider({ children }: { children: ReactNode }) {
   const [lockedStatus, setLockedStatus] = useState<boolean>(false);
 
   useEffect(() => {

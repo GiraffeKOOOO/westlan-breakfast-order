@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 // providers
 // files
 // styles
@@ -17,7 +17,7 @@ const OrderContext = createContext<{
   completed: false,
 });
 
-export function OrderProvider({ children }: { children: React.ReactNode }) {
+export function OrderProvider({ children }: { children: ReactNode }) {
   const [orderId, setOrderId] = useState<number>(-1);
   const [orderUserName, setOrderUserName] = useState<string>('');
   const [orderType, setOrderType] = useState<string>('');

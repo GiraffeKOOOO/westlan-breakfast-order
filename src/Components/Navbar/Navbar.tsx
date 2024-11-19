@@ -12,28 +12,30 @@ import {
   Stack,
   Toolbar,
   useMediaQuery,
-  useTheme,
+  useTheme as muiTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 // providers
 import UserContext from '../../Context/UserContext';
+import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 import logoWhite from '../../assets/logo-white.webp';
+import logoDark from '../../assets/logo-colour.webp';
 import NavButton from './NavButton';
 import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
-// import logoDark from '../assets/logo-colour.webp';
 // styles
 
 const Navbar: FC = () => {
   const { userRole, userId, userName } = useContext(UserContext);
+  const { darkMode } = useTheme();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
-  const theme = useTheme();
+  const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
@@ -56,7 +58,7 @@ const Navbar: FC = () => {
       <Box
         sx={{
           height: '100vh',
-          backgroundColor: COLOURS.DARK_PRIMARY,
+          backgroundColor: darkMode ? COLOURS.DARK_PRIMARY : COLOURS.LIGHT_PRIMARY,
           borderRight: `1px solid ${COLOURS.DARK_MENU_BACKGROUND}`,
         }}
       >
@@ -88,7 +90,7 @@ const Navbar: FC = () => {
             top: 'auto',
             bottom: 0,
             left: 0,
-            backgroundColor: COLOURS.DARK_PRIMARY,
+            backgroundColor: darkMode ? COLOURS.DARK_PRIMARY : COLOURS.LIGHT_PRIMARY,
             borderTop: `1px solid ${COLOURS.DARK_MENU_BACKGROUND}`,
             borderRight: `1px solid ${COLOURS.DARK_MENU_BACKGROUND}`,
             width: '320px',
@@ -106,7 +108,7 @@ const Navbar: FC = () => {
               '& .MuiMenu-paper': {
                 width: '320px',
                 marginLeft: '-1rem',
-                backgroundColor: COLOURS.DARK_MENU_BACKGROUND,
+                backgroundColor: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.LIGHT_PRIMARY,
               },
             }}
             anchorEl={anchorElUser}
@@ -141,8 +143,8 @@ const Navbar: FC = () => {
         <AppBar
           position="static"
           sx={{
-            backgroundColor: COLOURS.DARK_PRIMARY,
-            color: COLOURS.DARK_FONT_PRIMARY,
+            backgroundColor: darkMode ? COLOURS.DARK_PRIMARY : COLOURS.LIGHT_PRIMARY,
+            color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
           }}
         >
           <Container>
@@ -166,7 +168,7 @@ const Navbar: FC = () => {
               </Grid>
               <Grid item xs={9.5} display="flex">
                 <img
-                  src={logoWhite}
+                  src={darkMode ? logoWhite : logoDark}
                   style={{
                     height: '1.097rem',
                     cursor: 'pointer',
@@ -188,7 +190,7 @@ const Navbar: FC = () => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -205,7 +207,7 @@ const Navbar: FC = () => {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: COLOURS.DARK_PRIMARY,
+        backgroundColor: darkMode ? COLOURS.DARK_PRIMARY : COLOURS.LIGHT_PRIMARY,
         color: COLOURS.DARK_FONT_PRIMARY,
       }}
     >
@@ -214,7 +216,7 @@ const Navbar: FC = () => {
           <Grid item xs={10}>
             <Toolbar disableGutters={true}>
               <img
-                src={logoWhite}
+                src={darkMode ? logoWhite : logoDark}
                 style={{
                   height: '1.097em',
                   width: '8rem',
@@ -242,7 +244,8 @@ const Navbar: FC = () => {
                 minWidth: '1900px',
                 '& .MuiMenu-paper': {
                   maxWidth: '1900px',
-                  backgroundColor: COLOURS.DARK_MENU_BACKGROUND,
+                  width: '12rem',
+                  backgroundColor: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.LIGHT_PRIMARY,
                 },
               }}
               anchorEl={anchorElUser}

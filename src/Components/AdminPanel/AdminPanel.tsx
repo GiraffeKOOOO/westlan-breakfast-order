@@ -142,9 +142,6 @@ const AdminPanel: FC = () => {
     <Grid
       container
       sx={{
-        width: '100vw',
-        maxWidth: '100vw',
-        backgroundColor: COLOURS.DARK_MODE_BUTTON_LIGHT,
         paddingBottom: '3rem',
       }}
     >

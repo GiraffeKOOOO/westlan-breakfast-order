@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // providers
 // files
 import COLOURS from '../../Theme/Colours';
+import { useTheme } from '../../Context/useTheme';
 // styles
 
 type MenuButtonProps = {
@@ -17,6 +18,7 @@ type MenuButtonProps = {
 const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu }) => {
   // TODO: add a avatar fetch url from the API
   const avatarUrl = '../assets/person-avatar.png';
+  const { darkMode } = useTheme();
 
   if (isMobile)
     return (
@@ -38,8 +40,23 @@ const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu 
         >
           <Avatar alt="user avatar" src={avatarUrl} sx={{ width: '2rem', height: '2rem' }} />
         </IconButton>
-        <Typography sx={{ paddingX: '0.5rem' }}>username</Typography>
-        {isOpen ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        <Typography
+          sx={{
+            paddingX: '0.5rem',
+            color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+          }}
+        >
+          username
+        </Typography>
+        {isOpen ? (
+          <ExpandMoreIcon
+            sx={{ color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY }}
+          />
+        ) : (
+          <ExpandLessIcon
+            sx={{ color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY }}
+          />
+        )}
       </Stack>
     );
 

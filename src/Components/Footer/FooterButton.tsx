@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { Button } from '@mui/material';
 import COLOURS from '../../Theme/Colours';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 // styles
 
@@ -11,6 +12,8 @@ type FooterButtonProps = {
 };
 
 const FooterButton: FC<FooterButtonProps> = ({ buttonName }) => {
+  const { darkMode } = useTheme();
+
   const locationSwitch = () => {
     switch (buttonName) {
       case 'Events':
@@ -37,11 +40,11 @@ const FooterButton: FC<FooterButtonProps> = ({ buttonName }) => {
       sx={{
         backgroundColor: COLOURS.TRANSPARENT,
         border: COLOURS.TRANSPARENT,
-        color: COLOURS.DARK_MENU_BACKGROUND,
+        color: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.DARK_TABLE_CELL_BACKGROUND,
         textTransform: 'none',
         '&:hover': {
           backgroundColor: COLOURS.TRANSPARENT,
-          color: COLOURS.DARK_FONT_PRIMARY,
+          color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
         },
       }}
       onClick={() => locationSwitch()}

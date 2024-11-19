@@ -6,6 +6,7 @@ import axios from 'axios';
 // providers
 import UserContext from '../../Context/UserContext';
 import OrderContext from '../../Context/OrderContext';
+import { useTheme } from '../../Context/useTheme';
 // files
 import BreakfastOrderCard from './BreakfastOrderCard';
 import COLOURS from '../../Theme/Colours';
@@ -50,6 +51,7 @@ const setUserOrder = (response: any) => {
 
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
+  const { darkMode } = useTheme();
   const { userRole, userId, userName } = useContext(UserContext);
   const { orderId, orderType, completed } = useContext(OrderContext);
   const [lockedStatus, setLockedStatus] = useState(false);
@@ -72,7 +74,7 @@ const BreakfastOrderContainer: FC = () => {
       sx={{
         width: '100vw',
         maxWidth: '100vw',
-        backgroundColor: COLOURS.DARK_MODE_BUTTON_LIGHT,
+        backgroundColor: darkMode ? COLOURS.DARK_MODE_BUTTON_LIGHT : COLOURS.LIGHT_SECONDARY,
         paddingBottom: '2rem',
       }}
     >
@@ -82,7 +84,7 @@ const BreakfastOrderContainer: FC = () => {
           orderSelected ? (
             <Typography
               sx={{
-                color: COLOURS.DARK_FONT_PRIMARY,
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
                 fontSize: {
                   xs: '1.3rem',
                   sm: '1.6rem',
@@ -101,7 +103,7 @@ const BreakfastOrderContainer: FC = () => {
           ) : (
             <Typography
               sx={{
-                color: COLOURS.DARK_FONT_PRIMARY,
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
                 fontSize: {
                   xs: '1.4rem',
                   sm: '1.6rem',
@@ -121,7 +123,7 @@ const BreakfastOrderContainer: FC = () => {
         ) : (
           <Typography
             sx={{
-              color: COLOURS.DARK_FONT_PRIMARY,
+              color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
               fontSize: {
                 xs: '1.3rem',
                 sm: '1.6rem',

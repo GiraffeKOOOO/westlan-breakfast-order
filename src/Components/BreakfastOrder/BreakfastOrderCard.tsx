@@ -10,13 +10,14 @@ import {
   ListItem,
   Typography,
   useMediaQuery,
-  useTheme,
+  useTheme as muiTheme,
 } from '@mui/material';
 import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
 import axios from 'axios';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import burgerBlue from '../../assets/burger-blue.png';
 import burgerGreen from '../../assets/burger-green.png';
@@ -116,8 +117,9 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   completed,
   lockedStatus,
 }) => {
+  const { darkMode } = useTheme();
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const theme = useTheme();
+  const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const iconSwitch = useCallback((ingredient: string) => {
@@ -200,7 +202,9 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           marginY: '2rem',
           marginX: '1rem',
           borderRadius: '6%',
-          border: `0.3rem solid ${COLOURS.TRANSPARENT}`,
+          border: darkMode
+            ? `0.3rem solid ${COLOURS.TRANSPARENT}`
+            : `0.3rem solid ${COLOURS.LIGHT_FONT_TERTIARY}`,
         }}
       >
         <div style={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
@@ -302,7 +306,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           border:
             breakfastOption.name === orderType
               ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
-              : `0.3rem solid ${COLOURS.TRANSPARENT}`,
+              : `0.3rem solid ${darkMode ? COLOURS.TRANSPARENT : COLOURS.LIGHT_FONT_TERTIARY}`,
           '&:hover': {
             border:
               breakfastOption.name === orderType

@@ -2,6 +2,7 @@
 import { Grid, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 import FooterButton from './FooterButton';
@@ -9,13 +10,15 @@ import SocialButton from './SocialButton';
 // styles
 
 const Footer: FC = () => {
+  const { darkMode } = useTheme();
+
   return (
     <Grid
       container
       sx={{
         width: '100vw',
         maxWidth: '100vw',
-        backgroundColor: COLOURS.FOOTER_BACKGROUND,
+        backgroundColor: darkMode ? COLOURS.FOOTER_BACKGROUND : COLOURS.LIGHT_PRIMARY,
         paddingY: '3rem',
         paddingX: '2rem',
         paddingTop: '4rem',
@@ -36,7 +39,11 @@ const Footer: FC = () => {
           <SocialButton buttonName={'youtube'} />
         </Stack>
         <Stack direction="row" justifyContent="center" sx={{ marginTop: '2rem' }}>
-          <Typography sx={{ color: COLOURS.DARK_MENU_BACKGROUND }}>
+          <Typography
+            sx={{
+              color: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.DARK_TABLE_CELL_BACKGROUND,
+            }}
+          >
             © 2024 WestLAN. All rights reserved.
           </Typography>
         </Stack>
