@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { MenuItem, Typography } from '@mui/material';
 import axios from 'axios';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 // styles
@@ -22,7 +23,8 @@ const fetchUser = () => {
   }
 };
 
-const handleLogin = (response) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handleLogin = (response: any) => {
   if (response.status === 200) {
     localStorage.setItem('userId', response.data.userId);
     localStorage.setItem('userName', response.data.userName);
@@ -32,6 +34,8 @@ const handleLogin = (response) => {
 };
 
 const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
+  const { darkMode } = useTheme();
+
   const redirectEventTickets = () => {
     window.location.href = 'https://westlan.co.uk/events';
   };
@@ -73,21 +77,16 @@ const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
       key={setting}
       onClick={() => handleMenuOption(setting)}
       sx={{
+        paddingX: '1rem',
         '&:hover': {
-          backgroundColor: COLOURS.DARK_SECONDARY,
+          backgroundColor: darkMode ? COLOURS.DARK_SECONDARY : COLOURS.LIGHT_SECONDARY,
         },
       }}
     >
       <Typography
-        textAlign="center"
         sx={{
-          color: COLOURS.DARK_FONT_PRIMARY,
+          color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_SECONDARY,
           fontSize: '0.875rem',
-          lineHeight: '1.25rem',
-          fontWeight: '500',
-          paddingY: '0.5rem',
-          paddingX: '0.75rem',
-          textSizeAdjust: '100%',
         }}
       >
         {setting}

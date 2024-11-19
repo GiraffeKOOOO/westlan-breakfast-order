@@ -2,6 +2,7 @@
 import { FC } from 'react';
 import { Button, ListItem, ListItemButton, Typography } from '@mui/material';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 import locationSwitch from './locationSwitch';
@@ -13,6 +14,8 @@ type ButtonProps = {
 };
 
 const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
+  const { darkMode } = useTheme();
+
   if (isMobile)
     return (
       <ListItem disablePadding sx={{ my: '0.5rem' }}>
@@ -20,12 +23,14 @@ const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
           onClick={() => locationSwitch(buttonName)}
           sx={{
             textAlign: 'center',
-            color: COLOURS.DARK_BUTTON_PRIMARY,
+            color: darkMode ? COLOURS.DARK_BUTTON_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
             borderRadius: '0.375rem',
             mx: '0.5rem',
             '&:hover': {
-              backgroundColor: COLOURS.DARK_BUTTON_HOVER_BACKGROUND,
-              color: COLOURS.DARK_FONT_PRIMARY,
+              backgroundColor: darkMode
+                ? COLOURS.DARK_BUTTON_HOVER_BACKGROUND
+                : COLOURS.DARK_TABLE_FONT,
+              color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
             },
             '&:focus': {
               backgroundColor: COLOURS.TRANSPARENT,
@@ -45,7 +50,7 @@ const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
       sx={{
         backgroundColor: COLOURS.TRANSPARENT,
         border: COLOURS.TRANSPARENT,
-        color: COLOURS.DARK_BUTTON_PRIMARY,
+        color: darkMode ? COLOURS.DARK_BUTTON_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
         textTransform: 'none',
         fontSize: '0.875rem',
         lineHeight: '1.25rem',
@@ -56,13 +61,10 @@ const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
         marginLeft: '1rem',
         transition: 'all 0s',
         '&:hover': {
-          backgroundColor: COLOURS.DARK_BUTTON_HOVER_BACKGROUND,
-          color: COLOURS.DARK_FONT_PRIMARY,
-          border: 'none',
-        },
-        '&:focus': {
-          backgroundColor: COLOURS.DARK_BUTTON_FOCUS_BACKGROUND,
-          color: COLOURS.DARK_FONT_PRIMARY,
+          backgroundColor: darkMode
+            ? COLOURS.DARK_BUTTON_HOVER_BACKGROUND
+            : COLOURS.LIGHT_BACKGROUND_HOVER,
+          color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
           border: 'none',
         },
       }}
