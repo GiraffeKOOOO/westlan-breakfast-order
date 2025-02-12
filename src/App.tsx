@@ -6,8 +6,8 @@ import { OrderProvider } from './Context/OrderContext.tsx';
 import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
 import { ThemeProvider } from './Context/ThemeContext';
 // files
-import Home from './Pages/Home.tsx';
-import Admin from './Pages/Admin.tsx';
+import Home from './pages/Home.tsx';
+import Admin from './pages/Admin.tsx';
 // styles
 import './App.css';
 
