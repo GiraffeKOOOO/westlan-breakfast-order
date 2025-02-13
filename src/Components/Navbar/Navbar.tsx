@@ -28,13 +28,14 @@ import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
+import DiscordLogin from './DiscordLogin';
 // styles
 
 const Navbar: FC = () => {
   const { userRole, userId, userName } = useContext(UserContext);
   const { darkMode } = useTheme();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
+  const userLoggedIn = userName !== undefined;
   const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -266,7 +267,8 @@ const Navbar: FC = () => {
               {userLoggedIn ? (
                 <NavbarMenuItem setting="Sign out" />
               ) : (
-                <NavbarMenuItem setting="Log in" />
+                // <NavbarMenuItem setting="Log in" />
+                <DiscordLogin />
               )}
             </Menu>
           </Grid>

@@ -11,15 +11,18 @@
 </p>
 
 ## What does this web app do?
+
 For Users:
+
 - Allows users to select a breakfast option
-For Admins:
+  For Admins:
 - Allows admins to view the orders in a table
-- the table is sortable by: orderId, username, order type, and order's complete status
+- the table is sortable by: username, order type, and order's complete status
 - allows admins to mark orders as complete
 - the order table has toggleable color coding
 
 ## Key libraries and Frameworks used in this project
+
 <ul>
     <li>React</li>
     <li>Vite</li>

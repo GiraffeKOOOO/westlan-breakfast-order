@@ -10,7 +10,6 @@ import { useTheme } from '../../Context/useTheme';
 // files
 import BreakfastOrderCard from './BreakfastOrderCard';
 import COLOURS from '../../Theme/Colours';
-import userType from '../../Context/UserTypes';
 import BreakfastOptions from './BreakfastOrderOptions';
 // styles
 
@@ -43,7 +42,6 @@ const fetchLockedStatus = (setLockedStatus: Dispatch<SetStateAction<boolean>>) =
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setUserOrder = (response: any) => {
-  localStorage.setItem('orderId', response.data.orderId);
   localStorage.setItem('userName', response.data.userName);
   localStorage.setItem('orderType', response.data.orderType);
   localStorage.setItem('completed', response.data.completed);
@@ -52,14 +50,14 @@ const setUserOrder = (response: any) => {
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
-  const { userRole, userId, userName } = useContext(UserContext);
-  const { orderId, orderType, completed } = useContext(OrderContext);
+  const { userName } = useContext(UserContext);
+  const { orderType, completed } = useContext(OrderContext);
   const [lockedStatus, setLockedStatus] = useState(false);
   const [editing, setEditing] = useState<boolean>(false);
   const breakfastOptions = BreakfastOptions;
 
-  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
-  const orderSelected = orderId !== -1 && orderType !== '';
+  const userLoggedIn = userName !== undefined;
+  const orderSelected = orderType !== '';
 
   useEffect(() => {
     fetchLockedStatus(setLockedStatus);
@@ -142,11 +140,15 @@ const BreakfastOrderContainer: FC = () => {
         )}
       </Grid>
       <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        {userRole === userType.admin && (
-          <Button variant="contained" onClick={() => navigate('/admin')}>
-            Admin Panel
-          </Button>
-        )}
+        {userLoggedIn &&
+          (userName === 'GirraffeKOOOO' ||
+            userName === 'bloodtobleed' ||
+            userName === 'MikeTheGreek' ||
+            userName === 'Neomancer') && (
+            <Button variant="contained" onClick={() => navigate('/admin')}>
+              Admin Panel
+            </Button>
+          )}
       </Grid>
       <Grid item xs={0} sm={2} />
       <Grid item xs={12} sm={8}>
@@ -161,7 +163,6 @@ const BreakfastOrderContainer: FC = () => {
                 orderType={orderType}
                 breakfastOption={breakfastOption}
                 userName={userName}
-                orderId={orderId}
                 completed={completed}
                 lockedStatus={lockedStatus}
               />

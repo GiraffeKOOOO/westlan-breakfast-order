@@ -39,7 +39,6 @@ type BreakfastOrderCardProps = {
   orderType: string;
   breakfastOption: BreakfastOption;
   userName: string;
-  orderId: number;
   completed: boolean;
   lockedStatus: boolean;
 };
@@ -47,7 +46,6 @@ type BreakfastOrderCardProps = {
 const updateUserOrder = (response: any, data: any) => {
   if (response.status !== 200) return;
 
-  localStorage.setItem('orderId', data.orderId);
   localStorage.setItem('userName', data.userName);
   localStorage.setItem('orderType', data.orderType);
   localStorage.setItem('completed', data.completed);
@@ -56,13 +54,11 @@ const updateUserOrder = (response: any, data: any) => {
 };
 
 const updateOrderCall = (
-  orderId: number,
   userName: string,
   breakfastOption: BreakfastOption,
   completed: boolean,
 ) => {
   const newData = {
-    orderId: orderId,
     userName: userName,
     orderType: breakfastOption.name,
     completed: completed,
@@ -85,7 +81,6 @@ const updateOrderCall = (
 
 const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => {
   const newData = {
-    orderId: 0,
     userName: userName,
     orderType: breakfastOption.name,
     completed: false,
@@ -113,7 +108,6 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   orderType,
   breakfastOption,
   userName,
-  orderId,
   completed,
   lockedStatus,
 }) => {
@@ -179,13 +173,13 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       setEditing(false);
 
       if (orderSelected) {
-        updateOrderCall(orderId, userName, breakfastOption, completed);
+        updateOrderCall(userName, breakfastOption, completed);
       } else {
         createOrderCall(userName, breakfastOption);
       }
     },
     // eslint-disable-next-line no-sparse-arrays
-    [completed, orderId, orderSelected, setEditing, , userName],
+    [completed, orderSelected, setEditing, , userName],
   );
 
   if (showConfirmation)
