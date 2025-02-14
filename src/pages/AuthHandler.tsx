@@ -13,8 +13,8 @@ const AuthHandler = () => {
         .then((res) => res.json())
         .then((data) => {
           localStorage.setItem('userName', data.global_name);
-          // TODO: add avatar to user context & display in navbar
-          // localStorage.setItem('userAvatar', data.avata);
+          localStorage.setItem('userAvatar', data.avatar);
+          localStorage.setItem('userDiscordId', data.id);
           window.location.href = '/';
         })
         .catch((error) => console.error('Error fetching Discord data', error));

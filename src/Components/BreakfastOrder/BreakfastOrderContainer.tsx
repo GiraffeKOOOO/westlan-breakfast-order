@@ -51,7 +51,7 @@ const setUserOrder = (response: any) => {
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
-  const { userName } = useContext(UserContext);
+  const { userName, userDiscordId } = useContext(UserContext);
   const { orderType, completed } = useContext(OrderContext);
   const [lockedStatus, setLockedStatus] = useState(false);
   const [editing, setEditing] = useState<boolean>(false);
@@ -146,10 +146,10 @@ const BreakfastOrderContainer: FC = () => {
       </Grid>
       <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
         {userLoggedIn &&
-          (userName === 'GirraffeKOOOO' ||
-            userName === 'bloodtobleed' ||
-            userName === 'MikeTheGreek' ||
-            userName === 'Neomancer') && (
+          (userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`) && (
             <Button variant="contained" onClick={() => navigate('/admin')}>
               Admin Panel
             </Button>

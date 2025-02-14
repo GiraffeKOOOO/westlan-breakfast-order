@@ -115,7 +115,7 @@ const setLockedStatus = (response: any) => {
 const AdminPanel: FC = () => {
   const navigate = useNavigate();
   const { lockedStatus } = useContext(LockedStatusContext);
-  const { userName } = useContext(UserContext);
+  const { userName, userDiscordId } = useContext(UserContext);
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
   const [useColourModeWholeRow, setUseColourModeWholeRow] = useState<boolean>(false);
   const [strikethrough, setStrikethrough] = useState<boolean>(false);
@@ -142,10 +142,10 @@ const AdminPanel: FC = () => {
 
   if (
     userLoggedIn &&
-    (userName === 'GirraffeKOOOO' ||
-      userName === 'bloodtobleed' ||
-      userName === 'MikeTheGreek' ||
-      userName === 'Neomancer')
+    (userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
+      userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
+      userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
+      userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`)
   )
     return (
       <Grid
