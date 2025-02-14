@@ -28,11 +28,10 @@ import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
-import DiscordLogin from './DiscordLogin';
 // styles
 
 const Navbar: FC = () => {
-  const { userRole, userId, userName } = useContext(UserContext);
+  const { userName } = useContext(UserContext);
   const { darkMode } = useTheme();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const userLoggedIn = userName !== undefined;
@@ -127,11 +126,7 @@ const Navbar: FC = () => {
           >
             <NavbarMenuItem setting="Event Tickets" />
             <NavbarMenuItem setting="Settings" />
-            {userLoggedIn ? (
-              <NavbarMenuItem setting="Sign out" />
-            ) : (
-              <NavbarMenuItem setting="Log in" />
-            )}
+            {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
           </Menu>
         </AppBar>
       </Box>
@@ -264,12 +259,7 @@ const Navbar: FC = () => {
             >
               <NavbarMenuItem setting="Event Tickets" />
               <NavbarMenuItem setting="Settings" />
-              {userLoggedIn ? (
-                <NavbarMenuItem setting="Sign out" />
-              ) : (
-                // <NavbarMenuItem setting="Log in" />
-                <DiscordLogin />
-              )}
+              {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
             </Menu>
           </Grid>
         </Grid>

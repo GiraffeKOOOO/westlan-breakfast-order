@@ -13,13 +13,20 @@ const AuthHandler = () => {
         .then((res) => res.json())
         .then((data) => {
           localStorage.setItem('userName', data.global_name);
+          // TODO: add avatar to user context & display in navbar
+          // localStorage.setItem('userAvatar', data.avata);
           window.location.href = '/';
         })
         .catch((error) => console.error('Error fetching Discord data', error));
     }
   }, []);
 
-  return <div>Authenticating...</div>;
+  return (
+    <div>
+      If you have encountered an error, please go back to the previous page, or ask a member of
+      staff for help
+    </div>
+  );
 };
 
 export default AuthHandler;

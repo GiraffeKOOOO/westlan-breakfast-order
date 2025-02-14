@@ -1,5 +1,5 @@
 // libraries
-import { FC, MouseEvent } from 'react';
+import { FC, MouseEvent, useContext } from 'react';
 import { Avatar, IconButton, Stack, Typography } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // files
 import COLOURS from '../../Theme/Colours';
 import { useTheme } from '../../Context/useTheme';
+import UserContext from '../../Context/UserContext';
 // styles
 
 type MenuButtonProps = {
@@ -19,6 +20,7 @@ const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu 
   // TODO: add a avatar fetch url from the API
   const avatarUrl = '../assets/person-avatar.png';
   const { darkMode } = useTheme();
+  const { userName } = useContext(UserContext);
 
   if (isMobile)
     return (
@@ -46,7 +48,7 @@ const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu 
             color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
           }}
         >
-          username
+          {userName}
         </Typography>
         {isOpen ? (
           <ExpandMoreIcon

@@ -11,6 +11,7 @@ import { useTheme } from '../../Context/useTheme';
 import BreakfastOrderCard from './BreakfastOrderCard';
 import COLOURS from '../../Theme/Colours';
 import BreakfastOptions from './BreakfastOrderOptions';
+import DiscordLogin from '../Navbar/DiscordLogin';
 // styles
 
 export type BreakfastOption = {
@@ -119,24 +120,28 @@ const BreakfastOrderContainer: FC = () => {
             </Typography>
           )
         ) : (
-          <Typography
-            sx={{
-              color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-              fontSize: {
-                xs: '1.3rem',
-                sm: '1.6rem',
-                md: '2rem',
-                lg: '2rem',
-              },
-              lineHeight: '1.25rem',
-              fontWeight: '500',
-              paddingY: '0.5rem',
-              paddingX: '0.75rem',
-              textSizeAdjust: '100%',
-            }}
-          >
-            Please log in to get started
-          </Typography>
+          <>
+            <Typography
+              sx={{
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                fontSize: {
+                  xs: '1.3rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
+                lineHeight: '1.25rem',
+                fontWeight: '500',
+                paddingY: '0.5rem',
+                paddingX: '0.75rem',
+                marginBottom: '1rem',
+                textSizeAdjust: '100%',
+              }}
+            >
+              To open the breakfast selection, please log in using Discord
+            </Typography>
+            <DiscordLogin />
+          </>
         )}
       </Grid>
       <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
