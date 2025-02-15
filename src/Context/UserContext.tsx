@@ -1,44 +1,42 @@
 // libraries
-import { useState, createContext, useEffect } from 'react';
+import { useState, createContext, useEffect, ReactNode } from 'react';
 // providers
-// files
-import userType from './UserTypes';
 // styles
 
-const UserContext = createContext({
-  userId: -1,
+const UserContext = createContext<{
+  userName: string;
+  userAvatar: string;
+  userDiscordId: string;
+}>({
   userName: '',
-  userRole: userType.user,
+  userAvatar: '',
+  userDiscordId: '',
 });
 
-export function UserProvider({ children }) {
-  const [userId, setUserId] = useState<number>();
+export function UserProvider({ children }: { children: ReactNode }) {
   const [userName, setUserName] = useState<string>();
-  const [userRole, setUserRole] = useState<userType>();
+  const [userAvatar, setUserAvatar] = useState<string>();
+  const [userDiscordId, setUserDiscordId] = useState<string>();
 
   useEffect(() => {
-    const userId = window.localStorage.getItem('userId');
-    if (userId) {
-      setUserId(userId);
-    }
     const userName = window.localStorage.getItem('userName');
     if (userName && typeof userName === 'string') {
       setUserName(userName);
     }
-    const userRole = window.localStorage.getItem('userRole');
-    if (userRole && (userRole === userType.admin || userRole === userType.user)) {
-      setUserRole(userRole);
+
+    const userAvatar = window.localStorage.getItem('userAvatar');
+    if (userAvatar && typeof userAvatar === 'string') {
+      setUserAvatar(userAvatar);
+    }
+
+    const userDiscordId = window.localStorage.getItem('userDiscordId');
+    if (userDiscordId && typeof userDiscordId === 'string') {
+      setUserDiscordId(userDiscordId);
     }
   }, []);
 
   return (
-    <UserContext.Provider
-      value={{
-        userId,
-        userName,
-        userRole,
-      }}
-    >
+    <UserContext.Provider value={{ userName, userAvatar, userDiscordId }}>
       {children}
     </UserContext.Provider>
   );

@@ -3,10 +3,12 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // providers
 import { UserProvider } from './Context/UserContext.tsx';
 import { OrderProvider } from './Context/OrderContext.tsx';
-// import { ThemeProvider } from './components/ThemeContext/ThemeContext';
+import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
+import { ThemeProvider } from './Context/ThemeContext';
 // files
-import Home from './Pages/Home.tsx';
-import Admin from './Pages/Admin.tsx';
+import Home from './pages/Home.tsx';
+import Admin from './pages/Admin.tsx';
+import AuthHandler from './pages/AuthHandler.tsx';
 // styles
 import './App.css';
 
@@ -19,17 +21,23 @@ const router = createBrowserRouter([
     path: '/admin',
     element: <Admin />,
   },
+  {
+    path: '/auth',
+    element: <AuthHandler />,
+  },
 ]);
 
 function App() {
   return (
-    // <ThemeProvider>
-    <UserProvider>
-      <OrderProvider>
-        <RouterProvider router={router} />
-      </OrderProvider>
-    </UserProvider>
-    // </ThemeProvider>
+    <ThemeProvider>
+      <LockedStatusProvider>
+        <UserProvider>
+          <OrderProvider>
+            <RouterProvider router={router} />
+          </OrderProvider>
+        </UserProvider>
+      </LockedStatusProvider>
+    </ThemeProvider>
   );
 }
 

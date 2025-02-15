@@ -1,16 +1,17 @@
 // libraries
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { Button, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // providers
 import UserContext from '../../Context/UserContext';
 import OrderContext from '../../Context/OrderContext';
+import { useTheme } from '../../Context/useTheme';
 // files
 import BreakfastOrderCard from './BreakfastOrderCard';
 import COLOURS from '../../Theme/Colours';
-import userType from '../../Context/UserTypes';
 import BreakfastOptions from './BreakfastOrderOptions';
+import DiscordLogin from '../Navbar/DiscordLogin';
 // styles
 
 export type BreakfastOption = {
@@ -30,9 +31,18 @@ const fetchOrder = (userName: string) => {
   }
 };
 
+const fetchLockedStatus = (setLockedStatus: Dispatch<SetStateAction<boolean>>) => {
+  try {
+    axios.get(`${import.meta.env.VITE_API_ADDRESS}LockedStatus`).then((response) => {
+      setLockedStatus(response.data[0].value);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setUserOrder = (response: any) => {
-  localStorage.setItem('orderId', response.data.orderId);
   localStorage.setItem('userName', response.data.userName);
   localStorage.setItem('orderType', response.data.orderType);
   localStorage.setItem('completed', response.data.completed);
@@ -40,15 +50,18 @@ const setUserOrder = (response: any) => {
 
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
-  const { userRole, userId, userName } = useContext(UserContext);
-  const { orderId, orderType, completed } = useContext(OrderContext);
+  const { darkMode } = useTheme();
+  const { userName, userDiscordId } = useContext(UserContext);
+  const { orderType, completed } = useContext(OrderContext);
+  const [lockedStatus, setLockedStatus] = useState(false);
   const [editing, setEditing] = useState<boolean>(false);
   const breakfastOptions = BreakfastOptions;
 
-  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
-  const orderSelected = orderId !== null && orderType !== undefined;
+  const userLoggedIn = userName !== undefined;
+  const orderSelected = orderType !== '';
 
   useEffect(() => {
+    fetchLockedStatus(setLockedStatus);
     if (userLoggedIn) {
       fetchOrder(userName);
     }
@@ -60,7 +73,7 @@ const BreakfastOrderContainer: FC = () => {
       sx={{
         width: '100vw',
         maxWidth: '100vw',
-        backgroundColor: COLOURS.DARK_MODE_BUTTON_LIGHT,
+        backgroundColor: darkMode ? COLOURS.DARK_MODE_BUTTON_LIGHT : COLOURS.LIGHT_SECONDARY,
         paddingBottom: '2rem',
       }}
     >
@@ -70,8 +83,13 @@ const BreakfastOrderContainer: FC = () => {
           orderSelected ? (
             <Typography
               sx={{
-                color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '2rem',
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                fontSize: {
+                  xs: '1.3rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
                 lineHeight: '1.25rem',
                 fontWeight: '500',
                 paddingY: '0.5rem',
@@ -84,8 +102,13 @@ const BreakfastOrderContainer: FC = () => {
           ) : (
             <Typography
               sx={{
-                color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '2rem',
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                fontSize: {
+                  xs: '1.4rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
                 lineHeight: '1.25rem',
                 fontWeight: '500',
                 paddingY: '0.5rem',
@@ -97,31 +120,44 @@ const BreakfastOrderContainer: FC = () => {
             </Typography>
           )
         ) : (
-          <Typography
-            sx={{
-              color: COLOURS.DARK_FONT_PRIMARY,
-              fontSize: '2rem',
-              lineHeight: '1.25rem',
-              fontWeight: '500',
-              paddingY: '0.5rem',
-              paddingX: '0.75rem',
-              textSizeAdjust: '100%',
-            }}
-          >
-            Please log in to get started
-          </Typography>
+          <>
+            <Typography
+              sx={{
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                fontSize: {
+                  xs: '1.3rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
+                lineHeight: '1.25rem',
+                fontWeight: '500',
+                paddingY: '0.5rem',
+                paddingX: '0.75rem',
+                marginBottom: '1rem',
+                textSizeAdjust: '100%',
+              }}
+            >
+              To open the breakfast selection, please log in using Discord
+            </Typography>
+            <DiscordLogin />
+          </>
         )}
       </Grid>
       <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        {userRole === userType.admin && (
-          <Button variant="contained" onClick={() => navigate('/admin')}>
-            Admin Panel
-          </Button>
-        )}
+        {userLoggedIn &&
+          (userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`) && (
+            <Button variant="contained" onClick={() => navigate('/admin')}>
+              Admin Panel
+            </Button>
+          )}
       </Grid>
-      <Grid item xs={2} />
-      <Grid item xs={8} sx={{ width: '1000px', maxWidth: '1000px' }}>
-        <Stack direction="row" justifyContent="space-between" flexWrap="wrap">
+      <Grid item xs={0} sm={2} />
+      <Grid item xs={12} sm={8}>
+        <Stack direction="row" justifyContent="center" flexWrap="wrap">
           {userLoggedIn &&
             breakfastOptions.map((breakfastOption, iterator) => (
               <BreakfastOrderCard
@@ -132,13 +168,13 @@ const BreakfastOrderContainer: FC = () => {
                 orderType={orderType}
                 breakfastOption={breakfastOption}
                 userName={userName}
-                orderId={orderId}
                 completed={completed}
+                lockedStatus={lockedStatus}
               />
             ))}
         </Stack>
       </Grid>
-      <Grid item xs={2} />
+      <Grid item xs={0} sm={2} />
     </Grid>
   );
 };

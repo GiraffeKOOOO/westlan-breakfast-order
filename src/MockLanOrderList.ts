@@ -1,7 +1,6 @@
 import BREAKFAST_OPTIONS from './Components/BreakfastOptions';
 
 type MockOrder = {
-  orderId: number;
   userName: string;
   orderType: string;
   completed: boolean;
@@ -9,38 +8,36 @@ type MockOrder = {
 
 const MockLanOrderList: MockOrder[] = [
   {
-    orderId: 0,
     userName: 'BobSwarley',
     orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
     completed: false,
   },
   {
-    orderId: 1,
     userName: 'Johnnny',
     orderType: BREAKFAST_OPTIONS.SAUSAGE_AND_BACON,
     completed: false,
   },
   {
-    orderId: 2,
     userName: 'Randomness',
     orderType: BREAKFAST_OPTIONS.EGG_AND_BACON,
     completed: false,
   },
-  { orderId: 3, userName: 'AAAAAAAAA', orderType: BREAKFAST_OPTIONS.ONLY_EGG, completed: false },
   {
-    orderId: 4,
+    userName: 'AAAAAAAAA',
+    orderType: BREAKFAST_OPTIONS.ONLY_EGG,
+    completed: false,
+  },
+  {
     userName: 'SwahiliMahili',
     orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
     completed: false,
   },
   {
-    orderId: 5,
     userName: 'PenPineapple',
     orderType: BREAKFAST_OPTIONS.FAT_BASTARD,
     completed: false,
   },
   // {
-  //   orderId: 6,
   //   userName: 'Shrek',
   //   orderType: BREAKFAST_OPTIONS.SAUSAGE_AND_BACON,
   //   completed: false,

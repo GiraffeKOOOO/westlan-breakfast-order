@@ -1,12 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { Dispatch, FC, SetStateAction, useCallback, useState } from 'react';
-import { Button, Card, CardContent, CardMedia, List, ListItem, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  List,
+  ListItem,
+  Typography,
+  useMediaQuery,
+  useTheme as muiTheme,
+} from '@mui/material';
 import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
 import axios from 'axios';
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import burgerBlue from '../../assets/burger-blue.png';
 import burgerGreen from '../../assets/burger-green.png';
@@ -15,6 +26,7 @@ import burgerPink from '../../assets/burger-pink.png';
 import burgerPurple from '../../assets/burger-purple.png';
 import burgerWhite from '../../assets/burger-white.png';
 import burgerYellow from '../../assets/burger-yellow.png';
+import burgerGrey from '../../assets/burger-grey.png';
 import { BreakfastOption } from './BreakfastOrderContainer';
 import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import COLOURS from '../../Theme/Colours';
@@ -27,14 +39,13 @@ type BreakfastOrderCardProps = {
   orderType: string;
   breakfastOption: BreakfastOption;
   userName: string;
-  orderId: number;
   completed: boolean;
+  lockedStatus: boolean;
 };
 
 const updateUserOrder = (response: any, data: any) => {
   if (response.status !== 200) return;
 
-  localStorage.setItem('orderId', data.orderId);
   localStorage.setItem('userName', data.userName);
   localStorage.setItem('orderType', data.orderType);
   localStorage.setItem('completed', data.completed);
@@ -43,13 +54,11 @@ const updateUserOrder = (response: any, data: any) => {
 };
 
 const updateOrderCall = (
-  orderId: number,
   userName: string,
   breakfastOption: BreakfastOption,
   completed: boolean,
 ) => {
   const newData = {
-    orderId: orderId,
     userName: userName,
     orderType: breakfastOption.name,
     completed: completed,
@@ -72,7 +81,6 @@ const updateOrderCall = (
 
 const createOrderCall = (userName: string, breakfastOption: BreakfastOption) => {
   const newData = {
-    orderId: 0,
     userName: userName,
     orderType: breakfastOption.name,
     completed: false,
@@ -100,10 +108,13 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   orderType,
   breakfastOption,
   userName,
-  orderId,
   completed,
+  lockedStatus,
 }) => {
+  const { darkMode } = useTheme();
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const theme = muiTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const iconSwitch = useCallback((ingredient: string) => {
     switch (ingredient) {
@@ -133,6 +144,8 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
         return burgerPink;
       case BREAKFAST_OPTION_COLOURS.ONLY_EGG:
         return burgerWhite;
+      case 'DISABLED':
+        return burgerGrey;
       default:
         return burgerOrange;
     }
@@ -160,13 +173,13 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       setEditing(false);
 
       if (orderSelected) {
-        updateOrderCall(orderId, userName, breakfastOption, completed);
+        updateOrderCall(userName, breakfastOption, completed);
       } else {
         createOrderCall(userName, breakfastOption);
       }
     },
     // eslint-disable-next-line no-sparse-arrays
-    [completed, orderId, orderSelected, setEditing, , userName],
+    [completed, orderSelected, setEditing, , userName],
   );
 
   if (showConfirmation)
@@ -174,13 +187,18 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       <Card
         sx={{
           zIndex: 1,
-          width: '20rem',
+          width: {
+            xs: '16rem',
+            sm: '20rem',
+          },
           minHeight: '19.125rem',
           maxHeight: '19.125rem',
           marginY: '2rem',
           marginX: '1rem',
           borderRadius: '6%',
-          border: `0.3rem solid ${COLOURS.TRANSPARENT}`,
+          border: darkMode
+            ? `0.3rem solid ${COLOURS.TRANSPARENT}`
+            : `0.3rem solid ${COLOURS.LIGHT_FONT_TERTIARY}`,
         }}
       >
         <div style={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
@@ -219,9 +237,9 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               style={{
                 zIndex: 1,
                 position: 'relative',
-                width: '20rem',
+                width: isMobile ? '16rem' : '20rem',
                 height: '19.125rem',
-                top: '-10rem',
+                top: isMobile ? '-8.5rem' : '-10rem',
               }}
             >
               <Typography
@@ -268,10 +286,13 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     );
 
   return (
-    <div onClick={() => checkShowConfirmation(breakfastOption)}>
+    <div onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
       <Card
         sx={{
-          width: '20rem',
+          width: {
+            xs: '16rem',
+            sm: '20rem',
+          },
           minHeight: '19.125rem',
           marginY: '2rem',
           marginX: '1rem',
@@ -279,16 +300,27 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           border:
             breakfastOption.name === orderType
               ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
-              : `0.3rem solid ${COLOURS.TRANSPARENT}`,
+              : `0.3rem solid ${darkMode ? COLOURS.TRANSPARENT : COLOURS.LIGHT_FONT_TERTIARY}`,
           '&:hover': {
             border:
               breakfastOption.name === orderType
                 ? `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_SELECTED}`
-                : `0.3rem solid ${COLOURS.BREAKFAST_OPTION_CARD_HOVER}`,
+                : `0.3rem solid ${
+                    lockedStatus && orderType !== breakfastOption.name
+                      ? COLOURS.DARK_FONT_PRIMARY
+                      : COLOURS.BREAKFAST_OPTION_CARD_HOVER
+                  }`,
           },
         }}
       >
-        <CardMedia sx={{ height: '8.75rem' }} image={colourSwitch(breakfastOption.colour)} />
+        <CardMedia
+          sx={{ height: '8.75rem' }}
+          image={colourSwitch(
+            lockedStatus && orderType !== breakfastOption.name
+              ? 'DISABLED'
+              : breakfastOption.colour,
+          )}
+        />
         <CardContent
           sx={{
             padding: '0.4rem',

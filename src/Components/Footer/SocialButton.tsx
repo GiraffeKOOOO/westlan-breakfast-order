@@ -5,8 +5,8 @@ import { FaDiscord } from 'react-icons/fa';
 import { FaFacebook } from 'react-icons/fa';
 import { FaSteam } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
-
 // providers
+import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 // styles
@@ -16,6 +16,8 @@ type SocialButtonProps = {
 };
 
 const SocialButton: FC<SocialButtonProps> = ({ buttonName }) => {
+  const { darkMode } = useTheme();
+
   const locationSwitch = () => {
     switch (buttonName) {
       case 'discord':
@@ -54,10 +56,10 @@ const SocialButton: FC<SocialButtonProps> = ({ buttonName }) => {
       sx={{
         backgroundColor: COLOURS.TRANSPARENT,
         border: COLOURS.TRANSPARENT,
-        color: COLOURS.DARK_MENU_BACKGROUND,
+        color: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.DARK_TABLE_CELL_BACKGROUND,
         '&:hover': {
           backgroundColor: COLOURS.TRANSPARENT,
-          color: COLOURS.DARK_FONT_PRIMARY,
+          color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
         },
       }}
       onClick={() => locationSwitch()}
