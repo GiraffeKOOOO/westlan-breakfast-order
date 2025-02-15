@@ -15,14 +15,8 @@ import colourSwitch from './ColourSwitch';
 import axios from 'axios';
 // styles
 
-const updateOrderCall = (
-  orderId: number,
-  userName: string,
-  orderType: string,
-  completed: boolean,
-) => {
+const updateOrderCall = (userName: string, orderType: string, completed: boolean) => {
   const newData = {
-    orderId: orderId,
     userName: userName,
     orderType: orderType,
     completed: completed,
@@ -42,7 +36,6 @@ const updateOrderCall = (
 };
 
 export type Order = {
-  orderId: number;
   userName: string;
   orderType: string;
   completed: boolean;
@@ -64,7 +57,7 @@ const TableContent: FC<TableContentProps> = ({
   setStateOrderList,
 }) => {
   const [orderDirection, setOrderDirection] = useState<ascDescEnum>(ascDescEnum.asc);
-  const [valueToOrderBy, setValueToOrderBy] = useState<keyof Order>('orderId');
+  const [valueToOrderBy, setValueToOrderBy] = useState<keyof Order>('userName');
 
   function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -111,10 +104,10 @@ const TableContent: FC<TableContentProps> = ({
 
   const checkboxChangeHandler = useCallback(
     (index: number, order: Order) => {
-      if (!stateOrderList && !order.orderId && !order.completed) return;
+      if (!stateOrderList && !order.completed) return;
 
       const completedFlip = !order.completed;
-      updateOrderCall(order.orderId, order.userName, order.orderType, completedFlip);
+      updateOrderCall(order.userName, order.orderType, completedFlip);
 
       const updatedArray = [...stateOrderList];
       updatedArray[index].completed = !updatedArray[index].completed;
@@ -134,14 +127,7 @@ const TableContent: FC<TableContentProps> = ({
         <TableBody>
           {visibleRows.map((order, index) => {
             return (
-              <StyledTableRow key={order.orderId}>
-                <StyledTableCell
-                  orderType={order.orderType}
-                  cellText={order.orderId}
-                  useColourModeWholeRow={useColourModeWholeRow}
-                  strikethrough={strikethrough}
-                  completed={order.completed}
-                />
+              <StyledTableRow key={order.userName}>
                 <StyledTableCell
                   orderType={order.orderType}
                   cellText={order.userName}

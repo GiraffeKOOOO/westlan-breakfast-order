@@ -10,8 +10,8 @@ import { useTheme } from '../../Context/useTheme';
 // files
 import BreakfastOrderCard from './BreakfastOrderCard';
 import COLOURS from '../../Theme/Colours';
-import userType from '../../Context/UserTypes';
 import BreakfastOptions from './BreakfastOrderOptions';
+import DiscordLogin from '../Navbar/DiscordLogin';
 // styles
 
 export type BreakfastOption = {
@@ -43,7 +43,6 @@ const fetchLockedStatus = (setLockedStatus: Dispatch<SetStateAction<boolean>>) =
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const setUserOrder = (response: any) => {
-  localStorage.setItem('orderId', response.data.orderId);
   localStorage.setItem('userName', response.data.userName);
   localStorage.setItem('orderType', response.data.orderType);
   localStorage.setItem('completed', response.data.completed);
@@ -52,14 +51,14 @@ const setUserOrder = (response: any) => {
 const BreakfastOrderContainer: FC = () => {
   const navigate = useNavigate();
   const { darkMode } = useTheme();
-  const { userRole, userId, userName } = useContext(UserContext);
-  const { orderId, orderType, completed } = useContext(OrderContext);
+  const { userName, userDiscordId } = useContext(UserContext);
+  const { orderType, completed } = useContext(OrderContext);
   const [lockedStatus, setLockedStatus] = useState(false);
   const [editing, setEditing] = useState<boolean>(false);
   const breakfastOptions = BreakfastOptions;
 
-  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
-  const orderSelected = orderId !== -1 && orderType !== '';
+  const userLoggedIn = userName !== undefined;
+  const orderSelected = orderType !== '';
 
   useEffect(() => {
     fetchLockedStatus(setLockedStatus);
@@ -121,32 +120,40 @@ const BreakfastOrderContainer: FC = () => {
             </Typography>
           )
         ) : (
-          <Typography
-            sx={{
-              color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-              fontSize: {
-                xs: '1.3rem',
-                sm: '1.6rem',
-                md: '2rem',
-                lg: '2rem',
-              },
-              lineHeight: '1.25rem',
-              fontWeight: '500',
-              paddingY: '0.5rem',
-              paddingX: '0.75rem',
-              textSizeAdjust: '100%',
-            }}
-          >
-            Please log in to get started
-          </Typography>
+          <>
+            <Typography
+              sx={{
+                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                fontSize: {
+                  xs: '1.3rem',
+                  sm: '1.6rem',
+                  md: '2rem',
+                  lg: '2rem',
+                },
+                lineHeight: '1.25rem',
+                fontWeight: '500',
+                paddingY: '0.5rem',
+                paddingX: '0.75rem',
+                marginBottom: '1rem',
+                textSizeAdjust: '100%',
+              }}
+            >
+              To open the breakfast selection, please log in using Discord
+            </Typography>
+            <DiscordLogin />
+          </>
         )}
       </Grid>
       <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        {userRole === userType.admin && (
-          <Button variant="contained" onClick={() => navigate('/admin')}>
-            Admin Panel
-          </Button>
-        )}
+        {userLoggedIn &&
+          (userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
+            userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`) && (
+            <Button variant="contained" onClick={() => navigate('/admin')}>
+              Admin Panel
+            </Button>
+          )}
       </Grid>
       <Grid item xs={0} sm={2} />
       <Grid item xs={12} sm={8}>
@@ -161,7 +168,6 @@ const BreakfastOrderContainer: FC = () => {
                 orderType={orderType}
                 breakfastOption={breakfastOption}
                 userName={userName}
-                orderId={orderId}
                 completed={completed}
                 lockedStatus={lockedStatus}
               />

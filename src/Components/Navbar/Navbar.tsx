@@ -31,10 +31,10 @@ import NavbarMenuItem from './MenuItem';
 // styles
 
 const Navbar: FC = () => {
-  const { userRole, userId, userName } = useContext(UserContext);
+  const { userName } = useContext(UserContext);
   const { darkMode } = useTheme();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const userLoggedIn = userId !== undefined && userName !== undefined && userRole !== undefined;
+  const userLoggedIn = userName !== undefined;
   const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -126,11 +126,7 @@ const Navbar: FC = () => {
           >
             <NavbarMenuItem setting="Event Tickets" />
             <NavbarMenuItem setting="Settings" />
-            {userLoggedIn ? (
-              <NavbarMenuItem setting="Sign out" />
-            ) : (
-              <NavbarMenuItem setting="Log in" />
-            )}
+            {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
           </Menu>
         </AppBar>
       </Box>
@@ -263,11 +259,7 @@ const Navbar: FC = () => {
             >
               <NavbarMenuItem setting="Event Tickets" />
               <NavbarMenuItem setting="Settings" />
-              {userLoggedIn ? (
-                <NavbarMenuItem setting="Sign out" />
-              ) : (
-                <NavbarMenuItem setting="Log in" />
-              )}
+              {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
             </Menu>
           </Grid>
         </Grid>

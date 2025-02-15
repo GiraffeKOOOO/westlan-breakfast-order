@@ -8,6 +8,7 @@ import { ThemeProvider } from './Context/ThemeContext';
 // files
 import Home from './pages/Home.tsx';
 import Admin from './pages/Admin.tsx';
+import AuthHandler from './pages/AuthHandler.tsx';
 // styles
 import './App.css';
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: '/admin',
     element: <Admin />,
+  },
+  {
+    path: '/auth',
+    element: <AuthHandler />,
   },
 ]);
 

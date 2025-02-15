@@ -1,7 +1,6 @@
 // libraries
 import { FC } from 'react';
 import { MenuItem, Typography } from '@mui/material';
-import axios from 'axios';
 // providers
 import { useTheme } from '../../Context/useTheme';
 // files
@@ -10,27 +9,6 @@ import COLOURS from '../../Theme/Colours';
 
 type MenuItemProps = {
   setting: string;
-};
-
-const fetchUser = () => {
-  try {
-    axios
-      .get(`${import.meta.env.VITE_API_ADDRESS}User/1`)
-      .then((response) => handleLogin(response))
-      .catch((error) => console.log(error));
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleLogin = (response: any) => {
-  if (response.status === 200) {
-    localStorage.setItem('userId', response.data.userId);
-    localStorage.setItem('userName', response.data.userName);
-    localStorage.setItem('userRole', response.data.userRole);
-    window.location.reload();
-  }
 };
 
 const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
@@ -42,10 +20,6 @@ const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
 
   const redirectSettings = () => {
     window.location.href = 'https://westlan.co.uk/settings';
-  };
-
-  const loginHandler = () => {
-    fetchUser();
   };
 
   const logoutHandler = () => {
@@ -60,9 +34,6 @@ const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
         break;
       case 'Settings':
         redirectSettings();
-        break;
-      case 'Log in':
-        loginHandler();
         break;
       case 'Sign out':
         logoutHandler();
