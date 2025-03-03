@@ -2,6 +2,7 @@
 import { FC, useMemo, useState } from 'react';
 import { Button, Grid, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { RiseLoader } from 'react-spinners';
 // queries
 import useOrder from '../../Queries/useOrder';
 // files
@@ -32,15 +33,17 @@ const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
     forceInvalidate,
     updatePending,
   } = useOrder(userName);
-  //   const { orderType, completed } = useContext(OrderContext);
   const [editing, setEditing] = useState<boolean>(false);
+  const [loadingSpinner, setLoadingSpinner] = useState<boolean>(false);
   const orderSelected = order !== undefined && order !== null;
 
   const orderText = useMemo(() => {
-    if (!updatePending) {
-      return `You have selected ${order?.orderType}`;
+    if (!updatePending && !loadingSpinner) {
+      return order?.orderType;
+    } else {
+      return <RiseLoader color={`${darkMode ? 'white' : 'black'}`} />;
     }
-  }, [order?.orderType, updatePending]);
+  }, [darkMode, loadingSpinner, order?.orderType, updatePending]);
 
   return (
     <>
@@ -56,24 +59,43 @@ const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
         <Grid item xs={2} />
         <Grid item xs={8} sx={{ paddingTop: '1.5rem', width: '100vw', maxWidth: '100vw' }}>
           {orderSelected && !isLoading ? (
-            <Typography
-              sx={{
-                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-                fontSize: {
-                  xs: '1.3rem',
-                  sm: '1.6rem',
-                  md: '2rem',
-                  lg: '2rem',
-                },
-                lineHeight: '1.25rem',
-                fontWeight: '500',
-                paddingY: '0.5rem',
-                paddingX: '0.75rem',
-                textSizeAdjust: '100%',
-              }}
-            >
-              {orderText}
-            </Typography>
+            <Stack direction="row" justifyContent="center" flexWrap="wrap">
+              <Typography
+                sx={{
+                  color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                  fontSize: {
+                    xs: '1.3rem',
+                    sm: '1.6rem',
+                    md: '2rem',
+                    lg: '2rem',
+                  },
+                  lineHeight: '1.25rem',
+                  fontWeight: '500',
+                  paddingY: '0.5rem',
+                  paddingX: '0.75rem',
+                  textSizeAdjust: '100%',
+                }}
+              >
+                You have selected
+              </Typography>
+              <Typography
+                sx={{
+                  color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
+                  fontSize: {
+                    xs: '1.3rem',
+                    sm: '1.6rem',
+                    md: '2rem',
+                    lg: '2rem',
+                  },
+                  lineHeight: '1.25rem',
+                  fontWeight: '500',
+                  paddingY: '0.5rem',
+                  textSizeAdjust: '100%',
+                }}
+              >
+                {orderText}
+              </Typography>
+            </Stack>
           ) : (
             <Typography
               sx={{
@@ -122,6 +144,8 @@ const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
                 createOrder={createOrder}
                 updateOrder={updateOrder}
                 forceInvalidate={forceInvalidate}
+                loadingSpinner={loadingSpinner}
+                setLoadingSpinner={setLoadingSpinner}
               />
             ))}
           </Stack>

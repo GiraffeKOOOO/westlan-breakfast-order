@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from './Context/UserContext.tsx';
 import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
 import { DarkModeProvider } from './Context/DarkModeContext.tsx';
+import { SnackbarProvider } from 'notistack';
 // files
 import Home from './Pages/Home.tsx';
 import Admin from './Pages/Admin.tsx';
@@ -32,13 +33,15 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <DarkModeProvider>
-        <LockedStatusProvider>
-          <UserProvider>
-            <RouterProvider router={router} />
-          </UserProvider>
-        </LockedStatusProvider>
-      </DarkModeProvider>
+      <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+        <DarkModeProvider>
+          <LockedStatusProvider>
+            <UserProvider>
+              <RouterProvider router={router} />
+            </UserProvider>
+          </LockedStatusProvider>
+        </DarkModeProvider>
+      </SnackbarProvider>
     </QueryClientProvider>
   );
 }

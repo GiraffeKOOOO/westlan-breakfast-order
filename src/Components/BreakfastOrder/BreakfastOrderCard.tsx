@@ -30,6 +30,7 @@ import burgerGrey from '../../assets/burger-grey.png';
 import { BreakfastOption } from './BreakfastOrderContainer';
 import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import { Order } from '../../Context/Types';
+import { useSnackbar } from 'notistack';
 
 type BreakfastOrderCardProps = {
   darkMode: boolean;
@@ -48,6 +49,8 @@ type BreakfastOrderCardProps = {
     completed: boolean;
   }) => void;
   forceInvalidate: () => void;
+  loadingSpinner: boolean;
+  setLoadingSpinner: Dispatch<SetStateAction<boolean>>;
 };
 
 const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
@@ -62,9 +65,12 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   createOrder,
   updateOrder,
   forceInvalidate,
+  loadingSpinner,
+  setLoadingSpinner,
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const [loadingSpinner, setLoadingSpinner] = useState<boolean>(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const theme = muiTheme();
 
   // TODO: this needs to be passed down from home
@@ -129,14 +135,16 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
         completed: order.completed!,
       });
     }
-    forceInvalidate();
-    // TODO: display a snackbar
 
     setLoadingSpinner(true);
     setTimeout(() => {
+      forceInvalidate();
       setShowConfirmation(false);
       setEditing(false);
       setLoadingSpinner(false);
+      enqueueSnackbar(`Order ${!orderSelected ? 'Created' : 'Updated'}`, {
+        variant: !orderSelected ? 'success' : 'info',
+      });
     }, 700);
   };
 
