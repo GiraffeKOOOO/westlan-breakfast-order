@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { Grid } from '@mui/material';
 // providers
-import { useTheme } from '../Context/useTheme';
+import { useDarkMode } from '../Context/useDarkMode';
 // files
 import Navbar from '../Components/Navbar/Navbar';
 import Footer from '../Components/Footer/Footer';
@@ -11,7 +11,7 @@ import AdminPanel from '../Components/AdminPanel/AdminPanel';
 // styles
 
 const Admin: FC = () => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   return (
     <Grid

@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // providers
 // files
 import COLOURS from '../../Theme/Colours';
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 import UserContext from '../../Context/UserContext';
 import DiscordAvatar from './DiscordAvatar';
 // styles
@@ -18,8 +18,7 @@ type MenuButtonProps = {
 };
 
 const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu }) => {
-  // TODO: add a avatar fetch url from the API
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
   const { userName, userAvatar, userDiscordId } = useContext(UserContext);
 
   if (isMobile)

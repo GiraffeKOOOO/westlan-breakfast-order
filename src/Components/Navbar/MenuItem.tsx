@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { MenuItem, Typography } from '@mui/material';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 // styles
@@ -12,7 +12,7 @@ type MenuItemProps = {
 };
 
 const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   const redirectEventTickets = () => {
     window.location.href = 'https://westlan.co.uk/events';

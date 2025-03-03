@@ -6,7 +6,7 @@ import { FaFacebook } from 'react-icons/fa';
 import { FaSteam } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 // styles
@@ -16,7 +16,7 @@ type SocialButtonProps = {
 };
 
 const SocialButton: FC<SocialButtonProps> = ({ buttonName }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   const locationSwitch = () => {
     switch (buttonName) {

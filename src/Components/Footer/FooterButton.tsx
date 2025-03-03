@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { Button } from '@mui/material';
 import COLOURS from '../../Theme/Colours';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 // styles
 
@@ -12,7 +12,7 @@ type FooterButtonProps = {
 };
 
 const FooterButton: FC<FooterButtonProps> = ({ buttonName }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   const locationSwitch = () => {
     switch (buttonName) {

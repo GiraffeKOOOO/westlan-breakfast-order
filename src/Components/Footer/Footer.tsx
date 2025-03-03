@@ -2,7 +2,7 @@
 import { Grid, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import FooterButton from './FooterButton';
@@ -10,7 +10,7 @@ import SocialButton from './SocialButton';
 // styles
 
 const Footer: FC = () => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   return (
     <Grid

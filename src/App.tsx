@@ -1,16 +1,18 @@
 // libraries
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // providers
 import { UserProvider } from './Context/UserContext.tsx';
-import { OrderProvider } from './Context/OrderContext.tsx';
 import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
-import { ThemeProvider } from './Context/ThemeContext';
+import { DarkModeProvider } from './Context/DarkModeContext.tsx';
 // files
-import Home from './pages/Home.tsx';
-import Admin from './pages/Admin.tsx';
-import AuthHandler from './pages/AuthHandler.tsx';
+import Home from './Pages/Home.tsx';
+import Admin from './Pages/Admin.tsx';
+import AuthHandler from './Pages/AuthHandler.tsx';
 // styles
 import './App.css';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -29,15 +31,15 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider>
-      <LockedStatusProvider>
-        <UserProvider>
-          <OrderProvider>
+    <QueryClientProvider client={queryClient}>
+      <DarkModeProvider>
+        <LockedStatusProvider>
+          <UserProvider>
             <RouterProvider router={router} />
-          </OrderProvider>
-        </UserProvider>
-      </LockedStatusProvider>
-    </ThemeProvider>
+          </UserProvider>
+        </LockedStatusProvider>
+      </DarkModeProvider>
+    </QueryClientProvider>
   );
 }
 
