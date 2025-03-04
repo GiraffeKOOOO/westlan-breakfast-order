@@ -18,6 +18,21 @@ const fetchOrder = async (userName: string) => {
   return data;
 };
 
+const fetchAllOrders = async () => {
+  const response = await fetch(`${apiUrl}/Order`);
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`Error occurred fetching user's order`);
+  }
+
+  const data = await response.json();
+  return data;
+};
+
 const createOrder = async (orderData: { userName: string; orderType: string }) => {
   const response = await fetch(`${apiUrl}/Order`, {
     method: 'POST',
@@ -58,14 +73,29 @@ const updateOrder = async (orderData: {
 const useOrder = (userName: string) => {
   const queryClient = useQueryClient();
 
-  const { data, error, isLoading, refetch } = useQuery({
+  const {
+    data: userOrderData,
+    error: userOrderError,
+    isLoading: isLoadingUserOrder,
+    refetch: refetchUserOrder,
+  } = useQuery({
     queryKey: ['userOrder', userName],
     queryFn: () => fetchOrder(userName),
   });
 
+  const {
+    data: allOrdersData,
+    error: allOrdersError,
+    isLoading: isLoadingAllOrders,
+    // refetch: refetchAllOrders,
+  } = useQuery({
+    queryKey: ['allOrders'],
+    queryFn: fetchAllOrders,
+  });
+
   const forceInvalidate = () => {
     queryClient.invalidateQueries({ queryKey: ['userOrder', userName] });
-    refetch();
+    refetchUserOrder();
   };
 
   const createMutation = useMutation({
@@ -83,9 +113,12 @@ const useOrder = (userName: string) => {
   });
 
   return {
-    data,
-    error,
-    isLoading,
+    userOrderData,
+    userOrderError,
+    isLoadingUserOrder,
+    allOrdersData,
+    allOrdersError,
+    isLoadingAllOrders,
     createOrder: createMutation.mutate,
     createPending: createMutation.isPending,
     updateOrder: updateMutation.mutate,

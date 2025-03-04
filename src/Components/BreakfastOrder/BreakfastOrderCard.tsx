@@ -27,7 +27,7 @@ import burgerPurple from '../../assets/burger-purple.png';
 import burgerWhite from '../../assets/burger-white.png';
 import burgerYellow from '../../assets/burger-yellow.png';
 import burgerGrey from '../../assets/burger-grey.png';
-import { BreakfastOption } from './BreakfastOrderContainer';
+import { BreakfastOption } from '../../Context/Types';
 import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import { Order } from '../../Context/Types';
 import { useSnackbar } from 'notistack';

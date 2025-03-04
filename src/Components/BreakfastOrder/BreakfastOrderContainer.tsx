@@ -2,25 +2,12 @@
 import { FC } from 'react';
 import { Grid, Typography } from '@mui/material';
 // files
-import COLOURS from '../../Theme/Colours';
-import DiscordLogin from '../Navbar/DiscordLogin';
+import { PanelContainerProps } from '../../Context/Types';
 import BreakfastOrderContent from './BreakfastOrderContent';
+import DiscordLogin from '../Navbar/DiscordLogin';
+import COLOURS from '../../Theme/Colours';
 
-export type BreakfastOption = {
-  name: string;
-  ingredients: string[];
-  colour: string;
-};
-
-type BreakfastOrderContainerProps = {
-  darkMode: boolean;
-  userName: string | undefined;
-  userDiscordId: string | undefined;
-  userLoggedIn: boolean;
-  lockedStatus: boolean;
-};
-
-const BreakfastOrderContainer: FC<BreakfastOrderContainerProps> = ({
+const BreakfastOrderContainer: FC<PanelContainerProps> = ({
   darkMode,
   userName,
   userDiscordId,

@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // libraries
 import { useState, createContext, useEffect, ReactNode } from 'react';
-// providers
-// files
-// styles
 
 const LockedStatusContext = createContext<{
   lockedStatus: boolean;

@@ -6,18 +6,12 @@ import { RiseLoader } from 'react-spinners';
 // queries
 import useOrder from '../../Queries/useOrder';
 // files
-import COLOURS from '../../Theme/Colours';
+import { PanelContentProps } from '../../Context/Types';
 import BreakfastOrderCard from './BreakfastOrderCard';
 import BreakfastOptions from './BreakfastOrderOptions';
+import COLOURS from '../../Theme/Colours';
 
-type BreakfastOrderContentProps = {
-  darkMode: boolean;
-  userName: string;
-  userDiscordId: string;
-  lockedStatus: boolean;
-};
-
-const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
+const BreakfastOrderContent: FC<PanelContentProps> = ({
   darkMode,
   userName,
   userDiscordId,
@@ -26,8 +20,8 @@ const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
   const navigate = useNavigate();
   const breakfastOptions = BreakfastOptions;
   const {
-    data: order,
-    isLoading,
+    userOrderData: order,
+    isLoadingUserOrder,
     createOrder,
     updateOrder,
     forceInvalidate,
@@ -58,7 +52,7 @@ const BreakfastOrderContent: FC<BreakfastOrderContentProps> = ({
       >
         <Grid item xs={2} />
         <Grid item xs={8} sx={{ paddingTop: '1.5rem', width: '100vw', maxWidth: '100vw' }}>
-          {orderSelected && !isLoading ? (
+          {orderSelected && !isLoadingUserOrder ? (
             <Stack direction="row" justifyContent="center" flexWrap="wrap">
               <Typography
                 sx={{

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const apiUrl = import.meta.env.VITE_API_ADDRESS;
 
@@ -10,13 +10,43 @@ const fetchLockedStatus = async () => {
   return response.json();
 };
 
+const updateLockedStatus = async (lockedStatusData: { lockStatus: string; value: boolean }) => {
+  const response = await fetch(`${apiUrl}/LockedStatus`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(lockedStatusData),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error occurred updating order`);
+  }
+
+  return response.json();
+};
+
 const useLockedStatus = () => {
-  const { data, error, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ['lockedStatus'],
     queryFn: fetchLockedStatus,
   });
 
-  return { data, error, isLoading };
+  const forceInvalidate = () => {
+    queryClient.invalidateQueries({ queryKey: ['lockedStatus'] });
+    refetch();
+  };
+
+  const updateMutation = useMutation({
+    mutationFn: updateLockedStatus,
+    onSuccess: () => {
+      forceInvalidate();
+    },
+  });
+
+  return { data, error, isLoading, updateLockedStatus: updateMutation.mutate };
 };
 
 export default useLockedStatus;
