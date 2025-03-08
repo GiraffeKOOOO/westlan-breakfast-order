@@ -1,7 +1,5 @@
 // libraries
 import { useState, createContext, useEffect, ReactNode } from 'react';
-// providers
-// styles
 
 const UserContext = createContext<{
   userName: string | undefined;

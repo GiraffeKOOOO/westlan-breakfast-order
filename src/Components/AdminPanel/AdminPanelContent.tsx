@@ -16,17 +16,16 @@ import {
   tableCellClasses,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-// providers
-// import LockedStatusContext from '../../Context/LockedStatusContext';
-// files
-import COLOURS from '../../Theme/Colours';
-import TableContent from './TableContent';
+import { useSnackbar } from 'notistack';
+import { HashLoader } from 'react-spinners';
+// queries
+import useLockedStatus from '../../Queries/useLockedStatus';
 import useOrder from '../../Queries/useOrder';
+// files
 import { PanelContentProps } from '../../Context/Types';
-// styles
+import TableContent from './TableContent';
+import LockButtonContent from './LockButtonContent';
+import COLOURS from '../../Theme/Colours';
 
 export const StyledTableCell1 = styled(TableCell)(() => ({
   // table head styling
@@ -51,64 +50,16 @@ export const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-// const fetchOrderList = (setStateOrderList: Dispatch<SetStateAction<basicOrderType[] | null>>) => {
-//   try {
-//     axios
-//       .get(`${import.meta.env.VITE_API_ADDRESS}Order`)
-//       .then((response) => setStateOrderList(response.data))
-//       .catch(() => setStateOrderList(null));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const updateLockedStatus = (response: any, data: any) => {
-//   if (response.status !== 200) return;
-
-//   setLockedStatus(data.value);
-//   window.location.reload();
-// };
-
-// const updateLockedStatusCall = (prevLockedStatus: boolean) => {
-//   const newData = {
-//     lockStatus: 'locked',
-//     value: !prevLockedStatus,
-//   };
-
-//   try {
-//     axios({
-//       method: 'PUT',
-//       url: `${import.meta.env.VITE_API_ADDRESS}LockedStatus`,
-//       headers: {
-//         'content-type': 'application/json',
-//       },
-//       data: newData,
-//     })
-//       .then((response) => updateLockedStatus(response, newData))
-//       .catch((error) => console.log(error));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const setLockedStatus = (response: any) => {
-//   localStorage.setItem('lockedStatus', response);
-// };
-
-const AdminPanelContent: FC<PanelContentProps> = ({ userName, lockedStatus }) => {
-  // const { lockedStatus } = useContext(LockedStatusContext);
-  // const [stateOrderList, setStateOrderList] = useState<basicOrderType[] | null>(null);
-
-  // useEffect(() => {
-  //   // fetchLockedStatus();
-  //   // fetchOrderList(setStateOrderList);
-  // }, []);
-
+const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
   const navigate = useNavigate();
   const { allOrdersData: allOrders, isLoadingAllOrders } = useOrder(userName);
+  const { data: lockedStatusData, updateLockedStatus, forceInvalidate } = useLockedStatus();
+  const { enqueueSnackbar } = useSnackbar();
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
   const [useColourModeWholeRow, setUseColourModeWholeRow] = useState<boolean>(false);
   const [strikethrough, setStrikethrough] = useState<boolean>(false);
+  const [loadingSpinner, setLoadingSpinner] = useState<boolean>(false);
+  const lockedStatus = lockedStatusData[0].value;
 
   const colourModeChangeHandler = () => {
     if (useColourMode === false) {
@@ -232,25 +183,22 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName, lockedStatus }) =>
                 <Typography>Order status: {lockedStatus ? 'locked' : 'unlocked'}</Typography>
                 <Button
                   variant="contained"
-                  onClick={
-                    () => {}
-                    // updateLockedStatusCall(lockedStatus)
-                  }
+                  onClick={() => {
+                    updateLockedStatus(lockedStatus);
+                    setLoadingSpinner(true);
+                    setTimeout(() => {
+                      forceInvalidate();
+                      setLoadingSpinner(false);
+                      enqueueSnackbar(`Orders are now ${!lockedStatus ? 'locked' : 'unlocked'}`, {
+                        variant: 'info',
+                      });
+                    }, 1000);
+                  }}
                 >
-                  {lockedStatus ? (
-                    <>
-                      <LockOpenOutlinedIcon fontSize="small" />
-                      <Typography fontSize={14} sx={{ marginTop: '0.2rem', marginLeft: '0.2rem' }}>
-                        Unlock Orders
-                      </Typography>
-                    </>
+                  {loadingSpinner ? (
+                    <HashLoader color="white" size={24} />
                   ) : (
-                    <>
-                      <LockOutlinedIcon fontSize="small" />
-                      <Typography fontSize={14} sx={{ marginTop: '0.2rem', marginLeft: '0.2rem' }}>
-                        Lock Orders
-                      </Typography>
-                    </>
+                    <LockButtonContent lockStatus={lockedStatus} />
                   )}
                 </Button>
               </Grid>

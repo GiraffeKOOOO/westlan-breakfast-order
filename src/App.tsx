@@ -3,7 +3,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // providers
 import { UserProvider } from './Context/UserContext.tsx';
-import { LockedStatusProvider } from './Context/LockedStatusContext.tsx';
 import { DarkModeProvider } from './Context/DarkModeContext.tsx';
 import { SnackbarProvider } from 'notistack';
 // files
@@ -35,11 +34,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
         <DarkModeProvider>
-          <LockedStatusProvider>
-            <UserProvider>
-              <RouterProvider router={router} />
-            </UserProvider>
-          </LockedStatusProvider>
+          <UserProvider>
+            <RouterProvider router={router} />
+          </UserProvider>
         </DarkModeProvider>
       </SnackbarProvider>
     </QueryClientProvider>

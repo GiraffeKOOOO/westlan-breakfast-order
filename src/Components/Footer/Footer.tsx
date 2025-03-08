@@ -2,12 +2,12 @@
 import { Grid, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 // providers
+// TODO: correct this dark mode context, use query instead passed down
 import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import FooterButton from './FooterButton';
 import SocialButton from './SocialButton';
-// styles
 
 const Footer: FC = () => {
   const { darkMode } = useDarkMode();

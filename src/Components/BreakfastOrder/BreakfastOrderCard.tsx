@@ -15,8 +15,7 @@ import { BsEggFried } from 'react-icons/bs';
 import { GiSausage } from 'react-icons/gi';
 import { FaBacon } from 'react-icons/fa';
 import { HashLoader } from 'react-spinners';
-// TODO: uninstall axios once it's no longer necessary
-// import axios from 'axios';
+import { useSnackbar } from 'notistack';
 // files
 import COLOURS from '../../Theme/Colours';
 import burgerBlue from '../../assets/burger-blue.png';
@@ -30,7 +29,6 @@ import burgerGrey from '../../assets/burger-grey.png';
 import { BreakfastOption } from '../../Context/Types';
 import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import { Order } from '../../Context/Types';
-import { useSnackbar } from 'notistack';
 
 type BreakfastOrderCardProps = {
   darkMode: boolean;

@@ -28,7 +28,6 @@ import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
-// styles
 
 const Navbar: FC = () => {
   const { userName } = useContext(UserContext);

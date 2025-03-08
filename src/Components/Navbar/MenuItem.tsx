@@ -5,7 +5,6 @@ import { MenuItem, Typography } from '@mui/material';
 import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
-// styles
 
 type MenuItemProps = {
   setting: string;

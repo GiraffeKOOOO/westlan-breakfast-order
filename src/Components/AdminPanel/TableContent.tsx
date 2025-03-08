@@ -1,7 +1,6 @@
 // libraries
 import { FC, useState, MouseEvent, useMemo } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableContainer } from '@mui/material';
-// providers
 // files
 import TableHeader from './TableHeader';
 // import MockLanOrderList from '../../MockLanOrderList';
@@ -9,11 +8,9 @@ import ascDescEnum from './ascDescEnum';
 import { StyledTableRow } from './AdminPanelContent';
 import StyledTableCell from './StyledTableCell';
 import StyledTypeTableCell from './StyledTypeTableCell';
-import COLOURS from '../../Theme/Colours';
 import colourSwitch from './ColourSwitch';
-// import axios from 'axios';
 import { basicOrderType } from '../../Context/Types';
-// styles
+import COLOURS from '../../Theme/Colours';
 
 // const updateOrderCall = (userName: string, orderType: string, completed: boolean) => {
 //   const newData = {

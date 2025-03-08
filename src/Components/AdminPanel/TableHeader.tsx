@@ -8,7 +8,6 @@ import ascDescEnum from './ascDescEnum';
 import { basicOrderType } from '../../Context/Types';
 // import { Order } from './TableContent';
 import COLOURS from '../../Theme/Colours';
-// styles
 
 interface HeadCell {
   id: keyof basicOrderType;

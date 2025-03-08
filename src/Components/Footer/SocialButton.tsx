@@ -6,10 +6,10 @@ import { FaFacebook } from 'react-icons/fa';
 import { FaSteam } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
 // providers
+// TODO: correct this dark mode context, use query instead passed down
 import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
-// styles
 
 type SocialButtonProps = {
   buttonName: string;

@@ -4,12 +4,12 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // providers
-// files
-import COLOURS from '../../Theme/Colours';
+// TODO: correct this dark mode context, use query instead passed down
 import { useDarkMode } from '../../Context/useDarkMode';
 import UserContext from '../../Context/UserContext';
+// files
 import DiscordAvatar from './DiscordAvatar';
-// styles
+import COLOURS from '../../Theme/Colours';
 
 type MenuButtonProps = {
   isMobile: boolean;

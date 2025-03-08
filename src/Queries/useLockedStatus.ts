@@ -1,4 +1,6 @@
+// libraries
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { LockedStatusRequest } from '../Context/Types';
 
 const apiUrl = import.meta.env.VITE_API_ADDRESS;
 
@@ -10,13 +12,18 @@ const fetchLockedStatus = async () => {
   return response.json();
 };
 
-const updateLockedStatus = async (lockedStatusData: { lockStatus: string; value: boolean }) => {
+const updateLockedStatus = async (prevValue: boolean) => {
+  const requestBody: LockedStatusRequest = {
+    lockStatus: 'locked',
+    value: !prevValue,
+  };
+
   const response = await fetch(`${apiUrl}/LockedStatus`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(lockedStatusData),
+    body: JSON.stringify(requestBody),
   });
 
   if (!response.ok) {
@@ -46,7 +53,7 @@ const useLockedStatus = () => {
     },
   });
 
-  return { data, error, isLoading, updateLockedStatus: updateMutation.mutate };
+  return { data, error, isLoading, updateLockedStatus: updateMutation.mutate, forceInvalidate };
 };
 
 export default useLockedStatus;

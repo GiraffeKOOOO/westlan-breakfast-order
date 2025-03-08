@@ -6,7 +6,6 @@ import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import locationSwitch from './locationSwitch';
-// styles
 
 type ButtonProps = {
   isMobile: boolean;

@@ -31,3 +31,8 @@ export type BreakfastOption = {
   ingredients: string[];
   colour: string;
 };
+
+export type LockedStatusRequest = {
+  lockStatus: string;
+  value: boolean;
+};
