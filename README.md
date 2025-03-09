@@ -29,5 +29,7 @@ For Users:
     <li>React Router</li>
     <li>Material UI</li>
     <li>React Icons</li>
-    <li>Axios</li>
+    <li>Tanstack Query</li>
+    <li>Notistack</li>
+    <li>React Spinners</li>
 </ul>

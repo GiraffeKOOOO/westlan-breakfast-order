@@ -2,11 +2,10 @@
 import { FC } from 'react';
 import { Button, ListItem, ListItemButton, Typography } from '@mui/material';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import locationSwitch from './locationSwitch';
-// styles
 
 type ButtonProps = {
   isMobile: boolean;
@@ -14,7 +13,7 @@ type ButtonProps = {
 };
 
 const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   if (isMobile)
     return (

@@ -1,17 +1,22 @@
 // libraries
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Grid } from '@mui/material';
 // providers
-import { useTheme } from '../Context/useTheme';
+import { useDarkMode } from '../Context/useDarkMode';
+import UserContext from '../Context/UserContext';
+// queries
+import useLockedStatus from '../Queries/useLockedStatus';
 // files
 import Navbar from '../Components/Navbar/Navbar';
+import AdminPanelContainer from '../Components/AdminPanel/AdminPanelContainer';
 import Footer from '../Components/Footer/Footer';
 import COLOURS from '../Theme/Colours';
-import AdminPanel from '../Components/AdminPanel/AdminPanel';
-// styles
 
 const Admin: FC = () => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
+  const { data: lockedStatus, isLoading } = useLockedStatus();
+  const { userName, userDiscordId } = useContext(UserContext);
+  const userLoggedIn = userName !== '' && userName !== undefined;
 
   return (
     <Grid
@@ -28,7 +33,15 @@ const Admin: FC = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <AdminPanel />
+        {!isLoading && (
+          <AdminPanelContainer
+            darkMode={darkMode}
+            userName={userName}
+            userDiscordId={userDiscordId}
+            userLoggedIn={userLoggedIn}
+            lockedStatus={lockedStatus[0].value}
+          />
+        )}
       </Grid>
 
       <Grid item xs={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>

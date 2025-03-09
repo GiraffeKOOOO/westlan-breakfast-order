@@ -4,12 +4,12 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // providers
-// files
-import COLOURS from '../../Theme/Colours';
-import { useTheme } from '../../Context/useTheme';
+// TODO: correct this dark mode context, use query instead passed down
+import { useDarkMode } from '../../Context/useDarkMode';
 import UserContext from '../../Context/UserContext';
+// files
 import DiscordAvatar from './DiscordAvatar';
-// styles
+import COLOURS from '../../Theme/Colours';
 
 type MenuButtonProps = {
   isMobile: boolean;
@@ -18,8 +18,7 @@ type MenuButtonProps = {
 };
 
 const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu }) => {
-  // TODO: add a avatar fetch url from the API
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
   const { userName, userAvatar, userDiscordId } = useContext(UserContext);
 
   if (isMobile)

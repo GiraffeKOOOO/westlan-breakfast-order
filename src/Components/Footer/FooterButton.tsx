@@ -1,18 +1,18 @@
 // libraries
 import { FC } from 'react';
 import { Button } from '@mui/material';
-import COLOURS from '../../Theme/Colours';
 // providers
-import { useTheme } from '../../Context/useTheme';
+// TODO: correct this dark mode context, use query instead passed down
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
-// styles
+import COLOURS from '../../Theme/Colours';
 
 type FooterButtonProps = {
   buttonName: string;
 };
 
 const FooterButton: FC<FooterButtonProps> = ({ buttonName }) => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
 
   const locationSwitch = () => {
     switch (buttonName) {

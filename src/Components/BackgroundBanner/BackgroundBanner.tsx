@@ -1,11 +1,9 @@
 // libraries
 import { FC } from 'react';
 import { Stack, Typography } from '@mui/material';
-// providers
 // files
 import bannerImage from '../../assets/background-banner.jpg';
 import COLOURS from '../../Theme/Colours';
-// styles
 
 const backgroundImage = {
   backgroundImage: `url(${bannerImage})`,

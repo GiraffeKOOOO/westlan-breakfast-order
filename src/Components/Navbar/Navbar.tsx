@@ -18,7 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 // providers
 import UserContext from '../../Context/UserContext';
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import logoWhite from '../../assets/logo-white.webp';
@@ -28,11 +28,10 @@ import DarkModeButton from './DarkModeButton';
 import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
-// styles
 
 const Navbar: FC = () => {
   const { userName } = useContext(UserContext);
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const userLoggedIn = userName !== undefined;
   const theme = muiTheme();
