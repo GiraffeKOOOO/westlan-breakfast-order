@@ -1,5 +1,5 @@
 // libraries
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -22,7 +22,7 @@ import { HashLoader } from 'react-spinners';
 import useLockedStatus from '../../Queries/useLockedStatus';
 import useOrder from '../../Queries/useOrder';
 // files
-import { PanelContentProps } from '../../Context/Types';
+import { basicOrderType, PanelContentProps } from '../../Context/Types';
 import TableContent from './TableContent';
 import LockButtonContent from './LockButtonContent';
 import COLOURS from '../../Theme/Colours';
@@ -52,14 +52,30 @@ export const StyledTableRow = styled(TableRow)(() => ({
 
 const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
   const navigate = useNavigate();
-  const { allOrdersData: allOrders, isLoadingAllOrders } = useOrder(userName);
-  const { data: lockedStatusData, updateLockedStatus, forceInvalidate } = useLockedStatus();
+  const {
+    allOrdersData: allOrders,
+    isLoadingAllOrders,
+    updateOrder,
+    forceInvalidate: forceInvalidateOrders,
+  } = useOrder(userName);
+  const {
+    data: lockedStatusData,
+    updateLockedStatus,
+    forceInvalidate: forceInvalidateLockStatus,
+  } = useLockedStatus();
   const { enqueueSnackbar } = useSnackbar();
   const [useColourMode, setUseColourMode] = useState<boolean>(false);
   const [useColourModeWholeRow, setUseColourModeWholeRow] = useState<boolean>(false);
   const [strikethrough, setStrikethrough] = useState<boolean>(false);
   const [loadingSpinner, setLoadingSpinner] = useState<boolean>(false);
+  const [stateTableData, setStateTableData] = useState<basicOrderType[]>([]);
   const lockedStatus = lockedStatusData[0].value;
+
+  useEffect(() => {
+    if (allOrders) {
+      setStateTableData(allOrders);
+    }
+  }, [allOrders]);
 
   const colourModeChangeHandler = () => {
     if (useColourMode === false) {
@@ -187,7 +203,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
                     updateLockedStatus(lockedStatus);
                     setLoadingSpinner(true);
                     setTimeout(() => {
-                      forceInvalidate();
+                      forceInvalidateLockStatus();
                       setLoadingSpinner(false);
                       enqueueSnackbar(`Orders are now ${!lockedStatus ? 'locked' : 'unlocked'}`, {
                         variant: 'info',
@@ -207,7 +223,10 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
 
           {!isLoadingAllOrders && allOrders && allOrders.length > 0 ? (
             <TableContent
-              orderList={allOrders}
+              orderList={stateTableData}
+              setStateTableData={setStateTableData}
+              updateOrder={updateOrder}
+              forceInvalidate={forceInvalidateOrders}
               useColourMode={useColourMode}
               useColourModeWholeRow={useColourModeWholeRow}
               strikethrough={strikethrough}

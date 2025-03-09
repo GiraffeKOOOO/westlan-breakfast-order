@@ -1,9 +1,8 @@
 // libraries
-import { FC, useState, MouseEvent, useMemo } from 'react';
+import { FC, useState, MouseEvent, useMemo, useCallback, Dispatch, SetStateAction } from 'react';
 import { Checkbox, Table, TableBody, TableCell, TableContainer } from '@mui/material';
 // files
 import TableHeader from './TableHeader';
-// import MockLanOrderList from '../../MockLanOrderList';
 import ascDescEnum from './ascDescEnum';
 import { StyledTableRow } from './AdminPanelContent';
 import StyledTableCell from './StyledTableCell';
@@ -12,28 +11,16 @@ import colourSwitch from './ColourSwitch';
 import { basicOrderType } from '../../Context/Types';
 import COLOURS from '../../Theme/Colours';
 
-// const updateOrderCall = (userName: string, orderType: string, completed: boolean) => {
-//   const newData = {
-//     userName: userName,
-//     orderType: orderType,
-//     completed: completed,
-//   };
-//   try {
-//     axios({
-//       method: 'PUT',
-//       url: `${import.meta.env.VITE_API_ADDRESS}Order`,
-//       headers: {
-//         'content-type': 'application/json',
-//       },
-//       data: newData,
-//     }).catch((error) => console.log(error));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 type TableContentProps = {
   orderList: basicOrderType[];
+  setStateTableData: Dispatch<SetStateAction<basicOrderType[]>>;
+  updateOrder: (orderData: {
+    orderId: number;
+    userName: string;
+    orderType: string;
+    completed: boolean;
+  }) => void;
+  forceInvalidate: () => void;
   useColourMode: boolean;
   useColourModeWholeRow: boolean;
   strikethrough: boolean;
@@ -41,6 +28,9 @@ type TableContentProps = {
 
 const TableContent: FC<TableContentProps> = ({
   orderList,
+  setStateTableData,
+  updateOrder,
+  forceInvalidate,
   useColourMode,
   useColourModeWholeRow,
   strikethrough,
@@ -86,24 +76,31 @@ const TableContent: FC<TableContentProps> = ({
     setValueToOrderBy(property);
   };
 
+  const checkboxChangeHandler = useCallback(
+    (index: number, order: basicOrderType) => {
+      const completedFlip = !order.completed;
+
+      updateOrder({
+        orderId: 0,
+        userName: order.userName,
+        orderType: order.orderType,
+        completed: completedFlip,
+      });
+      forceInvalidate();
+
+      setStateTableData((prev) => {
+        const updatedArray = [...prev];
+        updatedArray[index].completed = completedFlip;
+        return updatedArray;
+      });
+    },
+    [forceInvalidate, setStateTableData, updateOrder],
+  );
+
   const visibleRows = useMemo(
     () => stableSort(orderList, getComparator(orderDirection, valueToOrderBy)),
     [getComparator, orderDirection, orderList, valueToOrderBy],
   );
-
-  // const checkboxChangeHandler = useCallback(
-  //   (index: number, order: basicOrderType) => {
-  //     if (!stateOrderList && !order.completed) return;
-
-  //     const completedFlip = !order.completed;
-  //     updateOrderCall(order.userName, order.orderType, completedFlip);
-
-  //     const updatedArray = [...stateOrderList];
-  //     updatedArray[index].completed = !updatedArray[index].completed;
-  //     setStateOrderList(updatedArray);
-  //   },
-  //   [setStateOrderList, stateOrderList],
-  // );
 
   return (
     <TableContainer>
@@ -144,9 +141,9 @@ const TableContent: FC<TableContentProps> = ({
                     // @ts-expect-error-wrong-type
                     onChange={() => checkboxChangeHandler(index, order)}
                     sx={{
-                      color: 'white',
+                      color: useColourModeWholeRow ? 'black' : 'white',
                       '&.Mui-checked': {
-                        color: 'white',
+                        color: useColourModeWholeRow ? 'black' : 'white',
                       },
                     }}
                   />

@@ -87,7 +87,6 @@ const useOrder = (userName: string) => {
     data: allOrdersData,
     error: allOrdersError,
     isLoading: isLoadingAllOrders,
-    // refetch: refetchAllOrders,
   } = useQuery({
     queryKey: ['allOrders'],
     queryFn: fetchAllOrders,
