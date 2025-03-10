@@ -97,6 +97,7 @@ const TableContent: FC<TableContentProps> = ({
     [forceInvalidate, setStateTableData, updateOrder],
   );
 
+  // TODO: this is the issue with the checkboxes, this doesn't update the state order
   const visibleRows = useMemo(
     () => stableSort(orderList, getComparator(orderDirection, valueToOrderBy)),
     [getComparator, orderDirection, orderList, valueToOrderBy],
