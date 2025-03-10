@@ -24,7 +24,7 @@ const Admin: FC = () => {
       sx={{
         width: '100vw',
         maxWidth: '100vw',
-        height: '100vh',
+        height: '100%',
         backgroundColor: darkMode ? COLOURS.DARK_MODE_BUTTON_LIGHT : COLOURS.LIGHT_SECONDARY,
       }}
     >

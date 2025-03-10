@@ -2,11 +2,9 @@
 import { FC, MouseEvent } from 'react';
 import { Box, TableBody, TableCell, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-// providers
 // files
 import ascDescEnum from './ascDescEnum';
 import { basicOrderType } from '../../Context/Types';
-// import { Order } from './TableContent';
 import COLOURS from '../../Theme/Colours';
 
 interface HeadCell {

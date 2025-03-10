@@ -116,6 +116,7 @@ const useOrder = (userName: string) => {
     userOrderError,
     isLoadingUserOrder,
     allOrdersData,
+    allOrdersLength: allOrdersData?.length,
     allOrdersError,
     isLoadingAllOrders,
     createOrder: createMutation.mutate,
