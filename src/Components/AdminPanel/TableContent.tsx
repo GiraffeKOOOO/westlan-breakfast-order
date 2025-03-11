@@ -14,13 +14,7 @@ import COLOURS from '../../Theme/Colours';
 type TableContentProps = {
   orderList: basicOrderType[];
   setStateTableData: Dispatch<SetStateAction<basicOrderType[]>>;
-  updateOrder: (orderData: {
-    orderId: number;
-    userName: string;
-    orderType: string;
-    completed: boolean;
-  }) => void;
-  forceInvalidate: () => void;
+  updateOrder: (orderData: { userName: string; orderType: string; completed: boolean }) => void;
   useColourMode: boolean;
   useColourModeWholeRow: boolean;
   strikethrough: boolean;
@@ -30,7 +24,6 @@ const TableContent: FC<TableContentProps> = ({
   orderList,
   setStateTableData,
   updateOrder,
-  forceInvalidate,
   useColourMode,
   useColourModeWholeRow,
   strikethrough,
@@ -39,10 +32,15 @@ const TableContent: FC<TableContentProps> = ({
   const [valueToOrderBy, setValueToOrderBy] = useState<keyof basicOrderType>('userName');
 
   function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
+    const aValue =
+      typeof a[orderBy] === 'string' ? (a[orderBy] as string).toLowerCase() : a[orderBy];
+    const bValue =
+      typeof b[orderBy] === 'string' ? (b[orderBy] as string).toLowerCase() : b[orderBy];
+
+    if (bValue < aValue) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (bValue > aValue) {
       return 1;
     }
     return 0;
@@ -76,31 +74,30 @@ const TableContent: FC<TableContentProps> = ({
     setValueToOrderBy(property);
   };
 
-  const checkboxChangeHandler = useCallback(
-    (index: number, order: basicOrderType) => {
-      const completedFlip = !order.completed;
-
-      updateOrder({
-        orderId: 0,
-        userName: order.userName,
-        orderType: order.orderType,
-        completed: completedFlip,
-      });
-      forceInvalidate();
-
-      setStateTableData((prev) => {
-        const updatedArray = [...prev];
-        updatedArray[index].completed = completedFlip;
-        return updatedArray;
-      });
-    },
-    [forceInvalidate, setStateTableData, updateOrder],
-  );
-
-  // TODO: this is the issue with the checkboxes, this doesn't update the state order
   const visibleRows = useMemo(
     () => stableSort(orderList, getComparator(orderDirection, valueToOrderBy)),
     [getComparator, orderDirection, orderList, valueToOrderBy],
+  );
+
+  const checkboxChangeHandler = useCallback(
+    (index: number) => {
+      const order = visibleRows[index];
+
+      updateOrder({
+        userName: order.userName as string,
+        orderType: order.orderType as string,
+        completed: !order.completed,
+      });
+
+      // @ts-expect-error-wrong-type
+      setStateTableData(() => {
+        const updatedArray = [...visibleRows];
+        // @ts-expect-error-wrong-type
+        updatedArray[index].completed = !order.completed;
+        return updatedArray;
+      });
+    },
+    [setStateTableData, updateOrder, visibleRows],
   );
 
   return (
@@ -139,8 +136,7 @@ const TableContent: FC<TableContentProps> = ({
                   <Checkbox
                     // @ts-expect-error-wrong-type
                     checked={order.completed}
-                    // @ts-expect-error-wrong-type
-                    onChange={() => checkboxChangeHandler(index, order)}
+                    onChange={() => checkboxChangeHandler(index)}
                     sx={{
                       color: useColourModeWholeRow ? 'black' : 'white',
                       '&.Mui-checked': {

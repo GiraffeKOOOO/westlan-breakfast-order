@@ -50,7 +50,6 @@ const createOrder = async (orderData: { userName: string; orderType: string }) =
 };
 
 const updateOrder = async (orderData: {
-  orderId: number;
   userName: string;
   orderType: string;
   completed: boolean;

@@ -40,12 +40,7 @@ type BreakfastOrderCardProps = {
   orderSelected: boolean;
   order: Order;
   createOrder: (orderData: { userName: string; orderType: string }) => void;
-  updateOrder: (orderData: {
-    orderId: number;
-    userName: string;
-    orderType: string;
-    completed: boolean;
-  }) => void;
+  updateOrder: (orderData: { userName: string; orderType: string; completed: boolean }) => void;
   forceInvalidate: () => void;
   loadingSpinner: boolean;
   setLoadingSpinner: Dispatch<SetStateAction<boolean>>;
@@ -127,7 +122,6 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       createOrder({ userName, orderType: breakfastOption.name });
     } else {
       updateOrder({
-        orderId: order.orderId!,
         userName: userName,
         orderType: breakfastOption.name,
         completed: order.completed!,
