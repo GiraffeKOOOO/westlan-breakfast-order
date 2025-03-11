@@ -60,7 +60,6 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
     allOrdersLength,
     isLoadingAllOrders,
     updateOrder,
-    forceInvalidate: forceInvalidateOrders,
   } = useOrder(userName);
   const {
     data: lockedStatusData,
@@ -359,7 +358,6 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
               orderList={stateTableData}
               setStateTableData={setStateTableData}
               updateOrder={updateOrder}
-              forceInvalidate={forceInvalidateOrders}
               useColourMode={useColourMode}
               useColourModeWholeRow={useColourModeWholeRow}
               strikethrough={strikethrough}
