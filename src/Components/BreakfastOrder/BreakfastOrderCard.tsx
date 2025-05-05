@@ -11,24 +11,14 @@ import {
   useMediaQuery,
   useTheme as muiTheme,
 } from '@mui/material';
-import { BsEggFried } from 'react-icons/bs';
-import { GiSausage } from 'react-icons/gi';
-import { FaBacon } from 'react-icons/fa';
 import { HashLoader } from 'react-spinners';
 import { useSnackbar } from 'notistack';
 // files
 import { BreakfastOption } from '../../Context/Types';
-import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import { Order } from '../../Context/Types';
+import breakfastImageSwitch from './breakfastImageSwitch';
+import breakfastIngredientIconSwitch from './breakfastIngredientIconSwitch';
 import COLOURS from '../../Theme/Colours';
-import burgerBlue from '../../assets/burger-blue.png';
-import burgerGreen from '../../assets/burger-green.png';
-import burgerOrange from '../../assets/burger-orange.png';
-import burgerPink from '../../assets/burger-pink.png';
-import burgerPurple from '../../assets/burger-purple.png';
-import burgerWhite from '../../assets/burger-white.png';
-import burgerYellow from '../../assets/burger-yellow.png';
-import burgerGrey from '../../assets/burger-grey.png';
 
 type BreakfastOrderCardProps = {
   darkMode: boolean;
@@ -66,40 +56,13 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
   const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const iconSwitch = useCallback((ingredient: string) => {
-    switch (ingredient) {
-      case BREAKFAST_INGREDIENTS.SAUSAGE:
-        return <GiSausage style={{ fontSize: '1.5rem' }} />;
-      case BREAKFAST_INGREDIENTS.BACON:
-        return <FaBacon style={{ fontSize: '1.5rem' }} />;
-      case BREAKFAST_INGREDIENTS.EGG:
-        return <BsEggFried style={{ fontSize: '1.5rem' }} />;
-      default:
-    }
+  const cardImageSwitch = useCallback((colour: string) => {
+    return breakfastImageSwitch(colour);
   }, []);
 
-  const colourSwitch = (colour: string) => {
-    switch (colour) {
-      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_BACON:
-        return burgerOrange;
-      case BREAKFAST_OPTION_COLOURS.FAT_BASTARD:
-        return burgerBlue;
-      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_EGG:
-        return burgerPurple;
-      case BREAKFAST_OPTION_COLOURS.EGG_AND_BACON:
-        return burgerGreen;
-      case BREAKFAST_OPTION_COLOURS.ONLY_BACON:
-        return burgerYellow;
-      case BREAKFAST_OPTION_COLOURS.ONLY_SAUSAGE:
-        return burgerPink;
-      case BREAKFAST_OPTION_COLOURS.ONLY_EGG:
-        return burgerWhite;
-      case 'DISABLED':
-        return burgerGrey;
-      default:
-        return burgerOrange;
-    }
-  };
+  const ingredientIconSwitch = useCallback((ingredient: string) => {
+    return breakfastIngredientIconSwitch(ingredient);
+  }, []);
 
   const checkShowConfirmation = (breakfastOption: BreakfastOption) => {
     if (breakfastOption.name === order?.orderType) return;
@@ -163,7 +126,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                 height: '8.75rem',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${colourSwitch(breakfastOption.colour)})`,
+                backgroundImage: `url(${cardImageSwitch(breakfastOption.colour)})`,
                 backgroundBlendMode: 'multiply',
                 backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG,
               }}
@@ -182,7 +145,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               <List sx={{ paddingTop: 0 }}>
                 {breakfastOption.ingredients.map((ingredient, index) => (
                   <ListItem key={index} sx={{ justifyContent: 'center' }}>
-                    {iconSwitch(ingredient)}
+                    {ingredientIconSwitch(ingredient)}
                     <Typography>{ingredient}</Typography>
                   </ListItem>
                 ))}
@@ -289,7 +252,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       >
         <CardMedia
           sx={{ height: '8.75rem' }}
-          image={colourSwitch(
+          image={cardImageSwitch(
             lockedStatus && order?.orderType !== breakfastOption.name
               ? 'DISABLED'
               : breakfastOption.colour,
@@ -307,7 +270,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           <List sx={{ paddingTop: 0 }}>
             {breakfastOption.ingredients.map((ingredient, index) => (
               <ListItem key={index.toString()} sx={{ justifyContent: 'center' }}>
-                {iconSwitch(ingredient)}
+                {ingredientIconSwitch(ingredient)}
                 <div style={{ width: '0.6rem' }} />
                 <Typography color="text.secondary">{ingredient}</Typography>
               </ListItem>

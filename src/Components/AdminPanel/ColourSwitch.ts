@@ -1,3 +1,4 @@
+// files
 import BREAKFAST_OPTIONS, { BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 
 const colourSwitch = (colour: string | number) => {
