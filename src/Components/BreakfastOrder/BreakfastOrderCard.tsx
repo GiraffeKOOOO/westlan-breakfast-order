@@ -10,6 +10,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme as muiTheme,
+  Box,
 } from '@mui/material';
 import { HashLoader } from 'react-spinners';
 import { useSnackbar } from 'notistack';
@@ -100,6 +101,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     }, 700);
   };
 
+  // TODO: would be neat to correct the random button heights
   if (showConfirmation)
     return (
       <Card
@@ -119,10 +121,10 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
             : `0.3rem solid ${COLOURS.LIGHT_FONT_TERTIARY}`,
         }}
       >
-        <div style={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
+        <Box sx={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
           <CardMedia>
-            <div
-              style={{
+            <Box
+              sx={{
                 height: '8.75rem',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -140,7 +142,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               },
             }}
           >
-            <div style={{ zIndex: 0 }}>
+            <Box sx={{ zIndex: 0 }}>
               <Typography variant="h5">{breakfastOption.name}</Typography>
               <List sx={{ paddingTop: 0 }}>
                 {breakfastOption.ingredients.map((ingredient, index) => (
@@ -150,9 +152,9 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                   </ListItem>
                 ))}
               </List>
-            </div>
-            <div
-              style={{
+            </Box>
+            <Box
+              sx={{
                 zIndex: 1,
                 position: 'relative',
                 width: isMobile ? '16rem' : '20rem',
@@ -161,7 +163,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               }}
             >
               {loadingSpinner ? (
-                <div
+                <Box
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -174,7 +176,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                     color="white"
                     cssOverride={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '-10rem' }}
                   />
-                </div>
+                </Box>
               ) : (
                 <>
                   <Typography
@@ -216,14 +218,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                   </Button>
                 </>
               )}
-            </div>
+            </Box>
           </CardContent>
-        </div>
+        </Box>
       </Card>
     );
 
   return (
-    <div onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
+    <Box onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
       <Card
         sx={{
           width: {
@@ -271,14 +273,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
             {breakfastOption.ingredients.map((ingredient, index) => (
               <ListItem key={index.toString()} sx={{ justifyContent: 'center' }}>
                 {ingredientIconSwitch(ingredient)}
-                <div style={{ width: '0.6rem' }} />
+                <Box sx={{ width: '0.6rem' }} />
                 <Typography color="text.secondary">{ingredient}</Typography>
               </ListItem>
             ))}
           </List>
         </CardContent>
       </Card>
-    </div>
+    </Box>
   );
 };
 
