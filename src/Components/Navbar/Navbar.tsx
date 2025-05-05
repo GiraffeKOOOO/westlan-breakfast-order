@@ -1,5 +1,5 @@
 // libraries
-import { useState, MouseEvent, useContext, FC } from 'react';
+import { useState, MouseEvent, FC } from 'react';
 import {
   AppBar,
   Box,
@@ -16,8 +16,6 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-// providers
-import UserContext from '../../Context/UserContext';
 // files
 import COLOURS from '../../Theme/Colours';
 import logoWhite from '../../assets/logo-white.webp';
@@ -30,14 +28,16 @@ import NavbarMenuItem from './MenuItem';
 
 type NavbarProps = {
   darkMode: boolean;
+  userName: string | undefined;
 };
 
-const Navbar: FC<NavbarProps> = ({ darkMode }) => {
-  const { userName } = useContext(UserContext);
+const Navbar: FC<NavbarProps> = ({ darkMode, userName }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const userLoggedIn = userName !== undefined;
+  const [mobileOpen, setMobileOpen] = useState(false);
   const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const userLoggedIn = userName !== undefined;
+  const container = window !== undefined ? window.document.body : undefined;
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -47,13 +47,11 @@ const Navbar: FC<NavbarProps> = ({ darkMode }) => {
     setAnchorElUser(null);
   };
 
-  const container = window !== undefined ? window.document.body : undefined;
-
-  const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  // TODO: could potentially try to move this in to a custom component
   const drawer = (toggleClose: () => void) => {
     return (
       <Box

@@ -29,7 +29,7 @@ const Admin: FC = () => {
       }}
     >
       <Grid item xs={12}>
-        <Navbar darkMode={darkMode} />
+        <Navbar darkMode={darkMode} userName={userName} />
       </Grid>
 
       <Grid item xs={12}>
