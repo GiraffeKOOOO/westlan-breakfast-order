@@ -33,9 +33,8 @@ const BreakfastOrderContainer: FC<PanelContainerProps> = ({
                 color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
                 fontSize: {
                   xs: '1.3rem',
-                  sm: '1.6rem',
-                  md: '2rem',
-                  lg: '2rem',
+                  sm: '1.4rem',
+                  lg: '1.8rem',
                 },
                 lineHeight: '1.25rem',
                 fontWeight: '500',
