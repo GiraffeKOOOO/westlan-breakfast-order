@@ -4,22 +4,19 @@ import { IconButton, Stack, Typography } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // providers
-// files
-import COLOURS from '../../Theme/Colours';
-import { useTheme } from '../../Context/useTheme';
 import UserContext from '../../Context/UserContext';
+// files
 import DiscordAvatar from './DiscordAvatar';
-// styles
+import COLOURS from '../../Theme/Colours';
 
 type MenuButtonProps = {
+  darkMode: boolean;
   isMobile: boolean;
   isOpen: boolean;
   handleOpenUserMenu: (event: MouseEvent<HTMLElement>) => void;
 };
 
-const MenuButton: FC<MenuButtonProps> = ({ isMobile, isOpen, handleOpenUserMenu }) => {
-  // TODO: add a avatar fetch url from the API
-  const { darkMode } = useTheme();
+const MenuButton: FC<MenuButtonProps> = ({ darkMode, isMobile, isOpen, handleOpenUserMenu }) => {
   const { userName, userAvatar, userDiscordId } = useContext(UserContext);
 
   if (isMobile)

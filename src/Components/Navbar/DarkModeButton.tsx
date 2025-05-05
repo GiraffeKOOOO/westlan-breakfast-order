@@ -4,13 +4,12 @@ import { IconButton } from '@mui/material';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 // providers
-import { useTheme } from '../../Context/useTheme';
+import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
-// styles
 
 const DarkModeButton: FC = () => {
-  const { darkMode, enableDarkMode, disableDarkMode } = useTheme();
+  const { darkMode, enableDarkMode, disableDarkMode } = useDarkMode();
 
   return (
     <IconButton

@@ -1,12 +1,10 @@
 // libraries
 import { useState, createContext, useEffect, ReactNode } from 'react';
-// providers
-// styles
 
 const UserContext = createContext<{
-  userName: string;
-  userAvatar: string;
-  userDiscordId: string;
+  userName: string | undefined;
+  userAvatar: string | undefined;
+  userDiscordId: string | undefined;
 }>({
   userName: '',
   userAvatar: '',

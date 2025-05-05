@@ -1,8 +1,8 @@
+import { BreakfastOption } from '../../Context/Types';
 import BREAKFAST_OPTIONS, {
   BREAKFAST_INGREDIENTS,
   BREAKFAST_OPTION_COLOURS,
 } from '../BreakfastOptions';
-import { BreakfastOption } from './BreakfastOrderContainer';
 
 const BreakfastOptions: BreakfastOption[] = [
   {

@@ -5,7 +5,6 @@ import { TableCell, tableCellClasses } from '@mui/material';
 // files
 import COLOURS from '../../Theme/Colours';
 import colourSwitch from './ColourSwitch';
-// styles
 
 type StyledTableCellProps = {
   orderType: string | number;

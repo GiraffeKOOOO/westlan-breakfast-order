@@ -2,15 +2,13 @@
 import { FC, MouseEvent } from 'react';
 import { Box, TableBody, TableCell, TableRow, TableSortLabel } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-// providers
 // files
 import ascDescEnum from './ascDescEnum';
-import { Order } from './TableContent';
+import { basicOrderType } from '../../Context/Types';
 import COLOURS from '../../Theme/Colours';
-// styles
 
 interface HeadCell {
-  id: keyof Order;
+  id: keyof basicOrderType;
   label: string;
 }
 
@@ -32,11 +30,11 @@ const headCells: readonly HeadCell[] = [
 type TableHeaderProps = {
   orderDirection: ascDescEnum;
   valueToOrderBy: string;
-  onRequestSort: (event: MouseEvent<unknown>, property: keyof Order) => void;
+  onRequestSort: (event: MouseEvent<unknown>, property: keyof basicOrderType) => void;
 };
 
 const TableHeader: FC<TableHeaderProps> = ({ valueToOrderBy, orderDirection, onRequestSort }) => {
-  const createSortHandler = (property: keyof Order) => (event: MouseEvent<unknown>) => {
+  const createSortHandler = (property: keyof basicOrderType) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 

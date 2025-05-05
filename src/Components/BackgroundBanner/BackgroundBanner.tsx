@@ -1,11 +1,9 @@
 // libraries
 import { FC } from 'react';
-import { Stack, Typography } from '@mui/material';
-// providers
+import { Box, Stack, Typography } from '@mui/material';
 // files
 import bannerImage from '../../assets/background-banner.jpg';
 import COLOURS from '../../Theme/Colours';
-// styles
 
 const backgroundImage = {
   backgroundImage: `url(${bannerImage})`,
@@ -25,8 +23,8 @@ const darkLayer = {
 const BackgroundBanner: FC = () => {
   return (
     <Stack sx={{ position: 'static', borderTop: `1px solid ${COLOURS.NAVBAR_BORDER_BOTTOM}` }}>
-      <div style={backgroundImage}>
-        <div style={darkLayer}>
+      <Box sx={backgroundImage}>
+        <Box sx={darkLayer}>
           <Typography
             sx={{
               position: 'relative',
@@ -45,8 +43,8 @@ const BackgroundBanner: FC = () => {
           >
             Breakfast Order
           </Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </Stack>
   );
 };

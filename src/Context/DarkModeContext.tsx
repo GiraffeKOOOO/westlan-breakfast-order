@@ -1,19 +1,19 @@
 // libraries
 import { useState, createContext, useEffect, ReactNode } from 'react';
 
-export type ThemeContextType = {
+export type DarkModeContextType = {
   darkMode: boolean;
   enableDarkMode: () => void;
   disableDarkMode: () => void;
 };
 
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+export const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
 
-interface ThemeProviderProps {
+interface DarkModeProviderProps {
   children: ReactNode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
+export function DarkModeProvider({ children }: DarkModeProviderProps) {
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   const enableDarkMode = () => {
@@ -34,10 +34,10 @@ export function ThemeProvider({ children }: ThemeProviderProps): JSX.Element {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ darkMode, enableDarkMode, disableDarkMode }}>
+    <DarkModeContext.Provider value={{ darkMode, enableDarkMode, disableDarkMode }}>
       {children}
-    </ThemeContext.Provider>
+    </DarkModeContext.Provider>
   );
 }
 
-export default ThemeContext;
+export default DarkModeContext;

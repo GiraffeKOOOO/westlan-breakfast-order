@@ -1,17 +1,22 @@
 // libraries
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Grid } from '@mui/material';
 // providers
-import { useTheme } from '../Context/useTheme';
+import { useDarkMode } from '../Context/useDarkMode';
+import UserContext from '../Context/UserContext';
+// queries
+import useLockedStatus from '../Queries/useLockedStatus';
 // files
 import Navbar from '../Components/Navbar/Navbar';
 import BreakfastOrderContainer from '../Components/BreakfastOrder/BreakfastOrderContainer';
 import COLOURS from '../Theme/Colours';
 import Footer from '../Components/Footer/Footer';
-// styles
 
 const Home: FC = () => {
-  const { darkMode } = useTheme();
+  const { darkMode } = useDarkMode();
+  const { data: lockedStatus, isLoading } = useLockedStatus();
+  const { userName, userDiscordId } = useContext(UserContext);
+  const userLoggedIn = userName !== '' && userName !== undefined;
 
   return (
     <Grid
@@ -24,15 +29,23 @@ const Home: FC = () => {
       }}
     >
       <Grid item xs={12}>
-        <Navbar />
+        <Navbar darkMode={darkMode} userName={userName} />
       </Grid>
 
       <Grid item xs={12}>
-        <BreakfastOrderContainer />
+        {!isLoading && (
+          <BreakfastOrderContainer
+            darkMode={darkMode}
+            userName={userName}
+            userDiscordId={userDiscordId}
+            userLoggedIn={userLoggedIn}
+            lockedStatus={lockedStatus[0].value}
+          />
+        )}
       </Grid>
 
       <Grid item xs={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Footer />
+        <Footer darkMode={darkMode} />
       </Grid>
     </Grid>
   );

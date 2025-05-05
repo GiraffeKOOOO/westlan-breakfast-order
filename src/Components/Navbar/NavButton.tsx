@@ -1,21 +1,17 @@
 // libraries
 import { FC } from 'react';
 import { Button, ListItem, ListItemButton, Typography } from '@mui/material';
-// providers
-import { useTheme } from '../../Context/useTheme';
 // files
 import COLOURS from '../../Theme/Colours';
 import locationSwitch from './locationSwitch';
-// styles
 
 type ButtonProps = {
+  darkMode: boolean;
   isMobile: boolean;
   buttonName: string;
 };
 
-const NavButton: FC<ButtonProps> = ({ isMobile, buttonName }) => {
-  const { darkMode } = useTheme();
-
+const NavButton: FC<ButtonProps> = ({ darkMode, isMobile, buttonName }) => {
   if (isMobile)
     return (
       <ListItem disablePadding sx={{ my: '0.5rem' }}>
