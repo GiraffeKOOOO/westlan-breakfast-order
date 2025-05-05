@@ -63,10 +63,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
-
   const theme = muiTheme();
-
-  // TODO: this needs to be passed down from home
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const iconSwitch = useCallback((ingredient: string) => {

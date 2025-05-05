@@ -5,19 +5,15 @@ import { FaDiscord } from 'react-icons/fa';
 import { FaFacebook } from 'react-icons/fa';
 import { FaSteam } from 'react-icons/fa';
 import { FaYoutube } from 'react-icons/fa';
-// providers
-// TODO: correct this dark mode context, use query instead passed down
-import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 
 type SocialButtonProps = {
+  darkMode: boolean;
   buttonName: string;
 };
 
-const SocialButton: FC<SocialButtonProps> = ({ buttonName }) => {
-  const { darkMode } = useDarkMode();
-
+const SocialButton: FC<SocialButtonProps> = ({ darkMode, buttonName }) => {
   const locationSwitch = () => {
     switch (buttonName) {
       case 'discord':

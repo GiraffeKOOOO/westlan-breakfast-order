@@ -1,17 +1,16 @@
 // libraries
-import { Grid, Stack, Typography } from '@mui/material';
 import { FC } from 'react';
-// providers
-// TODO: correct this dark mode context, use query instead passed down
-import { useDarkMode } from '../../Context/useDarkMode';
+import { Grid, Stack, Typography } from '@mui/material';
 // files
 import COLOURS from '../../Theme/Colours';
 import FooterButton from './FooterButton';
 import SocialButton from './SocialButton';
 
-const Footer: FC = () => {
-  const { darkMode } = useDarkMode();
+type FooterProps = {
+  darkMode: boolean;
+};
 
+const Footer: FC<FooterProps> = ({ darkMode }) => {
   return (
     <Grid
       container
@@ -27,16 +26,16 @@ const Footer: FC = () => {
       <Grid item xs={4} />
       <Grid item xs={4}>
         <Stack direction="row" justifyContent="center">
-          <FooterButton buttonName={'Events'} />
-          <FooterButton buttonName={'Photos'} />
-          <FooterButton buttonName={'FAQs'} />
-          <FooterButton buttonName={'Support'} />
+          <FooterButton darkMode={darkMode} buttonName={'Events'} />
+          <FooterButton darkMode={darkMode} buttonName={'Photos'} />
+          <FooterButton darkMode={darkMode} buttonName={'FAQs'} />
+          <FooterButton darkMode={darkMode} buttonName={'Support'} />
         </Stack>
         <Stack direction="row" justifyContent="center" sx={{ marginTop: '2rem' }}>
-          <SocialButton buttonName={'discord'} />
-          <SocialButton buttonName={'facebook'} />
-          <SocialButton buttonName={'steam'} />
-          <SocialButton buttonName={'youtube'} />
+          <SocialButton darkMode={darkMode} buttonName={'discord'} />
+          <SocialButton darkMode={darkMode} buttonName={'facebook'} />
+          <SocialButton darkMode={darkMode} buttonName={'steam'} />
+          <SocialButton darkMode={darkMode} buttonName={'youtube'} />
         </Stack>
         <Stack direction="row" justifyContent="center" sx={{ marginTop: '2rem' }}>
           <Typography
@@ -44,7 +43,7 @@ const Footer: FC = () => {
               color: darkMode ? COLOURS.DARK_MENU_BACKGROUND : COLOURS.DARK_TABLE_CELL_BACKGROUND,
             }}
           >
-            © 2024 WestLAN. All rights reserved.
+            © 2025 WestLAN. All rights reserved.
           </Typography>
         </Stack>
       </Grid>

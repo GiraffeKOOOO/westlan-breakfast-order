@@ -87,7 +87,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
   const orderTypeCountSwitch = (type: string) => {
     switch (type) {
       case BREAKFAST_OPTIONS.FAT_BASTARD:
-        fatBastardCount += 1;
+        fatBastardCount++;
         break;
       case BREAKFAST_OPTIONS.SAUSAGE_AND_BACON:
         sausageBaconCount++;
@@ -327,7 +327,9 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
 
               {/* order status | right hand side */}
               <Grid item>
-                <Typography>Order status: {lockedStatus ? 'locked' : 'unlocked'}</Typography>
+                <Typography sx={{ color: COLOURS.DARK_FONT_PRIMARY }}>
+                  Order status: {lockedStatus ? 'locked' : 'unlocked'}
+                </Typography>
                 <Button
                   variant="contained"
                   onClick={() => {
