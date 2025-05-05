@@ -10,6 +10,7 @@ import { PanelContentProps } from '../../Context/Types';
 import BreakfastOrderCard from './BreakfastOrderCard';
 import BreakfastOptions from './BreakfastOrderOptions';
 import BreakfastOrderContentTypography from './BreakfastOrderContentTypography';
+import useAdminCheck from '../AdminPanel/useAdminCheck';
 import COLOURS from '../../Theme/Colours';
 
 const BreakfastOrderContent: FC<PanelContentProps> = ({
@@ -66,10 +67,7 @@ const BreakfastOrderContent: FC<PanelContentProps> = ({
           )}
         </Grid>
         <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          {(userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`) && (
+          {useAdminCheck(userDiscordId) && (
             <Button variant="contained" onClick={() => navigate('/admin')}>
               Admin Panel
             </Button>
