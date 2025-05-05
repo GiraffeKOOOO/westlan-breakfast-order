@@ -10,25 +10,16 @@ import {
   Typography,
   useMediaQuery,
   useTheme as muiTheme,
+  Box,
 } from '@mui/material';
-import { BsEggFried } from 'react-icons/bs';
-import { GiSausage } from 'react-icons/gi';
-import { FaBacon } from 'react-icons/fa';
 import { HashLoader } from 'react-spinners';
 import { useSnackbar } from 'notistack';
 // files
-import COLOURS from '../../Theme/Colours';
-import burgerBlue from '../../assets/burger-blue.png';
-import burgerGreen from '../../assets/burger-green.png';
-import burgerOrange from '../../assets/burger-orange.png';
-import burgerPink from '../../assets/burger-pink.png';
-import burgerPurple from '../../assets/burger-purple.png';
-import burgerWhite from '../../assets/burger-white.png';
-import burgerYellow from '../../assets/burger-yellow.png';
-import burgerGrey from '../../assets/burger-grey.png';
 import { BreakfastOption } from '../../Context/Types';
-import { BREAKFAST_INGREDIENTS, BREAKFAST_OPTION_COLOURS } from '../BreakfastOptions';
 import { Order } from '../../Context/Types';
+import breakfastImageSwitch from './breakfastImageSwitch';
+import breakfastIngredientIconSwitch from './breakfastIngredientIconSwitch';
+import COLOURS from '../../Theme/Colours';
 
 type BreakfastOrderCardProps = {
   darkMode: boolean;
@@ -63,46 +54,16 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
 }) => {
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const { enqueueSnackbar } = useSnackbar();
-
   const theme = muiTheme();
-
-  // TODO: this needs to be passed down from home
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const iconSwitch = useCallback((ingredient: string) => {
-    switch (ingredient) {
-      case BREAKFAST_INGREDIENTS.SAUSAGE:
-        return <GiSausage style={{ fontSize: '1.5rem' }} />;
-      case BREAKFAST_INGREDIENTS.BACON:
-        return <FaBacon style={{ fontSize: '1.5rem' }} />;
-      case BREAKFAST_INGREDIENTS.EGG:
-        return <BsEggFried style={{ fontSize: '1.5rem' }} />;
-      default:
-    }
+  const cardImageSwitch = useCallback((colour: string) => {
+    return breakfastImageSwitch(colour);
   }, []);
 
-  const colourSwitch = (colour: string) => {
-    switch (colour) {
-      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_BACON:
-        return burgerOrange;
-      case BREAKFAST_OPTION_COLOURS.FAT_BASTARD:
-        return burgerBlue;
-      case BREAKFAST_OPTION_COLOURS.SAUSAGE_AND_EGG:
-        return burgerPurple;
-      case BREAKFAST_OPTION_COLOURS.EGG_AND_BACON:
-        return burgerGreen;
-      case BREAKFAST_OPTION_COLOURS.ONLY_BACON:
-        return burgerYellow;
-      case BREAKFAST_OPTION_COLOURS.ONLY_SAUSAGE:
-        return burgerPink;
-      case BREAKFAST_OPTION_COLOURS.ONLY_EGG:
-        return burgerWhite;
-      case 'DISABLED':
-        return burgerGrey;
-      default:
-        return burgerOrange;
-    }
-  };
+  const ingredientIconSwitch = useCallback((ingredient: string) => {
+    return breakfastIngredientIconSwitch(ingredient);
+  }, []);
 
   const checkShowConfirmation = (breakfastOption: BreakfastOption) => {
     if (breakfastOption.name === order?.orderType) return;
@@ -140,6 +101,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
     }, 700);
   };
 
+  // TODO: would be neat to correct the random button heights
   if (showConfirmation)
     return (
       <Card
@@ -159,14 +121,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
             : `0.3rem solid ${COLOURS.LIGHT_FONT_TERTIARY}`,
         }}
       >
-        <div style={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
+        <Box sx={{ backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG, zIndex: 1 }}>
           <CardMedia>
-            <div
-              style={{
+            <Box
+              sx={{
                 height: '8.75rem',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${colourSwitch(breakfastOption.colour)})`,
+                backgroundImage: `url(${cardImageSwitch(breakfastOption.colour)})`,
                 backgroundBlendMode: 'multiply',
                 backgroundColor: COLOURS.DARKEN_OVERLAY_STRONG,
               }}
@@ -180,19 +142,19 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               },
             }}
           >
-            <div style={{ zIndex: 0 }}>
+            <Box sx={{ zIndex: 0 }}>
               <Typography variant="h5">{breakfastOption.name}</Typography>
               <List sx={{ paddingTop: 0 }}>
                 {breakfastOption.ingredients.map((ingredient, index) => (
                   <ListItem key={index} sx={{ justifyContent: 'center' }}>
-                    {iconSwitch(ingredient)}
+                    {ingredientIconSwitch(ingredient)}
                     <Typography>{ingredient}</Typography>
                   </ListItem>
                 ))}
               </List>
-            </div>
-            <div
-              style={{
+            </Box>
+            <Box
+              sx={{
                 zIndex: 1,
                 position: 'relative',
                 width: isMobile ? '16rem' : '20rem',
@@ -201,7 +163,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
               }}
             >
               {loadingSpinner ? (
-                <div
+                <Box
                   style={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -214,7 +176,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                     color="white"
                     cssOverride={{ marginLeft: 'auto', marginRight: 'auto', marginTop: '-10rem' }}
                   />
-                </div>
+                </Box>
               ) : (
                 <>
                   <Typography
@@ -256,14 +218,14 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
                   </Button>
                 </>
               )}
-            </div>
+            </Box>
           </CardContent>
-        </div>
+        </Box>
       </Card>
     );
 
   return (
-    <div onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
+    <Box onClick={() => (lockedStatus ? () => {} : checkShowConfirmation(breakfastOption))}>
       <Card
         sx={{
           width: {
@@ -292,7 +254,7 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
       >
         <CardMedia
           sx={{ height: '8.75rem' }}
-          image={colourSwitch(
+          image={cardImageSwitch(
             lockedStatus && order?.orderType !== breakfastOption.name
               ? 'DISABLED'
               : breakfastOption.colour,
@@ -310,15 +272,15 @@ const BreakfastOrderCard: FC<BreakfastOrderCardProps> = ({
           <List sx={{ paddingTop: 0 }}>
             {breakfastOption.ingredients.map((ingredient, index) => (
               <ListItem key={index.toString()} sx={{ justifyContent: 'center' }}>
-                {iconSwitch(ingredient)}
-                <div style={{ width: '0.6rem' }} />
+                {ingredientIconSwitch(ingredient)}
+                <Box sx={{ width: '0.6rem' }} />
                 <Typography color="text.secondary">{ingredient}</Typography>
               </ListItem>
             ))}
           </List>
         </CardContent>
       </Card>
-    </div>
+    </Box>
   );
 };
 

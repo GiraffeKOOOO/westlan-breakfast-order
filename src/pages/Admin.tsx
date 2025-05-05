@@ -29,7 +29,7 @@ const Admin: FC = () => {
       }}
     >
       <Grid item xs={12}>
-        <Navbar />
+        <Navbar darkMode={darkMode} userName={userName} />
       </Grid>
 
       <Grid item xs={12}>
@@ -45,7 +45,7 @@ const Admin: FC = () => {
       </Grid>
 
       <Grid item xs={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Footer />
+        <Footer darkMode={darkMode} />
       </Grid>
     </Grid>
   );

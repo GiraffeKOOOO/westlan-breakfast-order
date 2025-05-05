@@ -1,5 +1,5 @@
 // libraries
-import { useState, MouseEvent, useContext, FC } from 'react';
+import { useState, MouseEvent, FC } from 'react';
 import {
   AppBar,
   Box,
@@ -16,9 +16,6 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-// providers
-import UserContext from '../../Context/UserContext';
-import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 import logoWhite from '../../assets/logo-white.webp';
@@ -29,13 +26,18 @@ import MenuButton from './MenuButton';
 import BackgroundBanner from '../BackgroundBanner/BackgroundBanner';
 import NavbarMenuItem from './MenuItem';
 
-const Navbar: FC = () => {
-  const { userName } = useContext(UserContext);
-  const { darkMode } = useDarkMode();
+type NavbarProps = {
+  darkMode: boolean;
+  userName: string | undefined;
+};
+
+const Navbar: FC<NavbarProps> = ({ darkMode, userName }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const userLoggedIn = userName !== undefined;
+  const [mobileOpen, setMobileOpen] = useState(false);
   const theme = muiTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const userLoggedIn = userName !== undefined;
+  const container = window !== undefined ? window.document.body : undefined;
 
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -45,13 +47,11 @@ const Navbar: FC = () => {
     setAnchorElUser(null);
   };
 
-  const container = window !== undefined ? window.document.body : undefined;
-
-  const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  // TODO: could potentially try to move this in to a custom component
   const drawer = (toggleClose: () => void) => {
     return (
       <Box
@@ -76,10 +76,10 @@ const Navbar: FC = () => {
         </IconButton>
 
         <List disablePadding>
-          <NavButton isMobile buttonName="Events" />
-          <NavButton isMobile buttonName="Photos" />
-          <NavButton isMobile buttonName="FAQs" />
-          <NavButton isMobile buttonName="Support" />
+          <NavButton darkMode={darkMode} isMobile buttonName="Events" />
+          <NavButton darkMode={darkMode} isMobile buttonName="Photos" />
+          <NavButton darkMode={darkMode} isMobile buttonName="FAQs" />
+          <NavButton darkMode={darkMode} isMobile buttonName="Support" />
         </List>
 
         <AppBar
@@ -96,6 +96,7 @@ const Navbar: FC = () => {
           }}
         >
           <MenuButton
+            darkMode={darkMode}
             handleOpenUserMenu={handleOpenUserMenu}
             isMobile
             isOpen={Boolean(anchorElUser)}
@@ -123,9 +124,9 @@ const Navbar: FC = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
-            <NavbarMenuItem setting="Event Tickets" />
-            <NavbarMenuItem setting="Settings" />
-            {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
+            <NavbarMenuItem darkMode={darkMode} setting="Event Tickets" />
+            <NavbarMenuItem darkMode={darkMode} setting="Settings" />
+            {userLoggedIn && <NavbarMenuItem darkMode={darkMode} setting="Sign out" />}
           </Menu>
         </AppBar>
       </Box>
@@ -221,17 +222,22 @@ const Navbar: FC = () => {
                 onClick={() => (window.location.href = 'https://westlan.co.uk/')}
               />
               <Stack direction="row" justifyContent="space-between">
-                <NavButton isMobile={false} buttonName="Events" />
-                <NavButton isMobile={false} buttonName="Photos" />
-                <NavButton isMobile={false} buttonName="FAQs" />
-                <NavButton isMobile={false} buttonName="Support" />
+                <NavButton darkMode={darkMode} isMobile={false} buttonName="Events" />
+                <NavButton darkMode={darkMode} isMobile={false} buttonName="Photos" />
+                <NavButton darkMode={darkMode} isMobile={false} buttonName="FAQs" />
+                <NavButton darkMode={darkMode} isMobile={false} buttonName="Support" />
               </Stack>
             </Toolbar>
           </Grid>
 
           <Grid item xs={2}>
             <DarkModeButton />
-            <MenuButton isOpen={false} isMobile={false} handleOpenUserMenu={handleOpenUserMenu} />
+            <MenuButton
+              darkMode={darkMode}
+              isOpen={false}
+              isMobile={false}
+              handleOpenUserMenu={handleOpenUserMenu}
+            />
             <Menu
               sx={{
                 mt: '3rem',
@@ -256,9 +262,9 @@ const Navbar: FC = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <NavbarMenuItem setting="Event Tickets" />
-              <NavbarMenuItem setting="Settings" />
-              {userLoggedIn && <NavbarMenuItem setting="Sign out" />}
+              <NavbarMenuItem darkMode={darkMode} setting="Event Tickets" />
+              <NavbarMenuItem darkMode={darkMode} setting="Settings" />
+              {userLoggedIn && <NavbarMenuItem darkMode={darkMode} setting="Sign out" />}
             </Menu>
           </Grid>
         </Grid>

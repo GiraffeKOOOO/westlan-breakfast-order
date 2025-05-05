@@ -3,6 +3,7 @@ import { FC } from 'react';
 // files
 import { PanelContainerProps } from '../../Context/Types';
 import AdminPanelContent from './AdminPanelContent';
+import useAdminCheck from '../../Components/AdminPanel/useAdminCheck';
 
 const AdminPanel: FC<PanelContainerProps> = ({
   darkMode,
@@ -11,18 +12,10 @@ const AdminPanel: FC<PanelContainerProps> = ({
   userLoggedIn,
   lockedStatus,
 }) => {
-  if (
-    !userLoggedIn ||
-    !userName ||
-    (!userDiscordId &&
-      !(
-        userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
-        userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
-        userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
-        userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`
-      ))
-  )
-    return;
+  const adminCheck = useAdminCheck(userDiscordId);
+
+  if (!userLoggedIn || !userName || !userDiscordId) return null;
+  if (!adminCheck) return null;
 
   return (
     <AdminPanelContent

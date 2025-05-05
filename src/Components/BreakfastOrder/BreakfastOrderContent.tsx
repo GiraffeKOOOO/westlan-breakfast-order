@@ -1,6 +1,6 @@
 // libraries
 import { FC, useMemo, useState } from 'react';
-import { Button, Grid, Stack, Typography } from '@mui/material';
+import { Button, Grid, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { RiseLoader } from 'react-spinners';
 // queries
@@ -9,6 +9,8 @@ import useOrder from '../../Queries/useOrder';
 import { PanelContentProps } from '../../Context/Types';
 import BreakfastOrderCard from './BreakfastOrderCard';
 import BreakfastOptions from './BreakfastOrderOptions';
+import BreakfastOrderContentTypography from './BreakfastOrderContentTypography';
+import useAdminCheck from '../AdminPanel/useAdminCheck';
 import COLOURS from '../../Theme/Colours';
 
 const BreakfastOrderContent: FC<PanelContentProps> = ({
@@ -54,68 +56,18 @@ const BreakfastOrderContent: FC<PanelContentProps> = ({
         <Grid item xs={8} sx={{ paddingTop: '1.5rem', width: '100vw', maxWidth: '100vw' }}>
           {orderSelected && !isLoadingUserOrder ? (
             <Stack direction="row" justifyContent="center" flexWrap="wrap">
-              <Typography
-                sx={{
-                  color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-                  fontSize: {
-                    xs: '1.3rem',
-                    sm: '1.6rem',
-                    md: '2rem',
-                    lg: '2rem',
-                  },
-                  lineHeight: '1.25rem',
-                  fontWeight: '500',
-                  paddingY: '0.5rem',
-                  paddingX: '0.75rem',
-                  textSizeAdjust: '100%',
-                }}
-              >
-                You have selected
-              </Typography>
-              <Typography
-                sx={{
-                  color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-                  fontSize: {
-                    xs: '1.3rem',
-                    sm: '1.6rem',
-                    md: '2rem',
-                    lg: '2rem',
-                  },
-                  lineHeight: '1.25rem',
-                  fontWeight: '500',
-                  paddingY: '0.5rem',
-                  textSizeAdjust: '100%',
-                }}
-              >
-                {orderText}
-              </Typography>
+              <BreakfastOrderContentTypography darkMode={darkMode} text="You have selected" />
+              <BreakfastOrderContentTypography darkMode={darkMode} text={orderText} />
             </Stack>
           ) : (
-            <Typography
-              sx={{
-                color: darkMode ? COLOURS.DARK_FONT_PRIMARY : COLOURS.LIGHT_FONT_PRIMARY,
-                fontSize: {
-                  xs: '1.4rem',
-                  sm: '1.6rem',
-                  md: '2rem',
-                  lg: '2rem',
-                },
-                lineHeight: '1.25rem',
-                fontWeight: '500',
-                paddingY: '0.5rem',
-                paddingX: '0.75rem',
-                textSizeAdjust: '100%',
-              }}
-            >
-              Please select a breakfast bap
-            </Typography>
+            <BreakfastOrderContentTypography
+              darkMode={darkMode}
+              text="Please select a breakfast bap"
+            />
           )}
         </Grid>
         <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-          {(userDiscordId === `${import.meta.env.VITE_STAFF_1_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_2_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_3_ID}` ||
-            userDiscordId === `${import.meta.env.VITE_STAFF_4_ID}`) && (
+          {useAdminCheck(userDiscordId) && (
             <Button variant="contained" onClick={() => navigate('/admin')}>
               Admin Panel
             </Button>

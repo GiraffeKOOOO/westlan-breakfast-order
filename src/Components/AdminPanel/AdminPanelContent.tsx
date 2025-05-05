@@ -29,6 +29,7 @@ import COLOURS from '../../Theme/Colours';
 import AttendeeSummaryTableHeader from './AttendeeSummaryTableHeader';
 import OrderSummaryTableHeader from './OrderSummaryTableHeader';
 import BREAKFAST_OPTIONS from '../BreakfastOptions';
+import AdminTableTitle from './AdminTableTitle';
 
 export const StyledTableCell1 = styled(TableCell)(() => ({
   // table head styling
@@ -87,7 +88,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
   const orderTypeCountSwitch = (type: string) => {
     switch (type) {
       case BREAKFAST_OPTIONS.FAT_BASTARD:
-        fatBastardCount += 1;
+        fatBastardCount++;
         break;
       case BREAKFAST_OPTIONS.SAUSAGE_AND_BACON:
         sausageBaconCount++;
@@ -170,19 +171,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
           }}
         >
           <Stack alignItems="flex-start">
-            <Typography
-              sx={{
-                display: 'flex',
-                color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '1.25rem',
-                lineHeight: '1.75rem',
-                fontWeight: '700',
-                paddingY: '0.5rem',
-                textSizeAdjust: '100%',
-              }}
-            >
-              Attendee Summary
-            </Typography>
+            <AdminTableTitle text="Attendee Summary" />
             <Table>
               <AttendeeSummaryTableHeader />
               <TableBody
@@ -201,19 +190,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
 
           {/* 2nd table - Order summary */}
           <Stack alignItems="flex-start">
-            <Typography
-              sx={{
-                display: 'flex',
-                color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '1.25rem',
-                lineHeight: '1.75rem',
-                fontWeight: '700',
-                paddingY: '0.5rem',
-                textSizeAdjust: '100%',
-              }}
-            >
-              Order Summary
-            </Typography>
+            <AdminTableTitle text="Order Summary" />
             <Table>
               <OrderSummaryTableHeader />
               <TableBody
@@ -245,19 +222,7 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
         >
           {/* Table title */}
           <Stack alignItems="flex-start">
-            <Typography
-              sx={{
-                display: 'flex',
-                color: COLOURS.DARK_FONT_PRIMARY,
-                fontSize: '1.25rem',
-                lineHeight: '1.75rem',
-                fontWeight: '700',
-                paddingY: '0.5rem',
-                textSizeAdjust: '100%',
-              }}
-            >
-              Order List
-            </Typography>
+            <AdminTableTitle text="Order List" />
 
             {/*  table colour controls */}
             <Grid container alignItems="center" justifyContent="space-between">
@@ -327,7 +292,9 @@ const AdminPanelContent: FC<PanelContentProps> = ({ userName }) => {
 
               {/* order status | right hand side */}
               <Grid item>
-                <Typography>Order status: {lockedStatus ? 'locked' : 'unlocked'}</Typography>
+                <Typography sx={{ color: COLOURS.DARK_FONT_PRIMARY }}>
+                  Order status: {lockedStatus ? 'locked' : 'unlocked'}
+                </Typography>
                 <Button
                   variant="contained"
                   onClick={() => {

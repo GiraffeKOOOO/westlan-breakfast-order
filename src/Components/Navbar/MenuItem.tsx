@@ -1,18 +1,15 @@
 // libraries
 import { FC } from 'react';
 import { MenuItem, Typography } from '@mui/material';
-// providers
-import { useDarkMode } from '../../Context/useDarkMode';
 // files
 import COLOURS from '../../Theme/Colours';
 
 type MenuItemProps = {
+  darkMode: boolean;
   setting: string;
 };
 
-const NavbarMenuItem: FC<MenuItemProps> = ({ setting }) => {
-  const { darkMode } = useDarkMode();
-
+const NavbarMenuItem: FC<MenuItemProps> = ({ darkMode, setting }) => {
   const redirectEventTickets = () => {
     window.location.href = 'https://westlan.co.uk/events';
   };
